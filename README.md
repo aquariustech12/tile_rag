@@ -26,7 +26,7 @@ Combina RAG (Retrieval-Augmented Generation) con flujo de ventas guiado por opci
 
 ```bash
 # Clonar
-git clone https://github.com/tuusuario/vama-agent.git
+git clone https://github.com/aquariustech12/tile_rag.git
 cd vama-agent
 
 # Dependencias

@@ -1,8 +1,7 @@
-
 #!/usr/bin/env python3
 """
-VAMA PRO v2.2 - WhatsApp Integration
-Listo para producción con familia (4 usuarios)
+VAMA PRO - Asistente Inteligente con LLM + RAG
+VERSIÓN 2.0 - Con memoria multi-usuario PERSISTENTE
 """
 
 import os
@@ -14,31 +13,18 @@ import ollama
 import re
 import json
 import math
-import pickle
-import threading
-import time
+import pickle  # NUEVO: para guardar en disco
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify
-
-# Para WhatsApp usarás una de estas opciones:
-# Opción A: CallMeBot (gratis, web-based)
-# Opción B: WhatsApp Business API (Meta oficial, pago)
-# Opción C: whatsapp-web.js vía Node puente (recomendado)
 
 CHROMA_PATH = "chroma_db_v3"
-MEMORIA_PATH = "memoria_vama.pkl"
-WHATSAPP_MODE = "callmebot"  # Cambia a "api" o "bridge" según evolucione
-
-app = Flask(__name__)
+MEMORIA_PATH = "memoria_vama.pkl"  # NUEVO: archivo de memoria persistente
 
 # ============================================================================
-# DATABASE (igual que antes)
+# CONEXIÓN A DB
 # ============================================================================
 
-print("🔌 Iniciando VAMA WhatsApp Bot...")
-print("🔌 Conectando a ChromaDB...")
-
+print("🔌 Conectando...")
 embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="BAAI/bge-m3",
     device="cuda"
@@ -55,23 +41,22 @@ cols = {
 
 try:
     ollama.list()
-    print("✅ Ollama disponible")
+    print("✅ Ollama disponible (opcional)")
 except:
-    print("⚠️ Ollama no responde")
+    print("⚠️ Ollama no responde, modo sin LLM activado")
 
-total_productos = sum(c.count() for c in cols.values())
-print(f"✅ {total_productos} productos listos")
-print(f"✅ Modo WhatsApp: {WHATSAPP_MODE}")
+print(f"✅ {sum(c.count() for c in cols.values())} productos\n")
 
 # ============================================================================
-# MEMORIA (igual que antes, optimizado)
+# MEMORIA PERSISTENTE (NUEVO)
 # ============================================================================
 
 class MemoriaPersistente:
+    """Guarda historial de cotizaciones en disco"""
+    
     def __init__(self, archivo=MEMORIA_PATH):
         self.archivo = archivo
         self.datos = self._cargar()
-        self.lock = threading.Lock()
     
     def _cargar(self):
         if os.path.exists(self.archivo):
@@ -82,81 +67,74 @@ class MemoriaPersistente:
                 return {}
         return {}
     
-    def _guardar(self):
-        with self.lock:
-            with open(self.archivo, 'wb') as f:
-                pickle.dump(self.datos, f)
+    def guardar(self):
+        with open(self.archivo, 'wb') as f:
+            pickle.dump(self.datos, f)
     
-    def obtener(self, usuario_id):
+    def obtener_historial(self, usuario_id):
         return self.datos.get(usuario_id, {
-            "nombre": "",
             "cotizaciones": [],
             "productos_vistos": [],
             "ultima_visita": None,
-            "total_gastado": 0
+            "total_acumulado": 0
         })
     
-    def guardar_cotizacion(self, usuario_id, nombre, items, total):
-        with self.lock:
-            if usuario_id not in self.datos:
-                self.datos[usuario_id] = self.obtener(usuario_id)
-            
-            self.datos[usuario_id]["cotizaciones"].append({
-                "fecha": datetime.now().isoformat(),
-                "items": items,
-                "total": total
-            })
-            self.datos[usuario_id]["nombre"] = nombre
-            self.datos[usuario_id]["ultima_visita"] = datetime.now().isoformat()
-            self.datos[usuario_id]["total_gastado"] += total
-            
-            for item in items:
-                desc = item["producto"]["descripcion"]
-                if desc not in self.datos[usuario_id]["productos_vistos"]:
-                    self.datos[usuario_id]["productos_vistos"].append(desc)
-            
-            self._guardar()
-
-memoria = MemoriaPersistente()
-
-# ============================================================================
-# SESIÓN ACTIVA (Corto plazo)
-# ============================================================================
-
-class SesionActiva:
-    def __init__(self, telefono, nombre):
-        self.telefono = telefono
-        self.nombre = nombre
-        self.producto_seleccionado = None
-        self.m2_proyecto = None
-        self.items = []
-        self.ultimos_productos = []
-        self.ultimo_mensaje = datetime.now()
+    def agregar_cotizacion(self, usuario_id, items, total):
+        if usuario_id not in self.datos:
+            self.datos[usuario_id] = self.obtener_historial(usuario_id)
+        
+        self.datos[usuario_id]["cotizaciones"].append({
+            "fecha": datetime.now().isoformat(),
+            "items": items,
+            "total": total
+        })
+        self.datos[usuario_id]["ultima_visita"] = datetime.now().isoformat()
+        self.datos[usuario_id]["total_acumulado"] += total
+        
+        # Guardar productos vistos
+        for item in items:
+            desc = item["producto"]["descripcion"]
+            if desc not in self.datos[usuario_id]["productos_vistos"]:
+                self.datos[usuario_id]["productos_vistos"].append(desc)
+        
+        self.guardar()
     
-    def actualizar(self):
-        self.ultimo_mensaje = datetime.now()
+    def dias_desde_ultima_visita(self, usuario_id):
+        hist = self.obtener_historial(usuario_id)
+        if not hist["ultima_visita"]:
+            return None
+        ultima = datetime.fromisoformat(hist["ultima_visita"])
+        return (datetime.now() - ultima).days
 
-sesiones_activas: Dict[str, SesionActiva] = {}
-lock_sesiones = threading.Lock()
-
-def obtener_sesion(telefono, nombre):
-    with lock_sesiones:
-        # Limpiar sesiones viejas (>2 horas)
-        ahora = datetime.now()
-        vencidos = [t for t, s in sesiones_activas.items() 
-                   if (ahora - s.ultimo_mensaje).seconds > 7200]
-        for t in vencidos:
-            del sesiones_activas[t]
-        
-        if telefono not in sesiones_activas:
-            sesiones_activas[telefono] = SesionActiva(telefono, nombre)
-            print(f"🆕 Nueva sesión: {telefono[-10:]}")
-        
-        sesiones_activas[telefono].actualizar()
-        return sesiones_activas[telefono]
+memoria_largo_plazo = MemoriaPersistente()
 
 # ============================================================================
-# DB Y CÁLCULOS (Optimizados)
+# RENDIMIENTOS POLVOS
+# ============================================================================
+
+RENDIMIENTOS_POLVOS = {
+    "adhesivo": 4.5,
+    "pegazulejo": 5.0,
+    "cemento": 6.0,
+    "boquilla": 8.0,
+    "default": 4.5
+}
+
+def detectar_tipo_polvo(descripcion: str) -> str:
+    d = descripcion.lower()
+    if "adhesivo" in d or "porcelanico" in d:
+        return "adhesivo"
+    elif "pegazulejo" in d or "pegapiso" in d:
+        return "pegazulejo"
+    elif "cemento" in d:
+        return "cemento"
+    elif "boquilla" in d:
+        return "boquilla"
+    else:
+        return "default"
+
+# ============================================================================
+# CLASE DB
 # ============================================================================
 
 class DB:
@@ -172,359 +150,682 @@ class DB:
             if nombre not in self.cols:
                 continue
             
+            col = self.cols[nombre]
+            where_filter = {"tipo": tipo} if tipo and nombre in ["nacionales", "importados"] else None
+            
             try:
-                col = self.cols[nombre]
-                where = {"tipo": tipo} if tipo and nombre in ["nacionales", "importados"] else None
-                
-                if where:
-                    r = col.query(query_texts=[query], n_results=top_k, where=where)
+                if where_filter:
+                    r = col.query(query_texts=[query], n_results=top_k, where=where_filter)
                 else:
                     r = col.query(query_texts=[query], n_results=top_k)
                 
-                for meta, pid in zip(r["metadatas"][0], r["ids"][0]):
+                for meta, dist, pid in zip(r["metadatas"][0], r["distances"][0], r["ids"][0]):
                     resultados.append({
                         "codigo": meta.get("codigo", ""),
                         "descripcion": meta.get("descripcion", ""),
                         "proveedor": meta.get("proveedor", ""),
-                        "precio_m2": float(meta.get("precio_m2", 0)) or 0,
-                        "precio_unitario": float(meta.get("precio_unitario", 0)) or 0,
-                        "metraje_caja": float(meta.get("metraje_caja", 1.44)) or 1.44,
+                        "precio_m2": float(meta.get("precio_m2", 0)) if meta.get("precio_m2") else 0,
+                        "precio_unitario": float(meta.get("precio_unitario", 0)) if meta.get("precio_unitario") else 0,
+                        "metraje_caja": float(meta.get("metraje_caja", 1.44)) if meta.get("metraje_caja") else 1.44,
                         "formato": meta.get("formato", ""),
-                        "coleccion": nombre
+                        "color": meta.get("color", ""),
+                        "es_promo": meta.get("es_promo", False),
+                        "tipo": meta.get("tipo", ""),
+                        "coleccion": nombre,
+                        "presentacion": meta.get("presentacion", ""),
+                        "rendimiento": meta.get("rendimiento", 4.5)
                     })
-            except Exception as e:
-                print(f"Error DB {nombre}: {e}")
+            except:
                 continue
         
-        # Quitar duplicados por código
-        unicos = {}
+        vistos = set()
+        unicos = []
         for r in resultados:
-            if r["codigo"] not in unicos:
-                unicos[r["codigo"]] = r
-        return list(unicos.values())[:top_k]
-
-db = DB()
-
-def calcular_piso(producto, m2):
-    cajas = math.ceil(m2 / producto["metraje_caja"])
-    total = cajas * producto["precio_m2"] * producto["metraje_caja"]
-    return {"cajas": cajas, "total": total, "detalle": f"{cajas} cajas = ${total:.2f}"}
+            if r["codigo"] not in vistos:
+                vistos.add(r["codigo"])
+                unicos.append(r)
+        
+        return unicos[:top_k]
 
 # ============================================================================
-# CLASIFICADOR (Simplificado y robusto)
+# ESTADO DE CONVERSACIÓN (CORTO PLAZO - RAM)
 # ============================================================================
 
-def clasificar(mensaje: str, sesion: SesionActiva):
-    m = mensaje.lower().strip()
+class EstadoConversacion:
+    def __init__(self, usuario_id):
+        self.usuario_id = usuario_id
+        self.productos_vistos = []
+        self.producto_seleccionado = None
+        self.m2_proyecto = None
+        self.items_cotizacion = []
+        self.ultima_categoria = None
+        self.ultimos_productos = []
+        self.categoria_activa = None
+        self.ultimo_mensaje = datetime.now()
+        self.historial = []
     
-    # Número 1-5 = selección si hay productos previos
-    if m.isdigit() and 1 <= int(m) <= 5 and sesion.ultimos_productos:
-        return {"intencion": "seleccionar", "indice": int(m) - 1}
+    def actualizar_actividad(self):
+        self.ultimo_mensaje = datetime.now()
     
-    # Recordar cotización anterior
-    if any(x in m for x in ["ayer", "anterior", "otro día", "seguimos", "todavía"]):
-        return {"intencion": "recordar"}
+    def guardar_productos(self, productos):
+        self.ultimos_productos = productos
     
-    # Despedida
-    if any(x in m for x in ["gracias", "listo", "terminamos", "adiós", "chao"]):
-        return {"intencion": "despedida"}
+    def seleccionar(self, idx):
+        if 0 <= idx < len(self.ultimos_productos):
+            self.producto_seleccionado = self.ultimos_productos[idx]
+            return self.producto_seleccionado
+        return None
     
-    # Cotizar (tiene números)
-    if re.search(r'\d+', m) and any(x in m for x in ["m2", "metros", "precio", "cuesta"]):
-        return {"intencion": "cotizar"}
+    def agregar_item(self, producto, calculo, m2=None):
+        item = {
+            "producto": producto,
+            "calculo": calculo,
+            "m2": m2,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.items_cotizacion.append(item)
+        if m2:
+            self.m2_proyecto = m2
     
-    # Agregar complemento
-    if sesion.items and any(x in m for x in ["también", "además", "otro", "más", "agrega"]):
-        return {"intencion": "agregar"}
+    def get_total(self):
+        total = 0
+        for item in self.items_cotizacion:
+            total += item["calculo"].get("total", 0)
+        return total
     
-    # Por defecto: buscar
-    return {"intencion": "buscar", "categoria": detectar_cat(m)}
+    def get_resumen(self):
+        if not self.items_cotizacion:
+            return "No hay items en la cotización."
+        
+        lineas = ["📋 RESUMEN DE COTIZACIÓN"]
+        for i, item in enumerate(self.items_cotizacion[-5:], 1):
+            prod = item["producto"]
+            calc = item["calculo"]
+            if "cajas" in calc:
+                lineas.append(f"{i}. {prod['descripcion'][:30]} - {calc['cajas']} cajas = ${calc['total']:.2f}")
+            elif "sacos" in calc:
+                lineas.append(f"{i}. {prod['descripcion'][:30]} - {calc['sacos']} sacos = ${calc['total']:.2f}")
+            else:
+                lineas.append(f"{i}. {prod['descripcion'][:30]} - {calc.get('unidades', 1)} un = ${calc['total']:.2f}")
+        
+        lineas.append(f"\n💰 TOTAL: ${self.get_total():.2f}")
+        return "\n".join(lineas)
 
-def detectar_cat(mensaje: str):
+# ============================================================================
+# GESTOR DE SESIONES (INTEGRA CORTO Y LARGO PLAZO)
+# ============================================================================
+
+class GestorSesiones:
+    def __init__(self):
+        self.sesiones = {}  # Corto plazo (RAM)
+        self.tiempo_expiracion = timedelta(hours=2)  # Sesión activa 2 horas
+    
+    def obtener_sesion(self, usuario_id):
+        ahora = datetime.now()
+        
+        # Limpiar sesiones inactivas de corto plazo
+        expirados = []
+        for uid, sesion in self.sesiones.items():
+            if ahora - sesion.ultimo_mensaje > self.tiempo_expiracion:
+                expirados.append(uid)
+        
+        for uid in expirados:
+            del self.sesiones[uid]
+            print(f"🧹 Sesión corto plazo expirada: {uid}")
+        
+        # Crear nueva sesión de corto plazo si no existe
+        if usuario_id not in self.sesiones:
+            self.sesiones[usuario_id] = EstadoConversacion(usuario_id)
+            print(f"🆕 Nueva sesión activa: {usuario_id}")
+            
+            # Verificar si hay historial de largo plazo
+            dias = memoria_largo_plazo.dias_desde_ultima_visita(usuario_id)
+            if dias is not None:
+                if dias == 0:
+                    print(f"   📚 Cliente regresó hoy")
+                else:
+                    print(f"   📚 Última visita: hace {dias} días")
+        
+        self.sesiones[usuario_id].actualizar_actividad()
+        return self.sesiones[usuario_id]
+    
+    def guardar_cotizacion_largo_plazo(self, usuario_id):
+        """Persiste la cotización actual en disco"""
+        if usuario_id in self.sesiones:
+            sesion = self.sesiones[usuario_id]
+            if sesion.items_cotizacion:
+                total = sesion.get_total()
+                memoria_largo_plazo.agregar_cotizacion(
+                    usuario_id, 
+                    sesion.items_cotizacion, 
+                    total
+                )
+                print(f"💾 Cotización guardada en memoria persistente: ${total:.2f}")
+
+gestor_sesiones = GestorSesiones()
+
+# ============================================================================
+# CALCULADORA
+# ============================================================================
+
+class CalculadoraVAMA:
+    @staticmethod
+    def calcular_piso(producto, m2):
+        cajas = math.ceil(m2 / producto["metraje_caja"])
+        m2_real = cajas * producto["metraje_caja"]
+        precio_caja = producto["precio_m2"] * producto["metraje_caja"]
+        total = cajas * precio_caja
+        
+        return {
+            "tipo": "piso",
+            "cajas": cajas,
+            "m2_real": m2_real,
+            "precio_caja": precio_caja,
+            "total": total,
+            "detalle": f"{cajas} cajas = ${total:.2f}"
+        }
+    
+    @staticmethod
+    def calcular_polvo(producto, m2):
+        tipo = detectar_tipo_polvo(producto["descripcion"])
+        rendimiento = RENDIMIENTOS_POLVOS.get(tipo, RENDIMIENTOS_POLVOS["default"])
+        
+        sacos = math.ceil(m2 / rendimiento)
+        m2_reales = sacos * rendimiento
+        total = sacos * producto["precio_unitario"]
+        
+        return {
+            "tipo": "polvo",
+            "sacos": sacos,
+            "m2_reales": m2_reales,
+            "rendimiento": rendimiento,
+            "total": total,
+            "detalle": f"{sacos} sacos = ${total:.2f} (rinde {rendimiento}m²/saco)"
+        }
+    
+    @staticmethod
+    def calcular_griferia(producto, cantidad=1):
+        total = cantidad * producto["precio_unitario"]
+        
+        return {
+            "tipo": "griferia",
+            "unidades": cantidad,
+            "total": total,
+            "detalle": f"{cantidad} unidad(es) = ${total:.2f}"
+        }
+    
+    @staticmethod
+    def calcular_otro(producto, cantidad=1):
+        total = cantidad * producto.get("precio_unitario", 0)
+        
+        return {
+            "tipo": "otro",
+            "unidades": cantidad,
+            "total": total,
+            "detalle": f"{cantidad} unidad(es) = ${total:.2f}"
+        }
+    
+    @classmethod
+    def calcular(cls, producto, m2=None, cantidad=1):
+        coleccion = producto.get("coleccion", "")
+        
+        if coleccion in ["nacionales", "importados"] and producto.get("precio_m2", 0) > 0:
+            return cls.calcular_piso(producto, m2 if m2 else 10)
+        elif coleccion == "polvos":
+            return cls.calcular_polvo(producto, m2 if m2 else 10)
+        elif coleccion == "griferia":
+            return cls.calcular_griferia(producto, cantidad)
+        else:
+            return cls.calcular_otro(producto, cantidad)
+
+calculadora = CalculadoraVAMA()
+
+# ============================================================================
+# CLASIFICADOR DE INTENCIÓN
+# ============================================================================
+
+def clasificar_intencion(mensaje: str, estado: EstadoConversacion) -> Dict:
     m = mensaje.lower()
-    if any(x in m for x in ["piso", "porcelanato", "baño", "suelo"]):
+    
+    # Detectar recordar/memoria
+    if any(x in m for x in ["ayer", "anterior", "otro día", "seguimos", "todavía tengo", "la vez pasada", "recuerdas", "habíamos quedado"]):
+        return {"intencion": "recordar", "categoria": None, "es_complemento": False}
+    
+    if any(x in m for x in ["gracias", "adiós", "hasta luego", "eso es todo", "listo", "terminamos"]):
+        return {"intencion": "despedida", "categoria": None, "es_complemento": False}
+    
+    if any(x in m for x in ["busco", "tienes", "opciones", "muéstrame", "muestrame", "ver", "catalogo", "hay"]):
+        return {"intencion": "buscar", "categoria": detectar_categoria(m), "es_complemento": False}
+    
+    if any(x in m for x in ["cotizar", "precio", "cuanto", "cuesta", "m2", "m²"]) or re.search(r'\d+\s*(?:m2|m²)', m):
+        return {"intencion": "cotizar", "categoria": detectar_categoria(m), "es_complemento": False}
+    
+    if any(x in m for x in ["agrega", "tambien", "ademas", "y tambien", "también", "además", "otro"]) or \
+       (estado.items_cotizacion and any(x in m for x in ["pegamento", "griferia", "grifo", "llave", "adhesivo", "boquilla"])):
+        return {"intencion": "agregar", "categoria": detectar_categoria(m), "es_complemento": True}
+    
+    if m.strip().isdigit() and 1 <= int(m) <= 5 and estado.ultimos_productos:
+        return {"intencion": "seleccionar", "indice": int(m) - 1, "categoria": None, "es_complemento": False}
+    
+    return {"intencion": "info", "categoria": detectar_categoria(m), "es_complemento": False}
+
+def detectar_categoria(mensaje: str) -> Optional[str]:
+    m = mensaje.lower()
+    
+    if any(x in m for x in ["piso", "porcelanato", "porcelánico", "loseta"]):
         return "pisos"
-    if any(x in m for x in ["muro", "azulejo", "pared"]):
+    elif any(x in m for x in ["muro", "azulejo", "pared", "revestimiento"]):
         return "muros"
-    if any(x in m for x in ["grifo", "llave", "regadera"]):
+    elif any(x in m for x in ["grifo", "llave", "monomando", "mezcladora", "regadera", "griferia"]):
         return "griferia"
-    if any(x in m for x in ["pega", "adhesivo", "boquilla", "cemento"]):
+    elif any(x in m for x in ["pegamento", "adhesivo", "cemento", "boquilla", "pega", "polvo"]):
         return "polvos"
+    elif any(x in m for x in ["mueble", "espejo", "tinaco", "tarja", "lavabo"]):
+        return "otras"
+    
     return None
 
 # ============================================================================
-# RESPUESTAS (Compactas para WhatsApp)
+# VAMA LLM
 # ============================================================================
 
-def resp_buscar(sesion, clas):
-    cat = clas.get("categoria")
-    if not cat:
-        return "¿Qué buscas? (pisos, azulejos, grifería, pegamento)"
+class VAMALLM:
+    def __init__(self, usar_llm=True):
+        self.usar_llm = usar_llm
+        self.modelo = "qwen3:30b-a3b-fp16"
+        self.estado = None
     
-    productos = db.buscar("baño" if cat == "pisos" else cat, tipo=cat[:-1] if cat in ["pisos", "muros"] else None, top_k=5)
+    def set_estado(self, estado):
+        self.estado = estado
     
-    if not productos:
-        return f"No encontré {cat}. Intenta con otras palabras."
+    def clasificar_intencion(self, mensaje):
+        return clasificar_intencion(mensaje, self.estado)
     
-    sesion.ultimos_productos = productos
-    
-    msg = f"*{cat.upper()}* - Opciones:\n\n"
-    for i, p in enumerate(productos[:5], 1):
-        if p["precio_m2"] > 0:
-            msg += f"{i}. {p['descripcion'][:32]}\n"
-            msg += f"   ${p['precio_m2']:.0f}/m² | {p['proveedor']}\n\n"
+    def obtener_productos_rag(self, clas, mensaje):
+        categoria = clas.get('categoria')
+        db = DB()
+        if categoria == "pisos":
+            return db.buscar(mensaje, tipo="piso", top_k=5)
+        elif categoria == "muros":
+            return db.buscar(mensaje, tipo="muro", top_k=5)
+        elif categoria == "polvos":
+            return db.buscar(mensaje, colecciones=["polvos"], top_k=5)
+        elif categoria == "griferia":
+            return db.buscar(mensaje, colecciones=["griferia"], top_k=5)
         else:
-            msg += f"{i}. {p['descripcion'][:32]}\n"
-            msg += f"   ${p['precio_unitario']:.0f}/u | {p['proveedor']}\n\n"
+            return db.buscar(mensaje, top_k=5)
     
-    msg += "Responde con el número (1-5):"
-    return msg
+    def fallback_determinista(self, mensaje, clas):
+        return None
+    
+    def generar_prompt(self, mensaje: str, clas: Dict, productos_info: str) -> str:
+        contexto = ""
+        if self.estado and self.estado.items_cotizacion:
+            contexto += f"Cotización actual: {len(self.estado.items_cotizacion)} items, Total: ${self.estado.get_total():.2f}\n"
+        
+        if self.estado and self.estado.m2_proyecto:
+            contexto += f"Proyecto: {self.estado.m2_proyecto}m²\n"
+        
+        if productos_info:
+            seccion_productos = f"""PRODUCTOS REALES ENCONTRADOS:
+{productos_info}
 
-def resp_seleccionar(sesion, clas):
-    idx = clas.get("indice", 0)
-    if not sesion.ultimos_productos or idx >= len(sesion.ultimos_productos):
-        return "Primero busca productos. ¿Qué necesitas?"
-    
-    prod = sesion.ultimos_productos[idx]
-    sesion.producto_seleccionado = prod
-    
-    if prod["precio_m2"] > 0:
-        return f"✅ *{prod['descripcion'][:40]}*\n💵 ${prod['precio_m2']:.2f}/m²\n\n¿Cuántos m² necesitas?"
-    else:
-        return f"✅ *{prod['descripcion'][:40']}*\n💵 ${prod['precio_unitario']:.2f}/u\n\n¿Cuántas unidades?"
-
-def resp_cotizar(sesion, mensaje):
-    # Extraer número
-    match = re.search(r'(\d+(?:\.\d+)?)', mensaje.replace(",", "."))
-    if not match:
-        return "¿Para cuántos m²? (ejemplo: 25)"
-    
-    m2 = float(match.group(1))
-    sesion.m2_proyecto = m2
-    
-    if not sesion.producto_seleccionado:
-        if sesion.ultimos_productos:
-            sesion.producto_seleccionado = sesion.ultimos_productos[0]
+INSTRUCCIÓN: SOLO usa estos productos. NO inventes."""
         else:
-            return "Primero selecciona un producto (1-5)"
-    
-    prod = sesion.producto_seleccionado
-    calc = calcular_piso(prod, m2)
-    
-    sesion.items.append({
-        "producto": prod,
-        "calculo": calc,
-        "m2": m2
-    })
-    
-    total = sum(i["calculo"]["total"] for i in sesion.items)
-    
-    msg = f"💰 *COTIZACIÓN*\n\n"
-    msg += f"*{prod['descripcion'][:35]}*\n"
-    msg += f"📐 {m2}m² = {calc['detalle']}\n\n"
-    msg += f"💵 *TOTAL: ${total:.2f}*\n\n"
-    msg += "¿Algo más? (pegamento, grifería) o 'listo'"
-    
-    return msg
+            seccion_productos = "NO SE ENCONTRARON PRODUCTOS."
+        
+        prompt = f"""Eres VAMA, experto en materiales de construcción.
 
-def resp_recordar(telefono, nombre):
-    hist = memoria.obtener(telefono)
+CONTEXTO:
+{contexto.strip()}
+
+INTENCIÓN: {clas['intencion']}
+CATEGORÍA: {clas.get('categoria', 'no especificada')}
+
+{seccion_productos}
+
+CLIENTE: {mensaje}
+
+Responde como VAMA:"""
+        
+        return prompt
+    
+    def procesar_mensaje(self, mensaje):
+        if not self.estado:
+            return None
+        
+        clas = self.clasificar_intencion(mensaje)
+        
+        match = re.search(r'(\d+(?:\.\d+)?)\s*(?:m2|m²)', mensaje.lower())
+        if match:
+            self.estado.m2_proyecto = float(match.group(1))
+        
+        productos_info = ""
+        productos = []
+        if clas['intencion'] in ['buscar', 'cotizar', 'agregar']:
+            productos = self.obtener_productos_rag(clas, mensaje)
+            if productos:
+                lines = []
+                for i, p in enumerate(productos[:5], 1):
+                    if p['precio_m2'] > 0:
+                        lines.append(f"{i}. {p['descripcion']} - ${p['precio_m2']:.2f}/m²")
+                    else:
+                        lines.append(f"{i}. {p['descripcion']} - ${p['precio_unitario']:.2f}/unidad")
+                productos_info = "\n".join(lines)
+        
+        prompt = self.generar_prompt(mensaje, clas, productos_info)
+        
+        try:
+            respuesta = ollama.generate(
+                model=self.modelo,
+                prompt=prompt,
+                options={'temperature': 0.3}
+            )['response'].strip()
+            
+            if productos:
+                self.estado.guardar_productos(productos)
+            
+            return respuesta
+        except Exception as e:
+            print(f"⚠️ Error LLM: {e}")
+            return self.fallback_determinista(mensaje, clas)
+
+vama_llm = VAMALLM(usar_llm=False)
+
+# ============================================================================
+# RESPUESTAS DETERMINISTAS
+# ============================================================================
+
+def respuesta_recordar(usuario_id, mensaje, clas, estado):
+    """Maneja '¿te acuerdas del piso del otro día?'"""
+    hist = memoria_largo_plazo.obtener_historial(usuario_id)
     
     if not hist["cotizaciones"]:
-        return "No tengo registro anterior. Empecemos de nuevo. ¿Qué buscas?"
+        return "No tengo registro de cotizaciones anteriores. ¿En qué puedo ayudarte hoy?"
     
     ultima = hist["cotizaciones"][-1]
     dias = (datetime.now() - datetime.fromisoformat(ultima["fecha"])).days
     
-    msg = f"📚 *BIENVENIDO DE VUELTA {nombre}*\n\n"
+    respuesta = "📚 *TU HISTORIAL CON VAMA*\n\n"
+    
     if dias == 0:
-        msg += "Hoy ya cotizaste con nosotros.\n"
+        respuesta += "Hoy ya hiciste una cotización con nosotros.\n"
     elif dias == 1:
-        msg += "Ayer estuviste aquí.\n"
+        respuesta += "Ayer estuviste cotizando.\n"
     else:
-        msg += f"Última vez: hace {dias} días.\n"
+        respuesta += f"Tu última visita fue hace {dias} días.\n"
     
-    msg += f"💰 Total histórico: ${hist['total_gastado']:.2f}\n\n"
-    msg += "*TU ÚLTIMA COTIZACIÓN:*\n"
+    respuesta += f"💰 Total histórico: ${hist['total_acumulado']:.2f}\n\n"
+    respuesta += "*ÚLTIMA COTIZACIÓN:*\n"
     
-    for i, item in enumerate(ultima["items"][-2:], 1):
-        p = item["producto"]
-        msg += f"{i}. {p['descripcion'][:30]}... = ${item['calculo']['total']:.0f}\n"
+    for i, item in enumerate(ultima["items"][-3:], 1):
+        prod = item["producto"]
+        calc = item["calculo"]
+        respuesta += f"{i}. {prod['descripcion'][:35]}... = ${calc['total']:.2f}\n"
     
-    msg += f"\n¿Repetir esta cotización o nueva búsqueda?"
-    return msg
+    respuesta += f"\n¿Quieres repetir esta cotización o hacer una nueva?"
+    return respuesta
 
-def resp_despedida(telefono, sesion):
-    if not sesion.items:
-        return "¡Gracias! VAMA https://vama.com.mx 👋"
+def respuesta_buscar(usuario_id, mensaje, clas, estado):
+    categoria = clas.get('categoria')
     
-    total = sum(i["calculo"]["total"] for i in sesion.items)
-    memoria.guardar_cotizacion(telefono, sesion.nombre, sesion.items, total)
+    if not categoria:
+        return "¿Qué tipo de producto buscas? (pisos, azulejos, grifería, pegamentos)"
     
-    msg = f"🎉 *COTIZACIÓN GUARDADA*\n\n"
-    msg += f"💵 *TOTAL: ${total:.2f}*\n"
-    msg += f"📋 {len(sesion.items)} productos\n\n"
-    msg += "Tu cotización quedó guardada. Puedes consultarla escribiendo '¿te acuerdas?'\n\n"
-    msg += "VAMA https://vama.com.mx 👋"
+    db = DB()
+    if categoria == "pisos":
+        productos = db.buscar(mensaje, tipo="piso", top_k=5)
+    elif categoria == "muros":
+        productos = db.buscar(mensaje, tipo="muro", top_k=5)
+    elif categoria == "polvos":
+        productos = db.buscar(mensaje, colecciones=["polvos"], top_k=5)
+    elif categoria == "griferia":
+        productos = db.buscar(mensaje, colecciones=["griferia"], top_k=5)
+    else:
+        productos = db.buscar(mensaje, top_k=5)
     
-    # Limpiar sesión
-    with lock_sesiones:
-        if telefono in sesiones_activas:
-            del sesiones_activas[telefono]
+    if not productos:
+        return f"No encontré {categoria}. ¿Puedes ser más específico?"
     
-    return msg
+    estado.guardar_productos(productos)
+    estado.categoria_activa = categoria
+    
+    respuesta = f"🔍 *{categoria.upper()}* - Encontré {len(productos)} opciones:\n\n"
+    
+    for i, p in enumerate(productos[:5], 1):
+        if p['precio_m2'] > 0:
+            precio_caja = p['precio_m2'] * p['metraje_caja']
+            respuesta += f"{i}. *{p['descripcion'][:40]}*\n"
+            respuesta += f"   🏢 {p['proveedor']} | {p['formato']}\n"
+            respuesta += f"   💰 ${p['precio_m2']:.2f}/m² (${precio_caja:.2f}/caja)\n\n"
+        else:
+            respuesta += f"{i}. *{p['descripcion'][:40]}*\n"
+            respuesta += f"   🏢 {p['proveedor']} | 💰 ${p['precio_unitario']:.2f}/unidad\n\n"
+    
+    respuesta += "¿Cuál te interesa? (di el número 1-5)"
+    return respuesta
 
-def resp_agregar(sesion):
-    if not sesion.items:
-        return "Primero cotiza un piso. ¿Qué producto necesitas?"
-    return "🔧 *COMPLEMENTOS*\n\n¿Qué agregamos?\n• Pegamento\n• Boquilla\n• Grifería\n• Otro piso\n\nEspecifica cuál:"
+def respuesta_seleccionar(usuario_id, mensaje, clas, estado):
+    indice = clas.get('indice', 0)
+    
+    producto = estado.seleccionar(indice)
+    if not producto:
+        return "Primero necesito que busques productos. ¿Qué necesitas?"
+    
+    if producto['precio_m2'] > 0:
+        return f"✅ *Seleccionado:* {producto['descripcion'][:40]}\n\nPrecio: ${producto['precio_m2']:.2f}/m²\nMetraje por caja: {producto['metraje_caja']}m²\n\n¿Para cuántos metros cuadrados?"
+    else:
+        return f"✅ *Seleccionado:* {producto['descripcion'][:40]}\n\nPrecio unitario: ${producto['precio_unitario']:.2f}\n\n¿Cuántas unidades necesitas?"
+
+def respuesta_cotizar(usuario_id, mensaje, clas, estado):
+    m2 = None
+    match = re.search(r'(\d+(?:\.\d+)?)\s*(?:m2|m²|metros)', mensaje.lower())
+    if match:
+        m2 = float(match.group(1))
+        estado.m2_proyecto = m2
+    
+    if estado.producto_seleccionado and m2:
+        calculo = calculadora.calcular(estado.producto_seleccionado, m2)
+        estado.agregar_item(estado.producto_seleccionado, calculo, m2)
+        
+        respuesta = f"💰 *COTIZACIÓN*\n\n"
+        respuesta += f"*{estado.producto_seleccionado['descripcion'][:40]}*\n"
+        respuesta += f"📐 {m2}m² solicitados\n"
+        respuesta += f"📦 {calculo['detalle']}\n\n"
+        respuesta += f"💰 *TOTAL: ${calculo['total']:.2f}*\n\n"
+        respuesta += "¿Quieres agregar algo más? (pegamento, grifería, etc.)"
+        
+        return respuesta
+    
+    elif estado.ultimos_productos and m2:
+        producto = estado.ultimos_productos[0]
+        calculo = calculadora.calcular(producto, m2)
+        estado.agregar_item(producto, calculo, m2)
+        
+        respuesta = f"💰 *COTIZACIÓN PARA {m2}m²*\n\n"
+        respuesta += f"*{producto['descripcion'][:40]}*\n"
+        respuesta += f"{calculo['detalle']}\n\n"
+        respuesta += f"💰 *TOTAL: ${calculo['total']:.2f}*\n\n"
+        respuesta += "¿Quieres agregar algo más?"
+        
+        return respuesta
+    
+    else:
+        return "Para cotizar necesito:\n1. Un producto seleccionado\n2. Los metros cuadrados\n\n¿Puedes darme esos datos?"
+
+def respuesta_agregar(usuario_id, mensaje, clas, estado):
+    if not estado.items_cotizacion:
+        return "Primero necesitas una cotización. ¿Qué producto necesitas?"
+    
+    categoria = clas.get('categoria', 'polvos')
+    
+    if categoria == "polvos":
+        return "¿Qué tipo de pegamento necesitas? (adhesivo, pegazulejo, cemento, boquilla)"
+    elif categoria == "griferia":
+        return "¿Qué tipo de grifería necesitas? (monomando, llave, regadera)"
+    else:
+        return "¿Qué quieres agregar? (pegamento, grifería, etc.)"
+
+def respuesta_despedida(usuario_id, mensaje, clas, estado):
+    if estado.items_cotizacion:
+        # GUARDAR EN MEMORIA PERSISTENTE
+        gestor_sesiones.guardar_cotizacion_largo_plazo(usuario_id)
+        
+        total = estado.get_total()
+        respuesta = f"🎉 *COTIZACIÓN FINALIZADA*\n\n"
+        respuesta += f"💰 **TOTAL: ${total:.2f}**\n\n"
+        respuesta += estado.get_resumen()
+        respuesta += "\n\n¡Gracias por contactar a VAMA! 👋"
+    else:
+        respuesta = "¡Gracias por contactar a VAMA! Estamos aquí cuando lo necesites. 👋"
+    
+    return respuesta
+
+def respuesta_info(usuario_id, mensaje, clas, estado):
+    return "🏪 *VAMA - Materiales de Construcción*\n\nPuedo ayudarte con:\n\n" \
+           "1) 🏠 Buscar pisos y porcelanatos\n" \
+           "2) 🧱 Ver azulejos para muros\n" \
+           "3) 🚿 Cotizar grifería\n" \
+           "4) 🔧 Agregar pegamentos\n" \
+           "5) 💰 Crear cotizaciones\n\n" \
+           "¿En qué puedo ayudarte?"
+
+MANEJADORES = {
+    "recordar": respuesta_recordar,  # NUEVO
+    "buscar": respuesta_buscar,
+    "seleccionar": respuesta_seleccionar,
+    "cotizar": respuesta_cotizar,
+    "agregar": respuesta_agregar,
+    "despedida": respuesta_despedida,
+    "info": respuesta_buscar
+}
 
 # ============================================================================
-# PROCESADOR PRINCIPAL
+# FUNCIÓN PRINCIPAL DE PROCESAMIENTO
 # ============================================================================
 
-def procesar(telefono: str, nombre: str, mensaje: str) -> str:
-    sesion = obtener_sesion(telefono, nombre)
-    clas = clasificar(mensaje, sesion)
+def procesar_mensaje(usuario_id: str, mensaje: str) -> str:
+    estado = gestor_sesiones.obtener_sesion(usuario_id)
+    estado.historial.append(f"👤 Cliente: {mensaje}")
     
-    print(f"[{telefono[-10:]}] {clas['intencion']}: {mensaje[:40]}...")
+    clas = clasificar_intencion(mensaje, estado)
+    print(f"   [Usuario: {usuario_id[:8]}... | Intención: {clas['intencion']} | Cat: {clas.get('categoria')}]")
     
-    if clas["intencion"] == "recordar":
-        return resp_recordar(telefono, nombre)
-    elif clas["intencion"] == "buscar":
-        return resp_buscar(sesion, clas)
-    elif clas["intencion"] == "seleccionar":
-        return resp_seleccionar(sesion, clas)
-    elif clas["intencion"] == "cotizar":
-        return resp_cotizar(sesion, mensaje)
-    elif clas["intencion"] == "agregar":
-        return resp_agregar(sesion)
-    elif clas["intencion"] == "despedida":
-        return resp_despedida(telefono, sesion)
+    respuesta_llm = None
+    if vama_llm.usar_llm:
+        vama_llm.set_estado(estado)
+        respuesta_llm = vama_llm.procesar_mensaje(mensaje)
     
-    return "No entendí. Intenta: 'busco pisos' o 'cotizar 25m2'"
+    if respuesta_llm:
+        estado.historial.append(f"🤖 VAMA: {respuesta_llm[:100]}...")
+        return respuesta_llm
+    
+    manejador = MANEJADORES.get(clas['intencion'], MANEJADORES['info'])
+    respuesta = manejador(usuario_id, mensaje, clas, estado)
+    
+    estado.historial.append(f"🤖 VAMA: {respuesta[:100]}...")
+    return respuesta
 
 # ============================================================================
-# WHATSAPP INTEGRATION
+# SIMULADOR MULTI-USUARIO
 # ============================================================================
 
-# Opción 1: CallMeBot (Gratis, fácil, para empezar hoy)
-def enviar_whatsapp_callmebot(telefono, mensaje):
-    """Usa CallMeBot API gratuita"""
-    import urllib.request
-    import urllib.parse
+def simulador_multi_usuario():
+    print("="*60)
+    print("🧠 VAMA 2.0 - MODO MULTI-USUARIO CON MEMORIA PERSISTENTE")
+    print("="*60)
+    print("Usuarios disponibles:")
+    print("  U1: Juan (pisos)")
+    print("  U2: María (azulejos)")
+    print("  U3: Pedro (grifería)")
+    print("  U4: Ana (cotizaciones)")
+    print("="*60)
+    print("COMANDOS:")
+    print("  Escribe tu mensaje directamente")
+    print("  'C' = Cambiar de usuario")
+    print("  'S' = Salir")
+    print("="*60)
     
-    # Necesitas obtener API key de http://www.callmebot.com/blog/free-api-whatsapp-messages/
-    api_key = os.getenv("CALLMEBOT_KEY", "TU_API_KEY_AQUI")
-    
-    mensaje_codificado = urllib.parse.quote(mensaje)
-    url = f"https://api.callmebot.com/whatsapp.php?phone={telefono}&text={mensaje_codificado}&apikey={api_key}"
-    
-    try:
-        with urllib.request.urlopen(url, timeout=10) as response:
-            return response.read()
-    except Exception as e:
-        print(f"Error enviando WhatsApp: {e}")
-        return None
-
-# Opción 2: Webhook para recibir mensajes (usarás esto)
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    """Recibe mensajes de WhatsApp (via CallMeBot, Twilio, o tu puente)"""
-    data = request.json or request.form
-    
-    # Extraer datos según el proveedor
-    telefono = data.get('phone') or data.get('From', '').replace('whatsapp:', '')
-    mensaje = data.get('message') or data.get('Body', '')
-    nombre = data.get('name') or 'Cliente'
-    
-    if not telefono or not mensaje:
-        return jsonify({"error": "Faltan datos"}), 400
-    
-    # Procesar
-    respuesta = procesar(telefono, nombre, mensaje)
-    
-    # Enviar respuesta de vuelta
-    if WHATSAPP_MODE == "callmebot":
-        enviar_whatsapp_callmebot(telefono, respuesta)
-    
-    return jsonify({"status": "ok", "respuesta": respuesta})
-
-@app.route('/test', methods=['GET'])
-def test():
-    return "VAMA Bot activo"
-
-# ============================================================================
-# MODO CONSOLA (Para probar hoy con tu familia sin WhatsApp aún)
-# ============================================================================
-
-def modo_consola_familia():
-    """Simula 4 familiares para probar lógica antes de WhatsApp"""
-    
-    familia = {
-        "5215512345678": ("Papá", "busca pisos para la cocina"),
-        "5215598765432": ("Mamá", "azulejos para el baño"),
-        "5215522223333": ("Hermano", "grifería"),
-        "5215544445555": ("Tú", "cotizar 45m2")
+    usuarios = {
+        "1": "juan_whatsapp",
+        "2": "maria_whatsapp", 
+        "3": "pedro_whatsapp",
+        "4": "ana_whatsapp"
     }
     
-    print("\n" + "="*60)
-    print("MODO PRUEBA FAMILIAR (Simulando WhatsApp)")
-    print("="*60)
-    print("Usuarios configurados:")
-    for num, (nombre, _) in familia.items():
-        print(f"  {nombre}: {num}")
-    print("-"*60)
-    print("Escribe mensajes como si fueran de WhatsApp")
-    print("Comandos: 'reset' = limpiar todo | 'salir' = salir")
-    print("="*60 + "\n")
+    nombres = {
+        "1": "Juan",
+        "2": "María",
+        "3": "Pedro",
+        "4": "Ana"
+    }
     
-    telefono_actual = "5215512345678"
-    nombre_actual = "Papá"
+    # CORREGIDO: Mantener usuario activo
+    usuario_actual_id = None
+    nombre_actual = None
     
     while True:
-        print(f"\n👤 {nombre_actual} ({telefono_actual[-6:]}): ")
-        entrada = input("Mensaje (o 'cambiar'/'reset'/'salir'): ").strip()
+        # Solo preguntar usuario si no hay uno activo
+        if not usuario_actual_id:
+            print("\n" + "-"*60)
+            usuario_opt = input("¿Qué usuario habla? (1-4, S=salir): ").strip().upper()
+            
+            if usuario_opt == "S":
+                break
+            
+            if usuario_opt not in usuarios:
+                print("❌ Usuario no válido")
+                continue
+            
+            usuario_actual_id = usuarios[usuario_opt]
+            nombre_actual = nombres[usuario_opt]
+            print(f"\n👤 {nombre_actual} está ahora activo")
+            print("   (Escribe 'C' en cualquier momento para cambiar de usuario)")
         
-        if entrada.lower() == 'salir':
+        # Loop de conversación con el mismo usuario
+        print("-"*60)
+        mensaje = input(f"👤 {nombre_actual}: ").strip()
+        
+        if not mensaje:
+            continue
+        
+        # Comandos especiales
+        if mensaje.upper() == "S":
             break
-        elif entrada.lower() == 'reset':
-            sesiones_activas.clear()
-            print("🧹 Todo reiniciado")
-            continue
-        elif entrada.lower() == 'cambiar':
-            print("\nElige:")
-            for i, (num, (nom, _)) in enumerate(familia.items(), 1):
-                print(f"  {i}. {nom}")
-            try:
-                opt = int(input("Número: ")) - 1
-                telefono_actual = list(familia.keys())[opt]
-                nombre_actual = familia[telefono_actual][0]
-            except:
-                print("❌ Inválido")
+        elif mensaje.upper() == "C":
+            usuario_actual_id = None
+            nombre_actual = None
+            print(f"\n🔄 Cambiando de usuario...")
             continue
         
-        # Procesar como si viniera de WhatsApp
-        respuesta = procesar(telefono_actual, nombre_actual, entrada)
+        # Procesar mensaje
+        print("🤖 Procesando...")
+        respuesta = procesar_mensaje(usuario_actual_id, mensaje)
         
         print(f"\n🤖 VAMA:\n{respuesta}\n")
-        print("-"*40)
-
+        
 # ============================================================================
 # MAIN
 # ============================================================================
 
-if __name__ == "__main__":
-    import sys
+def main():
+    global vama_llm
+    print("="*60)
+    print("🏪 VAMA 2.0 - Asistente Multi-Usuario con Memoria Persistente")
+    print("="*60)
+    print("✅ Memoria CORTO PLAZO: Sesión activa (2h)")
+    print("✅ Memoria LARGO PLAZO: Historial guardado en disco")
+    print("✅ Cálculos especializados (pisos, polvos, grifería)")
+    print("✅ Multi-usuario: Juan, María, Pedro, Ana")
+    print("="*60 + "\n")
     
-    if len(sys.argv) > 1 and sys.argv[1] == "whatsapp":
-        # Modo producción WhatsApp
-        print("\n🚀 Iniciando servidor WhatsApp...")
-        print("Configura tu webhook en:")
-        print("  - CallMeBot: http://www.callmebot.com/")
-        print("  - O usa ngrok para pruebas: ngrok http 5000")
-        print("\nEsperando mensajes en http://0.0.0.0:5000/webhook\n")
-        app.run(host='0.0.0.0', port=5000, debug=False)
-    else:
-        # Modo prueba familiar (consola)
-        modo_consola_familia()
+    # Preguntar modo
+    modo = input("¿Usar LLM? (s/n) [n]: ").strip().lower()
+    vama_llm.usar_llm = (modo == "s")
+    print(f"📌 Modo: {'LLM activado' if vama_llm.usar_llm else 'Modo determinista'}\n")
+    
+    # Ir al simulador
+    simulador_multi_usuario()
+
+if __name__ == "__main__":
+    main()

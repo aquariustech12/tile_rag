@@ -1,4 +1,4 @@
-# VAMA Agent 3.0 - Asistente de Ventas Inteligente 🤖
+# VAMA Agent 2.0 - Asistente de Ventas Inteligente 🤖
 
 Sistema de cotización conversacional con memoria persistente para VAMA (materiales de construcción). 
 Combina RAG (Retrieval-Augmented Generation) con flujo de ventas guiado por opciones numéricas.

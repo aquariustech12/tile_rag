@@ -652,6 +652,258 @@ def resp_cotizar_polvo(sesion, clas):
     
     return msg
 
+# ============================================================================
+# NUEVO: FLUJO COMPLETO DE GRIFERÍA
+# ============================================================================
+
+def detectar_tipo_griferia(mensaje):
+    """Detecta qué tipo de grifería busca el usuario"""
+    m = mensaje.lower()
+    
+    if any(x in m for x in ["monomando", "mezcladora", "una perilla", "una manija"]):
+        return "monomando"
+    elif any(x in m for x in ["regadera", "ducha", "teléfono", "telefono"]):
+        return "regadera"
+    elif any(x in m for x in ["llave", "tarja", "fregadero", "cocina"]):
+        return "llave"
+    elif any(x in m for x in ["válvula", "valvula", "escape", "fluxor"]):
+        return "valvula"
+    else:
+        return None
+
+def formatear_griferia(productos):
+    """Formatea productos de grifería para mostrar"""
+    if not productos:
+        return ""
+    
+    msg = "🚿 *GRIFERÍA DISPONIBLE:*\n\n"
+    for i, p in enumerate(productos[:5], 1):
+        # Extraer tipo de la descripción si es posible
+        desc = p['descripcion']
+        if "MONOMANDO" in desc.upper():
+            tipo = "🚰 Monomando"
+        elif "REGADERA" in desc.upper() or "DUCHA" in desc.upper():
+            tipo = "🚿 Regadera"
+        elif "LLAVE" in desc.upper():
+            tipo = "🔧 Llave"
+        else:
+            tipo = "🚿 Grifo"
+        
+        color = p.get('color', '').capitalize() if p.get('color') else ''
+        color_txt = f" | 🎨 {color}" if color else ""
+        
+        msg += f"{i}. *{desc[:50]}*\n"
+        msg += f"   {tipo} | 🏢 {p['proveedor']}{color_txt}\n"
+        msg += f"   💰 ${p['precio_unitario']:.2f} c/u\n\n"
+    
+    msg += "¿Cuál te interesa? Escribe el número (1-5)\n"
+    msg += "O dime más específico: ¿monomando, regadera o llave?"
+    return msg
+
+def resp_buscar_griferia(sesion, mensaje, tipo_especifico=None):
+    """Busca grifería en la base de datos"""
+    # Determinar el tipo de búsqueda
+    if not tipo_especifico:
+        tipo_especifico = detectar_tipo_griferia(mensaje)
+    
+    # Construir query mejorada
+    query = mensaje
+    if tipo_especifico == "monomando":
+        query = "monomando " + mensaje
+    elif tipo_especifico == "regadera":
+        query = "regadera " + mensaje
+    elif tipo_especifico == "llave":
+        query = "llave " + mensaje
+    
+    # Buscar en colecciones relevantes
+    productos = []
+    for col_name in ["griferia", "otras"]:  # Ambas pueden tener grifería
+        if col_name in db.cols:
+            try:
+                col = db.cols[col_name]
+                r = col.query(query_texts=[query], n_results=10)
+                
+                for meta, dist, pid in zip(r["metadatas"][0], r["distances"][0], r["ids"][0]):
+                    # Solo incluir si parece grifería
+                    desc = meta.get("descripcion", "").upper()
+                    if any(x in desc for x in ["MONOMANDO", "REGADERA", "LLAVE", "GRIFO", "DUCHA", "MEZCLADORA"]):
+                        productos.append({
+                            "codigo": meta.get("codigo", ""),
+                            "descripcion": meta.get("descripcion", ""),
+                            "proveedor": meta.get("proveedor", ""),
+                            "precio_unitario": float(meta.get("precio_unitario", 0)) if meta.get("precio_unitario") else 0,
+                            "color": meta.get("color", ""),
+                            "coleccion": col_name
+                        })
+            except Exception as e:
+                print(f"⚠️ Error buscando en {col_name}: {e}")
+                continue
+    
+    # Si no hay resultados, búsqueda más amplia
+    if not productos:
+        # Buscar sin filtrar por tipo
+        for col_name in ["griferia", "otras"]:
+            if col_name in db.cols:
+                try:
+                    col = db.cols[col_name]
+                    r = col.query(query_texts=[mensaje], n_results=10)
+                    for meta, dist, pid in zip(r["metadatas"][0], r["distances"][0], r["ids"][0]):
+                        productos.append({
+                            "codigo": meta.get("codigo", ""),
+                            "descripcion": meta.get("descripcion", ""),
+                            "proveedor": meta.get("proveedor", ""),
+                            "precio_unitario": float(meta.get("precio_unitario", 0)) if meta.get("precio_unitario") else 0,
+                            "color": meta.get("color", ""),
+                            "coleccion": col_name
+                        })
+                except:
+                    continue
+    
+    # Quitar duplicados
+    vistos = set()
+    unicos = []
+    for p in productos:
+        if p["codigo"] and p["codigo"] not in vistos:
+            vistos.add(p["codigo"])
+            unicos.append(p)
+        elif not p["codigo"] and p["descripcion"] not in vistos:
+            vistos.add(p["descripcion"])
+            unicos.append(p)
+    
+    if not unicos:
+        return None
+    
+    # Guardar en sesión
+    sesion.guardar_productos(unicos[:5])
+    sesion.categoria_activa = "griferia"
+    sesion.esperando_respuesta = "seleccionar_griferia"
+    
+    return formatear_griferia(unicos[:5])
+
+def resp_seleccionar_griferia(sesion, clas, mensaje_original=""):
+    """Selecciona un producto de grifería"""
+    # Si llegó un número directo
+    idx = clas.get("indice", -1)
+    
+    # Si no hay índice pero hay texto, buscar coincidencia
+    if idx < 0 and mensaje_original:
+        m = mensaje_original.lower()
+        # Buscar coincidencias en descripción o proveedor
+        for i, p in enumerate(sesion.ultimos_productos, 1):
+            if m in p['descripcion'].lower() or m in p['proveedor'].lower():
+                idx = i - 1
+                break
+        
+        # Si no hay coincidencia, preguntar de nuevo
+        if idx < 0:
+            return f"No encontré '{mensaje_original}'. Por favor escribe el número del 1 al {len(sesion.ultimos_productos)}"
+    
+    # Validar rango
+    if idx < 0 or idx >= len(sesion.ultimos_productos):
+        return f"Por favor escribe un número del 1 al {len(sesion.ultimos_productos)}"
+    
+    producto = sesion.seleccionar(idx)
+    if not producto:
+        return "Primero busca grifería. ¿Qué necesitas?"
+    
+    # Guardar selección y preguntar cantidad
+    sesion.producto_seleccionado = producto
+    sesion.esperando_respuesta = "cantidad_griferia"
+    
+    # Mostrar detalles
+    color = f" 🎨 {producto['color'].capitalize()}" if producto.get('color') else ""
+    msg = f"✅ *{producto['descripcion'][:50]}*\n"
+    msg += f"🏢 {producto['proveedor']}{color}\n"
+    msg += f"💰 ${producto['precio_unitario']:.2f} por pieza\n\n"
+    msg += "¿Cuántas piezas necesitas? (ejemplo: 2)"
+    
+    return msg
+
+def resp_cotizar_griferia(sesion, mensaje):
+    """Cotiza la cantidad de grifería seleccionada"""
+    # Extraer número del mensaje
+    cantidad = extraer_numero(mensaje)
+    
+    if not cantidad:
+        return "¿Cuántas piezas necesitas? (ejemplo: 2)"
+    
+    if cantidad < 1:
+        return "La cantidad debe ser al menos 1"
+    
+    producto = sesion.producto_seleccionado
+    if not producto:
+        return "Primero selecciona un producto de grifería"
+    
+    # Redondear a entero (no se pueden comprar medias piezas)
+    cantidad = int(cantidad)
+    
+    # Calcular total
+    total = cantidad * producto['precio_unitario']
+    calculo = {
+        "cantidad": cantidad,
+        "total": total,
+        "detalle": f"{cantidad} pieza(s) = ${total:.2f}"
+    }
+    
+    # Agregar a cotización
+    sesion.agregar_item(producto, calculo, cantidad)
+    
+    # Calcular total general
+    total_general = sesion.get_total()
+    
+    # Preparar mensaje
+    msg = f"💰 *GRIFERÍA AGREGADA*\n\n"
+    msg += f"*{producto['descripcion'][:50]}*\n"
+    msg += f"📦 {cantidad} pieza(s) x ${producto['precio_unitario']:.2f}\n"
+    msg += f"💵 Subtotal: ${total:.2f}\n\n"
+    msg += f"💵 *TOTAL COTIZACIÓN: ${total_general:.2f}*\n\n"
+    msg += "¿Algo más? (otra grifería, pegamento, pisos) o 'listo'"
+    
+    # Limpiar selección temporal
+    sesion.producto_seleccionado = None
+    
+    return msg
+
+# MODIFICAR la función clasificar_intencion (agregar casos para grifería)
+# Busca la función y en la sección de "Agregar complemento", REEMPLAZA el bloque
+# actual (líneas aprox 380-390) con este:
+
+"""
+    # Agregar complemento - CORREGIDO: detectar productos directamente
+    if estado.items_cotizacion and any(x in m for x in ["pegamento", "adhesivo", "boquilla", "grifería", "grifo", "llave", "también", "además", "otro", "más", "agrega", "falta"]):
+        cat = detectar_categoria(m)
+        # Forzar categoría si no se detectó pero hay palabras clave
+        if not cat:
+            if any(x in m for x in ["pegamento", "adhesivo", "boquilla"]):
+                cat = "polvos"
+            elif any(x in m for x in ["grifería", "grifo", "llave", "regadera", "monomando", "ducha"]):
+                cat = "griferia"
+        
+        if cat == "polvos":
+            estado.esperando_respuesta = "tipo_polvo"
+        elif cat == "griferia":
+            # Para grifería, determinar tipo específico
+            tipo = detectar_tipo_griferia(m)
+            return {"intencion": "buscar_griferia", "categoria": "griferia", "tipo": tipo}
+        
+        return {"intencion": "agregar", "categoria": cat}
+"""
+
+# MODIFICAR la función detectar_categoria (agregar grifería)
+# Busca la función y REEMPLAZA con esta versión:
+
+def detectar_categoria(mensaje: str):
+    m = mensaje.lower()
+    if any(x in m for x in ["piso", "porcelanato", "baño", "suelo"]):
+        return "pisos"
+    if any(x in m for x in ["muro", "azulejo", "pared"]):
+        return "muros"
+    if any(x in m for x in ["grifo", "llave", "regadera", "griferia", "monomando", "ducha", "mezcladora"]):
+        return "griferia"
+    if any(x in m for x in ["pega", "adhesivo", "boquilla", "cemento", "polvo"]):
+        return "polvos"
+    return None
+
 def resp_agregar(sesion, clas):
     if not sesion.items_cotizacion:
         return "Primero cotiza un producto. ¿Qué piso necesitas?"
@@ -667,18 +919,71 @@ def resp_agregar(sesion, clas):
 
 def resp_despedida(usuario_id, sesion):
     if not sesion.items_cotizacion:
-        return "¡Gracias! VAMA https://vama.com.mx 👋"
+        return "¡Gracias! VAMA https://vama.com.mx  👋"
     
     gestor_sesiones.guardar_cotizacion(usuario_id)
     total = sesion.get_total()
     
+    # Generar texto copiable
+    fecha = datetime.now().strftime('%d/%m/%Y %H:%M')
+    cotizacion_texto = f"""COTIZACIÓN VAMA
+Fecha: {fecha}
+Cliente: {sesion.nombre}
+{'='*40}"""
+    
+    for i, item in enumerate(sesion.items_cotizacion, 1):
+        p = item["producto"]
+        cotizacion_texto += f"\n{i}. {p['descripcion'][:40]}"
+        if 'cajas' in item['calculo']:
+            cotizacion_texto += f"\n   {item['calculo']['cajas']} cajas - ${item['calculo']['total']:.2f}"
+        else:
+            cotizacion_texto += f"\n   {item['calculo'].get('sacos', item['calculo'].get('unidades', 1))} un - ${item['calculo']['total']:.2f}"
+    
+    cotizacion_texto += f"\n{'='*40}\nTOTAL: ${total:.2f}\nVAMA https://vama.com.mx "
+    
+    # Guardar también como archivo temporal para descargar
+    archivo_cotizacion = f"cotizacion_{usuario_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+    with open(archivo_cotizacion, 'w', encoding='utf-8') as f:
+        f.write(cotizacion_texto)
+    
     msg = f"🎉 *COTIZACIÓN GUARDADA*\n\n"
     msg += f"💵 *TOTAL: ${total:.2f}*\n"
     msg += f"📋 {len(sesion.items_cotizacion)} productos\n\n"
-    msg += "Tu cotización quedó guardada. Vuelve cuando quieras.\n\n"
-    msg += "VAMA https://vama.com.mx 👋"
+    
+    msg += "*COPIA TU COTIZACIÓN:*\n"
+    msg += "```\n"
+    msg += cotizacion_texto
+    msg += "\n```\n\n"
+    
+    msg += f"📄 También guardada en: `{archivo_cotizacion}`\n\n"
+    msg += "*¿Qué sigue?*\n"
+    msg += "1️⃣ Escribe *nuevo* para otra cotización\n"
+    msg += "2️⃣ Escribe *salir* para terminar\n"
+    msg += "3️⃣ O escribe *pdf* para generar PDF (próximamente)"
+    
+    sesion.reset()
+    sesion.esperando_respuesta = "post_cotizacion"
     
     return msg
+
+def resp_post_cotizacion(estado, clas, mensaje):
+    """Maneja opciones después de guardar cotización"""
+    m = mensaje.lower().strip()
+    
+    if m in ["salir", "adios", "adiós", "chao", "terminar"]:
+        estado.esperando_respuesta = None
+        return "¡Gracias por usar VAMA! 👋\nTu cotización quedó guardada.\n\nVAMA https://vama.com.mx "
+    
+    if m == "pdf":
+        return "📄 Función PDF en desarrollo.\n\nEscribe *nuevo* para otra cotización o *salir* para terminar."
+    
+    if m in ["nuevo", "nueva", "otra", "empezar", "si", "sí"]:
+        estado.esperando_respuesta = None
+        estado.reset()
+        return "🆕 Nueva cotización. ¿Qué buscas? (pisos, azulejos, grifería, pegamento)"
+    
+    # Cualquier otra cosa
+    return "¿Qué sigue?\n1️⃣ *nuevo* para otra cotización\n2️⃣ *salir* para terminar"
 
 # ============================================================================
 # PROCESADOR PRINCIPAL - CORREGIDO
@@ -692,13 +997,17 @@ def procesar_mensaje(usuario_id: str, nombre: str, mensaje: str) -> str:
     clas = clasificar_intencion(mensaje, estado)
     print(f"[{usuario_id[-10:]}] {clas['intencion']}: {mensaje[:40]}...")
     
+    # Post-cotización: manejar "nuevo", "salir", "pdf"
+    if estado.esperando_respuesta == "post_cotizacion":
+        return resp_post_cotizacion(estado, clas, mensaje)
+    
     # Manejar recordar primero
     if clas["intencion"] == "recordar":
         return resp_recordar(usuario_id, estado)
     
     # NUNCA usar LLM para estas intenciones - siempre determinista
     if clas["intencion"] == "seleccionar":
-        return resp_seleccionar(estado, clas, mensaje)  # Pasar mensaje original
+        return resp_seleccionar(estado, clas, mensaje)
     
     if clas["intencion"] == "seleccionar_polvo":
         return resp_seleccionar_polvo(estado, clas)
@@ -718,6 +1027,18 @@ def procesar_mensaje(usuario_id: str, nombre: str, mensaje: str) -> str:
     if clas["intencion"] == "despedida":
         return resp_despedida(usuario_id, estado)
     
+    # NUEVOS: Grifería
+    if clas["intencion"] == "buscar_griferia":
+        respuesta = resp_buscar_griferia(estado, mensaje, clas.get("tipo"))
+        if respuesta:
+            return respuesta
+    
+    if clas["intencion"] == "seleccionar_griferia":
+        return resp_seleccionar_griferia(estado, clas, mensaje)
+    
+    if clas["intencion"] == "cotizar_griferia" and estado.esperando_respuesta == "cantidad_griferia":
+        return resp_cotizar_griferia(estado, mensaje)
+
     # SOLO para búsqueda inicial usar LLM si está activo
     if clas["intencion"] == "buscar" and vama_llm.usar_llm:
         vama_llm.set_estado(estado)

@@ -168,19 +168,20 @@ class EstadoConversacion:
         self.categoria_activa = None
         self.ultimo_mensaje = datetime.now()
         self.esperando_respuesta = None
-    
+        self.saludo_enviado = False  # ← NUEVA BANDERA
+
     def actualizar(self):
         self.ultimo_mensaje = datetime.now()
-    
+
     def guardar_productos(self, productos):
         self.ultimos_productos = productos
-    
+
     def seleccionar(self, idx):
         if 0 <= idx < len(self.ultimos_productos):
             self.producto_seleccionado = self.ultimos_productos[idx]
             return self.producto_seleccionado
         return None
-    
+
     def agregar_item(self, producto, calculo, m2=None):
         item = {
             "producto": producto,
@@ -190,10 +191,10 @@ class EstadoConversacion:
         self.items_cotizacion.append(item)
         if m2:
             self.m2_proyecto = m2
-    
+
     def get_total(self):
         return sum(item["calculo"].get("total", 0) for item in self.items_cotizacion)
-    
+
     def reset(self):
         self.producto_seleccionado = None
         self.m2_proyecto = None
@@ -201,6 +202,7 @@ class EstadoConversacion:
         self.ultimos_productos = []
         self.categoria_activa = None
         self.esperando_respuesta = None
+        # NO RESETEAR saludo_enviado - así no se repite el saludo
 
 # ============================================================================
 # GESTOR DE SESIONES
@@ -269,21 +271,33 @@ def extraer_numero(mensaje):
 # ============================================================================
 
 def qwen_interpretar_categoria(mensaje: str) -> str:
-    prompt = f"""Eres un experto en materiales de construcción. 
-El cliente dice: "{mensaje}"
+    """Qwen decide la categoría - VERSIÓN FORZADA"""
+    
+    # Si el mensaje es muy corto o obvio, ni preguntamos
+    m = mensaje.lower().strip()
+    if "piso" in m or "baño" in m or "suelo" in m:
+        return "pisos"
+    if "muro" in m or "pared" in m or "azulejo" in m:
+        return "muros"
+    if "grifo" in m or "llave" in m or "monomando" in m:
+        return "griferia"
+    if "pega" in m or "adhesivo" in m or "cemento" in m:
+        return "polvos"
+    
+    # Si no es obvio, preguntamos a Qwen pero con un prompt MUY específico
+    prompt = f"""El cliente escribe: "{mensaje}"
 
-Basado en TU CONOCIMIENTO, ¿qué categoría de producto busca?
-Categorías posibles: pisos, muros, grifería, polvos
+Tu tarea es clasificar su mensaje en UNA de estas categorías:
+- pisos (si habla de pisos, suelos, porcelanatos, cerámicas para el suelo)
+- muros (si habla de paredes, azulejos, recubrimientos para pared)
+- grifería (si habla de llaves, grifos, monomandos, regaderas)
+- polvos (si habla de pegamentos, adhesivos, boquillas, cemento)
 
-Reglas:
-- Si menciona "llave", "regadera", "monomando", "grifo", "ducha", "mezcladora" → grifería
-- Si menciona "pegamento", "adhesivo", "boquilla", "cemento", "mortero" → polvos
-- Si menciona "piso", "porcelanato", "suelo", "baño", "cerámica" → pisos
-- Si menciona "muro", "azulejo", "pared", "cocina", "aleta" → muros
-- Si el mensaje es SOLO un número, responde "pisos"
+IMPORTANTE: SIEMPRE responde con UNA SOLA PALABRA de la lista.
+NO expliques, NO añadas texto, SOLO la palabra.
 
-Responde SOLO con la palabra: pisos, muros, grifería, o polvos
-"""
+Respuesta:"""
+    
     try:
         respuesta = ollama.generate(
             model=MODELO,
@@ -291,12 +305,24 @@ Responde SOLO con la palabra: pisos, muros, grifería, o polvos
             options={'temperature': 0.1, 'num_predict': 10}
         )['response'].strip().lower()
         
+        # Limpiar la respuesta (quitar puntos, espacios, etc)
+        respuesta = re.sub(r'[^a-z]', '', respuesta)
+        
         if respuesta in ["pisos", "muros", "griferia", "polvos"]:
             print(f"   🧠 Qwen interpretó: {respuesta}")
             return respuesta
         else:
-            print(f"   ⚠️ Qwen respondió '{respuesta}', usando pisos por defecto")
-            return "pisos"
+            print(f"   ⚠️ Qwen respondió '{respuesta}', usando reglas locales")
+            # Reglas locales de respaldo
+            if "piso" in m or "baño" in m:
+                return "pisos"
+            if "muro" in m or "pared" in m:
+                return "muros"
+            if "grifo" in m or "llave" in m:
+                return "griferia"
+            if "pega" in m:
+                return "polvos"
+            return "pisos"  # Default
     except Exception as e:
         print(f"⚠️ Error en Qwen: {e}")
         return "pisos"
@@ -309,39 +335,38 @@ def qwen_responder_con_catalogo(mensaje: str, productos: list, contexto: str = "
     for i, p in enumerate(productos, 1):
         if p['precio_m2'] > 0:
             precio_caja = p['precio_m2'] * p['metraje_caja']
-            productos_txt += f"{i}. {p['descripcion']} | {p['proveedor']} | ${p['precio_m2']:.2f}/m² | Caja: ${precio_caja:.2f}"
-            if p.get('color'):
-                productos_txt += f" | Color: {p['color']}"
-            productos_txt += "\n"
+            productos_txt += f"{i}. {p['descripcion']} | {p['proveedor']} | ${p['precio_m2']:.2f}/m² | Caja: ${precio_caja:.2f}\n"
         else:
-            productos_txt += f"{i}. {p['descripcion']} | {p['proveedor']} | ${p['precio_unitario']:.2f}/unidad"
-            if p.get('color'):
-                productos_txt += f" | Color: {p['color']}"
-            productos_txt += "\n"
+            productos_txt += f"{i}. {p['descripcion']} | {p['proveedor']} | ${p['precio_unitario']:.2f}/unidad\n"
     productos_txt += "=== FIN CATÁLOGO ==="
     
     prompt = f"""{productos_txt}
 
-REGLAS ABSOLUTAS:
-1. SOLO puedes hablar de los productos listados arriba
-2. NO inventes productos, precios, marcas o colores
-3. Si el cliente pide algo que no está en la lista, di: "No tengo ese producto en catálogo"
-4. Usa los precios EXACTOS de la lista
-5. Recomienda máximo 3 productos del catálogo
-6. Termina preguntando: "¿Cuál te interesa? (1-{len(productos)})"
+El cliente dice: "{mensaje}"
 
-{contexto}
+Basado ÚNICAMENTE en los productos listados arriba, responde al cliente.
+Debes recomendarle algunos productos y terminar preguntando qué número le interesa.
 
-CLIENTE: {mensaje}
+REGLAS:
+- SOLO menciona productos que están en la lista
+- Usa los precios exactos de la lista
+- Recomienda máximo 3 productos
+- Termina con: "¿Cuál te interesa? (1-{len(productos)})"
 
-VAMA (usa SOLO el catálogo de arriba):"""
+Respuesta:"""
     
     try:
         respuesta = ollama.generate(
             model=MODELO,
             prompt=prompt,
-            options={'temperature': 0.1, 'num_predict': 400}
+            options={'temperature': 0.3, 'num_predict': 300}
         )['response'].strip()
+        
+        # Verificar que no esté vacía
+        if not respuesta or len(respuesta) < 10:
+            # Fallback manual
+            return None
+            
         return respuesta
     except Exception as e:
         print(f"⚠️ Error en Qwen: {e}")
@@ -499,11 +524,13 @@ def clasificar_intencion(mensaje: str, estado: EstadoConversacion):
     m = mensaje.lower().strip()
     
     if estado.esperando_respuesta == "post_cotizacion":
-        if m in ["salir", "adios", "adiós", "chao", "terminar"]:
-            return {"intencion": "salir"}
-        if m in ["nuevo", "nueva", "otra", "empezar", "si", "sí"]:
+        m = mensaje.lower().strip()
+        if m in ["1", "1️⃣", "nuevo", "nueva", "otra", "empezar", "si"]:
             return {"intencion": "nueva_cotizacion"}
-        return {"intencion": "post_cotizacion"}
+        elif m in ["2", "2️⃣", "salir", "terminar", "adios", "chao"]:
+            return {"intencion": "salir"}
+        else:
+            return {"intencion": "post_cotizacion_repetir"}
     
     if estado.esperando_respuesta == "m2_polvo":
         if extraer_numero(m) is not None:
@@ -741,8 +768,67 @@ def resp_despedida(usuario_id, sesion):
 
 def procesar_mensaje(usuario_id: str, nombre: str, mensaje: str) -> str:
     estado = gestor_sesiones.obtener(usuario_id, nombre)
+    
+    # --- SALUDO PERSONALIZADO (solo si NO se ha enviado antes) ---
+    if not estado.saludo_enviado:
+        estado.saludo_enviado = True
+        hist = memoria_largo_plazo.obtener(usuario_id)
+        
+        if hist["cotizaciones"]:
+            ultima = hist["cotizaciones"][-1]
+            fecha_ultima = datetime.fromisoformat(ultima["fecha"])
+            dias = (datetime.now() - fecha_ultima).days
+            total_hist = hist['total_acumulado']
+            
+            saludo = f"👋 *¡Hola {nombre}!*\n\n"
+            
+            if dias == 0:
+                saludo += "Veo que hoy ya cotizaste con nosotros. ¿Quieres continuar donde te quedaste o empezar algo nuevo?"
+            elif dias == 1:
+                saludo += "¡Qué rápido! Apenas ayer estuviste por aquí. ¿Necesitas retomar tu cotización?"
+            elif dias <= 7:
+                saludo += f"Bienvenido de vuelta. Hace {dias} días que no te veíamos. ¿Continuamos con tu última cotización?"
+            else:
+                saludo += f"¡Qué gusto verte de nuevo! Han pasado {dias} días desde tu última visita."
+            
+            saludo += f"\n\n📋 *Tu última cotización* (${ultima['total']:.2f}):\n"
+            for i, item in enumerate(ultima["items"][-2:], 1):
+                p = item["producto"]
+                saludo += f"{i}. {p['descripcion'][:40]}... ${item['calculo']['total']:.2f}\n"
+            
+            if len(ultima["items"]) > 2:
+                saludo += f"... y {len(ultima['items']) - 2} producto(s) más\n"
+            
+            saludo += f"\n💰 *Total histórico:* ${total_hist:.2f}\n\n"
+            saludo += "¿Qué prefieres?\n"
+            saludo += "1️⃣ *Continuar* (sigo con mi cotización anterior)\n"
+            saludo += "2️⃣ *Nuevo* (empezar de cero)\n"
+            saludo += "3️⃣ *Buscar* (directo a buscar productos)"
+            
+            estado.esperando_respuesta = "saludo_inicial"
+            return saludo
+    
+    # --- MANEJO DE RESPUESTA AL SALUDO ---
+    if estado.esperando_respuesta == "saludo_inicial":
+        m = mensaje.lower().strip()
+        estado.esperando_respuesta = None  # Salir del modo saludo SIEMPRE
+        
+        if m in ["1", "1️⃣", "continuar", "si", "sí", "seguir"]:
+            return "Perfecto, continuemos con tu cotización anterior. ¿Qué necesitas agregar o modificar?"
+        elif m in ["2", "2️⃣", "nuevo", "nueva", "cero", "empezar"]:
+            estado.reset()
+            return "🆕 Empezamos de cero. ¿Qué buscas? (pisos, azulejos, grifería, pegamento)"
+        else:
+            # Cualquier otra cosa (incluyendo "3") va a búsqueda
+            pass
+    
+    # --- CLASIFICACIÓN NORMAL ---
     clas = clasificar_intencion(mensaje, estado)
     print(f"[{usuario_id[-10:]}] {clas['intencion']}: {mensaje[:40]}...")
+    
+    # ✅ AHORA SÍ podemos usar 'clas'
+    if clas["intencion"] == "post_cotizacion_repetir":
+        return "¿Nuevo o salir? (1 = nuevo, 2 = salir)"
     
     if clas["intencion"] == "salir":
         estado.esperando_respuesta = None

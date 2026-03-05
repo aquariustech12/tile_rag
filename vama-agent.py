@@ -874,75 +874,34 @@ def procesar_mensaje(usuario_id: str, nombre: str, mensaje: str) -> str:
     return resp_buscar_con_qwen(estado, clas)
 
 # ============================================================================
-# MODO CONSOLA
+# MODO CONSOLA (ELIMINADO - PRODUCCION)
 # ============================================================================
 
-def modo_consola():
-    print("="*60)
-    print("🏪 VAMA 2.0")
-    print("="*60)
-    print("Usuarios: 1=Papá, 2=Mamá, 3=Hermano, 4=Tú")
-    print("Comandos: 'C'=Cambiar, 'S'=Salir")
-    print("="*60)
-    
-    usuarios = {
-        "1": ("5215512345678", "Papá"),
-        "2": ("5215598765432", "Mamá"),
-        "3": ("5215522223333", "Hermano"),
-        "4": ("5215544445555", "Tú")
-    }
-    
-    usuario_actual = None
-    nombre_actual = None
-    id_actual = None
-    
-    while True:
-        if not usuario_actual:
-            opt = input("\n¿Qué usuario? (1-4, S=salir): ").strip().upper()
-            if opt == "S":
-                break
-            if opt not in usuarios:
-                print("❌ Inválido")
-                continue
-            
-            id_actual, nombre_actual = usuarios[opt]
-            usuario_actual = gestor_sesiones.obtener(id_actual, nombre_actual)
-            print(f"\n👤 {nombre_actual} activo")
-        
-        mensaje = input(f"👤 {nombre_actual}: ").strip()
-        if not mensaje:
-            continue
-        
-        if mensaje.upper() == "S":
-            break
-        elif mensaje.upper() == "C":
-            usuario_actual = None
-            continue
-        
-        respuesta = procesar_mensaje(id_actual, nombre_actual, mensaje)
-        print(f"\n🤖 VAMA:\n{respuesta}\n")
+
 
 # ============================================================================
 # MAIN
 # ============================================================================
 
 if __name__ == "__main__":
-    import sys
+    from flask import Flask, request, jsonify
     
-    if len(sys.argv) > 1 and sys.argv[1] == "api":
-        from flask import Flask, request, jsonify
-        app = Flask(__name__)
+    app = Flask(__name__)
+    
+    @app.route('/webhook', methods=['POST'])
+    def webhook():
+        data = request.get_json() or {}
+        telefono = data.get('telefono', 'unknown')
+        nombre = data.get('nombre', 'Cliente')
+        mensaje = data.get('mensaje', '')
         
-        @app.route('/webhook', methods=['POST'])
-        def webhook():
-            data = request.json
-            telefono = data.get('telefono', 'unknown')
-            nombre = data.get('nombre', 'Cliente')
-            mensaje = data.get('mensaje', '')
-            respuesta = procesar_mensaje(telefono, nombre, mensaje)
-            return jsonify({"respuesta": respuesta})
+        print(f"📩 [{telefono[-10:]}] {nombre}: {mensaje[:50]}...")
         
-        print("🚀 API en puerto 5000")
-        app.run(host='0.0.0.0', port=5000)
-    else:
-        modo_consola()
+        respuesta = procesar_mensaje(telefono, nombre, mensaje)
+        
+        print(f"📤 Respuesta: {respuesta[:50]}...")
+        
+        return jsonify({"respuesta": respuesta})
+    
+    print(f"🚀 VAMA API en puerto 5000")
+    app.run(host='0.0.0.0', port=5000)

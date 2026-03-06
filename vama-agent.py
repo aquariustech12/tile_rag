@@ -2,7 +2,9 @@
 """
 VAMA 2.0 - Sistema de Cotizaciones con RAG y LLM local
 """
-
+import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 

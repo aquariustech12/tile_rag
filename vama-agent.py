@@ -2,9 +2,27 @@
 """
 VAMA 2.0 - Sistema de Cotizaciones con RAG y LLM local
 """
+# ==================== PARCHES INICIALES ====================
+# Parche para sqlite3 (obligatorio para ChromaDB)
 import sys
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import subprocess
+
+try:
+    import pysqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    print("✅ Parche de sqlite3 aplicado correctamente")
+except ImportError:
+    print("⚠️ Instalando pysqlite3-binary...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])
+    import pysqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    print("✅ Parche de sqlite3 instalado y aplicado")
+
+# Forzar el directorio de Colab (otro truco para ChromaDB)
+import os
+os.makedirs('/home/julian/.local/lib/python3.10/site-packages/google/colab', exist_ok=True)
+os.environ['COLAB_GPU'] = '1'  # Engaña a ChromaDB haciéndole creer que está en Colab
+# ============================================================
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 

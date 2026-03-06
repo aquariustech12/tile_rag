@@ -23,7 +23,7 @@ import os
 os.makedirs('/home/julian/.local/lib/python3.10/site-packages/google/colab', exist_ok=True)
 os.environ['COLAB_GPU'] = '1'  # Engaña a ChromaDB haciéndole creer que está en Colab
 # ============================================================
-import os
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import chromadb

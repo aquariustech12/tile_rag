@@ -1,0 +1,673 @@
+#!/usr/bin/env python3\n"""\nVAMA 2.3 - VERSIÓN FINAL ESTABLE (corregido)\nCorrecciones:\n- Permite agregar productos sin precio (precio: None -> "precio por confirmar")\n- Manejo robusto de respuestas afirmativas cortas usando 'ultima_pregunta' y 'ultimo_producto_mostrado'\n- Flujo de pegamento integrado sin reiniciar diálogo\n"""\nimport sys\nimport subprocess\nimport os\nimport re\nimport math\nimport pickle\nimport json\nimport time\nfrom datetime import datetime\nfrom flask import Flask, request, jsonify\n\n# SQLite\ntry:\n    import pysqlite3\n    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')\nexcept ImportError:\n    subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])\n    import pysqlite3\n    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')\n\nimport chromadb\nfrom chromadb.utils import embedding_functions\nimport ollama\n\nos.environ["CUDA_VISIBLE_DEVICES"] = "-1"\nos.environ["TOKENIZERS_PARALLELISM"] = "false"\n\n# ============================================================================\n# CONFIGURACIÓN\n# ============================================================================\nCHROMA_PATH = "chroma_db_v3"\nMEMORIA_PATH = "memoria_vama.pkl"\nMODELO = "qwen2.5:3b"\nCACHE_SIMPLES = {}\nCACHE_TTL = 3600\n\nprint("🔧 Forzando embeddings en CPU...")\nembedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(\n    model_name="BAAI/bge-m3", device="cpu"\n)\nclient = chromadb.PersistentClient(path=CHROMA_PATH)\n\n# ============================================================================\n# COLECCIONES\n# ============================================================================\nprint("📚 Cargando colecciones...")\ncols = {\n    "nacionales": client.get_collection("nacionales", embedding_function=embedding_func),\n    "importados": client.get_collection("importados", embedding_function=embedding_func),\n    "griferia": client.get_or_create_collection("griferia", embedding_function=embedding_func),\n    "lavabos": client.get_or_create_collection("lavabos", embedding_function=embedding_func),\n    "sanitarios": client.get_or_create_collection("sanitarios", embedding_function=embedding_func),\n    "muebles": client.get_or_create_collection("muebles", embedding_function=embedding_func),\n    "tinacos": client.get_or_create_collection("tinacos", embedding_function=embedding_func),\n    "espejos": client.get_or_create_collection("espejos", embedding_function=embedding_func),\n    "tarjas": client.get_or_create_collection("tarjas", embedding_function=embedding_func),\n    "herramientas": client.get_or_create_collection("herramientas", embedding_function=embedding_func),\n    "polvos": client.get_or_create_collection("polvos", embedding_function=embedding_func),\n    "otras": client.get_or_create_collection("otras", embedding_function=embedding_func)\n}\nprint(f"✅ {len(cols)} colecciones cargadas")\n\n# ============================================================================\n# MEMORIA PERSISTENTE\n# ============================================================================\nclass MemoriaPersistente:\n    def __init__(self, archivo=MEMORIA_PATH):\n        self.archivo = archivo\n        self.datos = self._cargar()\n    \n    def _cargar(self):\n        if os.path.exists(self.archivo):\n            try:\n                with open(self.archivo, 'rb') as f: return pickle.load(f)\n            except: return {}\n        return {}\n    \n    def guardar(self):\n        with open(self.archivo, 'wb') as f:\n            pickle.dump(self.datos, f)\n    \n    def obtener(self, usuario_id):\n        if usuario_id not in self.datos:\n            self.datos[usuario_id] = {\n                "nombre": "", \n                "m2_proyecto": 0, \n                "cotizaciones": [], \n                "ultima_visita": None, \n                "interacciones": 0,\n                "ultima_respuesta": "",\n                "timestamp_ultima": 0,\n                "ultimo_mensaje_procesado": "",\n                "productos_cotizados": {},\n                "ultimos_mensajes": [],\n                # flags/estado de diálogo\n                "ultima_pregunta": None,            # e.g., "confirmar_cantidad", "elegir_pegamento"\n                "ultimo_producto_mostrado": None   # guardamos dict con campos clave del producto\n            }\n        else:\n            # asegurar claves\n            if "productos_cotizados" not in self.datos[usuario_id]:\n                self.datos[usuario_id]["productos_cotizados"] = {}\n            if "ultimo_mensaje_procesado" not in self.datos[usuario_id]:\n                self.datos[usuario_id]["ultimo_mensaje_procesado"] = ""\n            if "ultimos_mensajes" not in self.datos[usuario_id]:\n                self.datos[usuario_id]["ultimos_mensajes"] = []\n            if "ultima_pregunta" not in self.datos[usuario_id]:\n                self.datos[usuario_id]["ultima_pregunta"] = None\n            if "ultimo_producto_mostrado" not in self.datos[usuario_id]:\n                self.datos[usuario_id]["ultimo_producto_mostrado"] = None\n        \n        return self.datos[usuario_id]\n\nmemoria_largo_plazo = MemoriaPersistente()\n\n# ============================================================================\n# SESIONES\n# ============================================================================\nclass EstadoConversacion:\n    def __init__(self, usuario_id, nombre, m2_previos=0):\n        self.usuario_id = usuario_id\n        self.nombre = nombre\n        self.ultimos_productos = []\n        self.m2_proyecto = m2_previos\n        self.ultimo_mensaje = datetime.now()\n        self.ultima_respuesta_enviada = ""\n\n    def actualizar(self): self.ultimo_mensaje = datetime.now()\n    def guardar_productos(self, productos): self.ultimos_productos = productos\n\nclass GestorSesiones:\n    def __init__(self): self.sesiones = {}\n    \n    def obtener(self, usuario_id, nombre_webhook):\n        hist = memoria_largo_plazo.obtener(usuario_id)\n        if usuario_id not in self.sesiones:\n            nombre_real = hist["nombre"] or nombre_webhook\n            self.sesiones[usuario_id] = EstadoConversacion(usuario_id, nombre_real, hist.get("m2_proyecto", 0))\n        self.sesiones[usuario_id].actualizar()\n        return self.sesiones[usuario_id]\n\ngestor_sesiones = GestorSesiones()\n\n# ============================================================================\n# BÚSQUEDA\n# ============================================================================\nclass DB:\n    def buscar(self, query, colecciones=None, top_k=5):\n        if colecciones is None:\n            colecciones = list(cols.keys())\n        resultados = []\n        for nombre in colecciones:\n            if nombre not in cols: continue\n            try:\n                r = cols[nombre].query(query_texts=[query], n_results=top_k)\n                for meta in r["metadatas"][0]:\n                    meta['coleccion'] = nombre\n                    resultados.append(meta)\n            except Exception as e:\n                print(f"Error buscando en {nombre}: {e}")\n                continue\n        return resultados\n\ndb = DB()\n\n# ============================================================================\n# FORMATEADOR PARA PROMPT (VERSIÓN RUSS)\n# ============================================================================\ndef formatear_productos_russ(productos):\n    if not productos: return "Ninguno"\n    texto = ""\n    for i, p in enumerate(productos[:3], 1):\n        codigo = p.get('codigo', 'N/A')\n        desc = p.get('descripcion', 'Producto')\n        formato = p.get('formato', 'N/A')\n        precio = "Por confirmar"\n        for k, v in p.items():\n            if any(x in k.upper() for x in ["PRECIO", "OFERTA", "FINAL", "SISTEMA", "UNITARIO"]):\n                if v and str(v).strip() not in ["0", "0.0", "", "None"]:\n                    precio = f"${v}"\n                    break\n        texto += f"{i}. Código: {codigo} | {desc} | Formato: {formato} | Precio: {precio}\n"\n    return texto.strip()\n\n# ============================================================================\n# UTILIDADES\n# ============================================================================\ndef extraer_precio_de_meta(prod):\n    precio = None\n    for k, v in prod.items():\n        if any(x in k.upper() for x in ["PRECIO", "OFERTA", "FINAL", "UNITARIO"]):\n            try:\n                precio = float(v)\n                return precio\n            except:\n                continue\n    # fallback\n    for key in ['precio_unitario', 'precio_m2', 'precio_caja']:\n        if prod.get(key):\n            try:\n                return float(prod.get(key))\n            except:\n                continue\n    return None\n\ndef descripcion_corta(prod):\n    return prod.get('descripcion') or prod.get('codigo') or "Producto"\n\n# ============================================================================\n# CEREBRO - FINAL CON PROMPT RUSS (con manejo de afirmativos y flags)\n# ============================================================================\ndef generar_respuesta_llm(mensaje, estado, usuario_id):\n    msg_limpio = mensaje.strip() if mensaje else ""\n    msg_low = msg_limpio.lower()\n    hist = memoria_largo_plazo.obtener(usuario_id)\n    \n    num_interaccion = hist.get("interacciones", 0)\n    cache_key = f"{usuario_id}:{msg_limpio}"\n    tiempo_actual = time.time()\n\n    # ===== Manejo de respuestas afirmativas cortas y confirmaciones =====\n    afirmativos = {"si", "sí", "claro", "ok", "vale", "correcto", "sí.", "si.", "si,", "sí,"}\n    # Si el usuario responde afirmativamente y hay una ultima pregunta relevante, procesarla\n    if msg_low in afirmativos and hist.get("ultima_pregunta"):\n        ultima = hist.get("ultima_pregunta")\n        # Confirmar cantidad para ultimo producto mostrado\n        if ultima == "confirmar_cantidad" and hist.get("ultimo_producto_mostrado"):\n            prod = hist["ultimo_producto_mostrado"]\n            desc = descripcion_corta(prod)\n            precio = extraer_precio_de_meta(prod)\n            # calcular cantidad según metraje por caja si existe y si hay m2 en estado\n            cantidad = 1\n            try:\n                if estado.m2_proyecto and prod.get('metraje_caja'):\n                    metraje_caja = float(prod.get('metraje_caja') or 0)\n                    if metraje_caja > 0:\n                        cantidad = math.ceil(estado.m2_proyecto / metraje_caja)\n            except:\n                cantidad = 1\n            # guardar en cotización (precio puede ser None)\n            if desc in hist["productos_cotizados"]:\n                hist["productos_cotizados"][desc]["cantidad"] += cantidad\n            else:\n                hist["productos_cotizados"][desc] = {"precio": precio if precio not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}\n            # limpiar flag de pregunta\n            hist["ultima_pregunta"] = None\n            memoria_largo_plazo.guardar()\n            if hist["productos_cotizados"][desc]["precio"] is None:\n                return f"✅ Perfecto, agregué {cantidad} de {desc} a tu cotización (precio por confirmar). ¿Quieres que agregue pegamento o te paso el resumen parcial? Equipo VAMA."\n            else:\n                subtotal = hist["productos_cotizados"][desc]["precio"] * hist["productos_cotizados"][desc]["cantidad"]\n                return f"✅ Perfecto, agregué {cantidad} de {desc} a tu cotización. Subtotal: ${subtotal:.2f}. ¿Quieres algo más o te paso el total? Equipo VAMA."\n        # Confirmación para pegamento u otra pregunta simple\n        if ultima == "confirmar_pegamento" and hist.get("ultimo_producto_mostrado"):\n            # si la pregunta era "¿Quieres pegamento?" y responde si -> sugerir opciones\n            hist["ultima_pregunta"] = "elegir_pegamento"\n            memoria_largo_plazo.guardar()\n            return "Perfecto. Te muestro opciones de pegamento: CMX01 - PEGAZULEJO BLANCO 20KG ($169), CMX134 - CEMIX PEGAZULEJO GRIS 20KG ($143). ¿Cuál prefieres? Equipo VAMA."\n        # Si no hay manejo específico, continuar (no bloquear)\n    \n    # ========================================================================\n    # CACHÉ\n    # ========================================================================\n    if cache_key in CACHE_SIMPLES:\n        timestamp, respuesta_cache = CACHE_SIMPLES[cache_key]\n        if time.time() - timestamp < CACHE_TTL:\n            print(f"DEBUG: Respuesta desde caché")\n            return respuesta_cache\n    \n    # ========================================================================\n    # ANTI-DUPLICADO (solo después de manejar afirmativos)\n    # ========================================================================\n    if len(msg_limpio) < 3:\n        print(f"DEBUG: Mensaje muy corto")\n        if estado.ultima_respuesta_enviada:\n            return estado.ultima_respuesta_enviada\n        return "Estoy aquí para ayudarte. ¿Qué producto necesitas? Equipo VAMA."\n    \n    tiempo_ultimo = hist.get("timestamp_ultima", 0)\n    if tiempo_actual - tiempo_ultimo < 5 and msg_limpio == hist.get("ultimo_mensaje_procesado", ""):\n        print(f"DEBUG: Duplicado detectado")\n        return estado.ultima_respuesta_enviada or "Procesando..."\n    \n    hist["ultimo_mensaje_procesado"] = msg_limpio\n    hist["timestamp_ultima"] = tiempo_actual\n\n    # ========================================================================\n    # DETECCIÓN DE REPETICIÓN\n    # ========================================================================\n    if "ultimos_mensajes" in hist and len(hist["ultimos_mensajes"]) >= 4:\n        ultimos_3 = hist["ultimos_mensajes"][-3:]\n        mensajes_usuario = [m["content"] for m in ultimos_3 if m["role"] == "user"]\n        if len(mensajes_usuario) >= 2 and mensajes_usuario[-1] == mensajes_usuario[-2]:\n            print("DEBUG: Cliente repitiendo mensaje, forzando respuesta directa")\n            if estado.ultimos_productos:\n                total = 0.0\n                respuesta = "**Resumen de tu cotización:**\n"\n                for prod in estado.ultimos_productos[:3]:\n                    desc = descripcion_corta(prod)\n                    precio = extraer_precio_de_meta(prod) or 0\n                    if estado.m2_proyecto > 0 and prod.get('metraje_caja', 0) > 0:\n                        cajas = math.ceil(estado.m2_proyecto / prod['metraje_caja'])\n                        subtotal = cajas * precio\n                        total += subtotal\n                        respuesta += f"- {desc}: {cajas} cajas x ${precio:.2f} = ${subtotal:.2f}\n"\n                    else:\n                        respuesta += f"- {desc}: ${precio:.2f} (precio unitario)\n"\n                respuesta += f"\n**TOTAL: ${total:.2f}**\n\n¿Te confirmo disponibilidad? Equipo VAMA."\n                hist["ultimos_mensajes"].append({"role": "assistant", "content": respuesta})\n                memoria_largo_plazo.guardar()\n                CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n                return respuesta\n    \n    # ========================================================================\n    # COMANDOS ESPECIALES\n    # ========================================================================\n    if any(w in msg_low for w in ['nueva cotizacion', 'nueva cotización', 'empezar de nuevo', 'reiniciar', 'borrar todo']):\n        hist["productos_cotizados"] = {}\n        hist["m2_proyecto"] = 0\n        hist["interacciones"] = 0\n        estado.m2_proyecto = 0\n        hist["ultima_pregunta"] = None\n        hist["ultimo_producto_mostrado"] = None\n        memoria_largo_plazo.guardar()\n        respuesta = "Listo, hemos reiniciado tu cotización. ¿Qué necesitas cotizar hoy? Equipo VAMA."\n        CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n        return respuesta\n\n    if "interacciones" not in hist: hist["interacciones"] = 0\n    if "m2_proyecto" not in hist: hist["m2_proyecto"] = estado.m2_proyecto\n    \n    # ========================================================================\n    # DETECCIÓN DE TOTAL\n    # ========================================================================\n    es_pedido_total = any(p in msg_low for p in ["total", "cotización", "cuánto es", "suma", "precio final"])\n    if es_pedido_total and hist["productos_cotizados"]:\n        total = 0.0\n        detalle = "**Resumen de tu cotización:**\n"\n        for desc, data in hist["productos_cotizados"].items():\n            if data["precio"] is None:\n                detalle += f"- {desc}: {data['cantidad']} (precio por confirmar)\n"\n            else:\n                subtotal = data["precio"] * data["cantidad"]\n                total += subtotal\n                detalle += f"- {desc}: {data['cantidad']} x ${data['precio']} = ${subtotal:.2f}\n"\n        if total > 0:\n            detalle += f"\n**TOTAL: ${total:.2f}**\n\n¿Te confirmo disponibilidad o agregamos algo más? Equipo VAMA."\n        else:\n            detalle += "\n**TOTAL: por confirmar (faltan precios)**\n\n¿Quieres que te avise en cuanto tenga los precios? Equipo VAMA."\n        CACHE_SIMPLES[cache_key] = (tiempo_actual, detalle)\n        return detalle\n\n    # ========================================================================\n    # CAPTURAR M2\n    # ========================================================================\n    match_m2 = re.findall(r'(\d+)\s*(?:m2|metros|mts|cuadrados)', msg_low)\n    if match_m2:\n        estado.m2_proyecto = int(match_m2[0])\n        hist["m2_proyecto"] = estado.m2_proyecto\n    \n    nombre_cliente = hist["nombre"] or "Cliente"\n\n    # ========================================================================\n    # DETECCIÓN DE OFERTAS Y SALUDOS\n    # ========================================================================\n    es_oferta = any(w in msg_low for w in ['oferta', 'promo', 'descuento', 'barato', 'ofertas', 'promociones'])\n    saludos = ['hola', 'buenos dias', 'buenas tardes', 'buenas noches', 'que tal', 'hey', 'saludos', 'buen dia']\n    es_saludo = any(s in msg_low for s in saludos) and len(msg_low) < 50\n\n    # ========================================================================\n    # CATEGORÍAS Y BÚSQUEDA\n    # ========================================================================\n    if not es_saludo:\n        es_griferia = any(w in msg_low for w in ['monomando', 'grifo', 'mezcladora', 'llave', 'regadera'])\n        es_lavabo = any(w in msg_low for w in ['lavabo', 'lavamanos'])\n        es_sanitario = any(w in msg_low for w in ['wc', 'inodoro', 'taza', 'sanitario', 'tanque', 'pedestal'])\n        es_mueble = any(w in msg_low for w in ['mueble', 'gabinete', 'armario'])\n        es_tinaco = any(w in msg_low for w in ['tinaco', 'cisterna', 'tanque de agua'])\n        es_espejo = any(w in msg_low for w in ['espejo'])\n        es_tarja = any(w in msg_low for w in ['tarja', 'fregadero', 'lavaplatos'])\n        es_herramienta = any(w in msg_low for w in ['herramienta', 'redtools'])\n        es_pegamento = any(w in msg_low for w in ['pegazulejo', 'pegamento', 'pega', 'adhesivo', 'polvo', 'boquilla', 'pastina', 'lechada', 'junta', 'cemento', 'mortero'])\n        es_piso = any(w in msg_low for w in ['piso', 'azulejo', 'malla', 'porcelanato', 'ceramica', 'marmol', 'loseta', 'gres'])\n        \n        colecciones_buscar = []\n        if es_oferta:\n            colecciones_buscar = ["nacionales", "importados"]\n        else:\n            if es_pegamento:\n                colecciones_buscar.extend(["polvos", "otras"])\n            else:\n                if es_griferia: colecciones_buscar.append("griferia")\n                if es_lavabo: colecciones_buscar.append("lavabos")\n                if es_sanitario: colecciones_buscar.append("sanitarios")\n                if es_mueble: colecciones_buscar.append("muebles")\n                if es_tinaco: colecciones_buscar.append("tinacos")\n                if es_espejo: colecciones_buscar.append("espejos")\n                if es_tarja: colecciones_buscar.append("tarjas")\n                if es_herramienta: colecciones_buscar.append("herramientas")\n                if es_piso: colecciones_buscar.extend(["nacionales", "importados"])\n        \n        if not colecciones_buscar:\n            colecciones_buscar = list(cols.keys())\n        \n        colecciones_buscar = list(set(colecciones_buscar))\n        \n        resultados = []\n        for coleccion in colecciones_buscar:\n            if coleccion in cols:\n                try:\n                    k = 3 if coleccion in ["nacionales", "importados"] else 5\n                    r = cols[coleccion].query(query_texts=[msg_limpio], n_results=k)\n                    for meta in r["metadatas"][0]:\n                        meta['coleccion'] = coleccion\n                        resultados.append(meta)\n                except Exception as e:\n                    continue\n        \n        query_words = [w for w in re.sub(r'[^\w\s]', '', msg_low).split() if len(w) > 3]\n        if resultados:\n            resultados.sort(key=lambda x: sum(w in x.get('descripcion','').lower() for w in query_words), reverse=True)\n        \n        estado.guardar_productos(resultados[:6])\n        print(f"DEBUG: {len(resultados)} resultados")\n        \n        # ========================================================================\n        # GUARDAR COMPRA (CORREGIDO: permite agregar sin precio y usa flags)\n        # ========================================================================\n        es_compra = any(w in msg_low for w in [\n            'me llevo', 'quiero', 'agrega', 'compro', 'añade', \n            'cotiza', 'incluye', 'pon', 'agregar', 'comprame',\n            'deme', 'dame', 'selecciona', 'escojo', 'elijo',\n            'prefiero', 'me quedo', 'llevo'\n        ])\n        \n\n        # Si el usuario pide pegamento explícitamente y hay resultados de polvos, mostrar opciones\n        if es_pegamento and resultados:\n            # Filtrar estrictamente por colección 'polvos' primero\n            pegamentos = [p for p in resultados if p.get('coleccion') == 'polvos']\n            # Si no hay pegamentos en 'polvos', intentar buscar en 'otras' pero solo si la descripción contiene keywords\n            if not pegamentos:\n                pegamentos = []\n                for p in resultados:\n                    if p.get('coleccion') == 'otras':\n                        desc = (p.get('descripcion') or '').lower()\n                        cod = (p.get('codigo') or '').lower()\n                        if any(kw in desc or kw in cod for kw in ['peg', 'pegamento', 'pega', 'pegazulejo', 'cemento', 'adhesivo', 'cemento cola', 'pegapiso']):\n                            pegamentos.append(p)\n            # Si aún no hay coincidencias, preguntar al usuario en vez de devolver ruido\n            if not pegamentos:\n                respuesta = "No encontré pegamentos claros en el catálogo. ¿Quieres que muestre alternativas relacionadas o que busque por marca específica?"\n                CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n                return respuesta\n            # Construir opciones de pegamento (hasta 5)\n            opciones = []\n            for p in pegamentos[:5]:\n                codigo = p.get('codigo', 'N/A')\n                desc = descripcion_corta(p)\n                precio = extraer_precio_de_meta(p)\n                precio_txt = f"${precio}" if precio else "Precio: por confirmar"\n                opciones.append(f"{codigo} - {desc} - {precio_txt}")\n            hist["ultima_pregunta"] = "elegir_pegamento"\n            memoria_largo_plazo.guardar()\n            respuesta = "Precio de pegamento: " + ", ".join(opciones) + ". ¿Cuántos necesitas? Equipo VAMA."\n            CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n            return respuesta\n\n        if es_pegamento and resultados:\n            # mostrar opciones de pegamento (hasta 5)\n            opciones = []\n            for p in resultados[:5]:\n                codigo = p.get('codigo', 'N/A')\n                desc = descripcion_corta(p)\n                precio = extraer_precio_de_meta(p)\n                precio_txt = f"${precio}" if precio else "Precio: por confirmar"\n                opciones.append(f"{codigo} - {desc} - {precio_txt}")\n            # marcar que la ultima pregunta es elegir pegamento\n            hist["ultima_pregunta"] = "elegir_pegamento"\n            memoria_largo_plazo.guardar()\n            respuesta = "Precio de pegamento: " + ", ".join(opciones) + ". ¿Cuántos necesitas? Equipo VAMA."\n            CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n            return respuesta\n        \n        if es_compra and resultados:\n            print("DEBUG: Detectada compra")\n            match_precio = re.search(r'\$?(\d+(?:\.\d+)?)', msg_low)\n            precio_mencionado = float(match_precio.group(1)) if match_precio else None\n            producto_agregado = None\n            # Intentar identificar producto por coincidencia en descripción o código\n            # Selección robusta: 1) coincidencia exacta de código 2) coincidencia fuerte por descripción 3) fallback por colección\n            seleccionado = None\n            msg_words = [w for w in re.sub(r'[^\w\s]', '', msg_low).split() if len(w)>1]\n            # 1) buscar coincidencia exacta de código (case-insensitive)\n            for prod in resultados[:8]:\n                codigo = (prod.get('codigo') or '').strip().lower()\n                if codigo and codigo == msg_low.replace(' ', '').lower():\n                    seleccionado = prod\n                    break\n            # 2) si no hay código exacto, buscar coincidencia fuerte en descripción (todas las palabras clave presentes)\n            if not seleccionado:\n                for prod in resultados[:8]:\n                    desc = (prod.get('descripcion') or '').lower()\n                    if desc:\n                        if all(any(w in token for token in desc.split()) for w in msg_words if len(w)>2):\n                            seleccionado = prod\n                            break\n            # 3) si aún no hay seleccionado, preferir items cuya coleccion coincida con la intención detectada\n            if not seleccionado:\n                intent_col = None\n                if es_pegamento: intent_col = 'polvos'\n                elif es_griferia: intent_col = 'griferia'\n                elif es_piso: intent_col = 'nacionales'  # o 'importados' según contexto\n                elif es_tinaco: intent_col = 'tinacos'\n                if intent_col:\n                    for prod in resultados[:8]:\n                        if prod.get('coleccion') == intent_col:\n                            seleccionado = prod\n                            break\n            # 4) fallback: primer resultado (pero loguear que fue fallback)\n            if not seleccionado and resultados:\n                seleccionado = resultados[0]\n                print('DEBUG: Selección por fallback para mensaje: {}'.format(msg_limpio))\n\n                desc = descripcion_corta(prod)\n                codigo = prod.get('codigo','').lower()\n                # si el mensaje menciona el código o parte de la descripción, priorizar\n                if codigo and codigo in msg_low:\n                    seleccionado = prod\n                elif any(word in desc.lower() for word in re.sub(r'[^\w\s]', '', msg_low).split()):\n                    seleccionado = prod\n                else:\n                    seleccionado = None\n                \n                precio = extraer_precio_de_meta(prod)\n                if precio_mencionado and precio and abs(precio - precio_mencionado) < 1:\n                    seleccionado = prod\n                \n                if seleccionado:\n                    desc_sel = descripcion_corta(seleccionado)\n                    precio_sel = extraer_precio_de_meta(seleccionado)\n                    # calcular cantidad: si usuario dio m2 y hay metraje por caja\n                    cantidad = 1\n                    try:\n                        if estado.m2_proyecto and seleccionado.get('metraje_caja'):\n                            metraje_caja = float(seleccionado.get('metraje_caja') or 0)\n                            if metraje_caja > 0:\n                                cantidad = math.ceil(estado.m2_proyecto / metraje_caja)\n                    except:\n                        cantidad = 1\n                    if desc_sel in hist["productos_cotizados"]:\n                        hist["productos_cotizados"][desc_sel]["cantidad"] += cantidad\n                    else:\n                        hist["productos_cotizados"][desc_sel] = {"precio": precio_sel if precio_sel not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}\n                    producto_agregado = desc_sel\n                    # limpiar flags\n                    hist["ultima_pregunta"] = None\n                    hist["ultimo_producto_mostrado"] = None\n                    memoria_largo_plazo.guardar()\n                    break\n            \n            # Si no se identificó por texto, tomar el primer resultado mostrado\n            if not producto_agregado and resultados:\n                prod = resultados[0]\n                desc = descripcion_corta(prod)\n                precio = extraer_precio_de_meta(prod)\n                cantidad = 1\n                try:\n                    if estado.m2_proyecto and prod.get('metraje_caja'):\n                        metraje_caja = float(prod.get('metraje_caja') or 0)\n                        if metraje_caja > 0:\n                            cantidad = math.ceil(estado.m2_proyecto / metraje_caja)\n                except:\n                    cantidad = 1\n                if desc in hist["productos_cotizados"]:\n                    hist["productos_cotizados"][desc]["cantidad"] += cantidad\n                else:\n                    hist["productos_cotizados"][desc] = {"precio": precio if precio not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}\n                producto_agregado = desc\n                hist["ultima_pregunta"] = None\n                hist["ultimo_producto_mostrado"] = None\n                memoria_largo_plazo.guardar()\n            \n            if producto_agregado:\n                if hist["productos_cotizados"][producto_agregado]["precio"] is None:\n                    respuesta = f"✅ Agregado: {producto_agregado} a tu cotización (precio por confirmar). ¿Quieres algo más o te paso el total parcial? Equipo VAMA."\n                else:\n                    respuesta = f"✅ Agregado: {producto_agregado} a tu cotización. ¿Quieres algo más o te paso el total? Equipo VAMA."\n                CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)\n                return respuesta\n\n    # ========================================================================\n    # Si llegamos aquí, vamos a preparar prompt para LLM (si aplica)\n    # Guardar ultimo producto mostrado para confirmar después si el LLM muestra productos\n    productos_russ = formatear_productos_russ(estado.ultimos_productos[:3])\n    # Si hay productos en estado.ultimos_productos, guardamos el primero como 'ultimo_producto_mostrado'\n    if estado.ultimos_productos:\n        # guardamos una copia ligera (solo campos necesarios)\n        p0 = estado.ultimos_productos[0]\n        hist["ultimo_producto_mostrado"] = {\n            "codigo": p0.get("codigo"),\n            "descripcion": p0.get("descripcion"),\n            "formato": p0.get("formato"),\n            "metraje_caja": p0.get("metraje_caja"),\n            "precio_unitario": p0.get("precio_unitario"),\n            "precio_m2": p0.get("precio_m2"),\n            "precio_caja": p0.get("precio_caja"),\n            # incluir cualquier campo de precio bruto que venga en metadatas\n            **{k: v for k, v in p0.items() if "precio" in k.lower() or "oferta" in k.lower()}\n        }\n        # marcar que la ultima pregunta puede ser confirmar cantidad si el bot pregunta "¿Necesitas X m2?"\n        # No forzamos aquí; se seteará cuando el LLM pregunte explícitamente.\n    memoria_largo_plazo.guardar()\n\n    # Obtener historial reciente\n    historial_reciente = ""\n    if "ultimos_mensajes" in hist and hist["ultimos_mensajes"]:\n        ultimos = hist["ultimos_mensajes"][-6:]\n        for m in ultimos:\n            role = "Cliente" if m["role"] == "user" else "Russ"\n            historial_reciente += f"{role}: {m['content']}\n"\n    else:\n        historial_reciente = "Sin historial"\n\n    # ========================================================================\n    # PROMPT - VERSIÓN FINAL (igual que antes)\n    # ========================================================================\n    prompt = f"""Eres VAMA, asistente de ventas por WhatsApp de VAMA, una tienda de materiales y acabados (pisos, cerámicos, recubrimientos, muros, baños/grifería).\n\nTu tarea es orientar, recomendar y cerrar una cotización rápida, sin inventar datos.\n\nCONTEXTO ACTUAL:\n- Cliente: {nombre_cliente}\n- Historial de la conversación: {historial_reciente}\n- Productos encontrados: {productos_russ if estado.ultimos_productos else 'Ninguno'}\n- Metraje del cliente: {estado.m2_proyecto} m2\n\nREGLAS DE ESTILO:\n- Responde en español, texto plano listo para WhatsApp (sin markdown).\n- Mensajes cortos: ideal 2 a 6 líneas. Si listas opciones, hasta 10 líneas.\n- Tono humano, profesional y cercano.\n- No uses tecnicismos innecesarios.\n\nRESTRICCIONES (OBLIGATORIAS):\n- No inventes precios, existencias, tiempos, descuentos, marcas, formatos ni metrajes.\n- Solo usa información de los productos listados arriba.\n- Si falta un dato (ej. precio), dilo exactamente así: "Precio: por confirmar".\n\nUSO DE CONTEXTO:\n- Usa el historial para no repetir preguntas.\n- Si el cliente ya dio formato/uso/área/cantidad, NO lo vuelvas a preguntar.\n- Si el nombre existe, úsalo naturalmente máximo 1 vez por mensaje.\n\nTu respuesta debe ser SOLO el mensaje final para WhatsApp."""\n\n    hist["interacciones"] = num_interaccion + 1\n    hist["ultima_visita"] = datetime.now().strftime("%Y-%m-%d %H:%M")\n    memoria_largo_plazo.guardar()\n\n    try:\n        res = ollama.generate(\n            model=MODELO, \n            prompt=prompt,\n            options={\n                "temperature": 0.6, \n                "num_predict": 300, \n                "num_ctx": 2048,\n                "stop": ["CLIENTE:", "USUARIO:", "\n\n\n"]\n            }\n        )['response'].strip()\n        \n        # Limpieza básica\n        res = re.sub(r'\*\*?|\*|__|\|', '', res)\n        res = res.replace("  ", " ").strip()\n        \n        # Guardar en historial\n        if "ultimos_mensajes" not in hist:\n            hist["ultimos_mensajes"] = []\n        hist["ultimos_mensajes"].append({"role": "user", "content": msg_limpio})\n        hist["ultimos_mensajes"].append({"role": "assistant", "content": res})\n        if len(hist["ultimos_mensajes"]) > 10:\n            hist["ultimos_mensajes"] = hist["ultimos_mensajes"][-10:]\n        \n        # Si el LLM pregunta "¿Necesitas X m2?" o "¿Necesitas 7 m2?" detectarlo y setear ultima_pregunta\n        if re.search(r'¿.*necesit.*\s*\d+\s*(m2|metros|mts|cuadrados)\?', res.lower()):\n            hist["ultima_pregunta"] = "confirmar_cantidad"\n        # Si el LLM pregunta por pegamento explícitamente\n        if re.search(r'pegamento|pegazulejo|adhesivo', res.lower()) and "¿" in res:\n            hist["ultima_pregunta"] = "confirmar_pegamento"\n        memoria_largo_plazo.guardar()\n\n        estado.ultima_respuesta_enviada = res\n        hist["ultima_respuesta"] = res\n        memoria_largo_plazo.guardar()\n        CACHE_SIMPLES[cache_key] = (tiempo_actual, res)\n        \n        return res\n        \n    except Exception as e:\n        print(f"DEBUG: Error: {e}")\n        fallback = f"Entendido {nombre_cliente}, revisando disponibilidad. Equipo VAMA."\n        estado.ultima_respuesta_enviada = fallback\n        return fallback\n\n# ============================================================================\n# API\n# ============================================================================\napp = Flask(__name__)\n\n@app.route('/webhook', methods=['POST'])\ndef webhook():\n    data = request.get_json() or {}\n    tel = str(data.get('telefono') or '0')\n    nom = data.get('nombre') or 'Cliente'\n    msg = data.get('mensaje') or ""\n    \n    print(f"\n[WEBHOOK] {datetime.now().strftime('%H:%M:%S')} | {nom} ({tel}): {msg[:60]}")\n    \n    sesion = gestor_sesiones.obtener(tel, nom)\n    respuesta = generar_respuesta_llm(msg, sesion, tel)\n    \n    print(f"[RESPONSE] {respuesta[:80]}...\n")\n    return jsonify({"respuesta": respuesta})\n\nif __name__ == "__main__":\n    print(f"🚀 VAMA AGENT 2.3 RUSS | Modelo: {MODELO} | Puerto: 5000")\n    print(f"📚 Colecciones: {list(cols.keys())}")\n    print(f"🧠 Memoria de cliente: ACTIVADA")\n    print(f"🤖 Prompt estilo Russ: ACTIVADO")\n    app.run(host='0.0.0.0', port=5000, debug=False)\n#!/usr/bin/env python3
+"""
+VAMA 2.3 - VERSIÓN FINAL ESTABLE (corregido)
+Correcciones:
+- Permite agregar productos sin precio (precio: None -> "precio por confirmar")
+- Manejo robusto de respuestas afirmativas cortas usando 'ultima_pregunta' y 'ultimo_producto_mostrado'
+- Flujo de pegamento integrado sin reiniciar diálogo
+"""
+import sys
+import subprocess
+import os
+import re
+import math
+import pickle
+import json
+import time
+from datetime import datetime
+from flask import Flask, request, jsonify
+
+# SQLite
+try:
+    import pysqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])
+    import pysqlite3
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+import chromadb
+from chromadb.utils import embedding_functions
+import ollama
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# ============================================================================
+# CONFIGURACIÓN
+# ============================================================================
+CHROMA_PATH = "chroma_db_v3"
+MEMORIA_PATH = "memoria_vama.pkl"
+MODELO = "qwen2.5:3b"
+CACHE_SIMPLES = {}
+CACHE_TTL = 3600
+
+print("🔧 Forzando embeddings en CPU...")
+embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="BAAI/bge-m3", device="cpu"
+)
+client = chromadb.PersistentClient(path=CHROMA_PATH)
+
+# ============================================================================
+# COLECCIONES
+# ============================================================================
+print("📚 Cargando colecciones...")
+cols = {
+    "nacionales": client.get_collection("nacionales", embedding_function=embedding_func),
+    "importados": client.get_collection("importados", embedding_function=embedding_func),
+    "griferia": client.get_or_create_collection("griferia", embedding_function=embedding_func),
+    "lavabos": client.get_or_create_collection("lavabos", embedding_function=embedding_func),
+    "sanitarios": client.get_or_create_collection("sanitarios", embedding_function=embedding_func),
+    "muebles": client.get_or_create_collection("muebles", embedding_function=embedding_func),
+    "tinacos": client.get_or_create_collection("tinacos", embedding_function=embedding_func),
+    "espejos": client.get_or_create_collection("espejos", embedding_function=embedding_func),
+    "tarjas": client.get_or_create_collection("tarjas", embedding_function=embedding_func),
+    "herramientas": client.get_or_create_collection("herramientas", embedding_function=embedding_func),
+    "polvos": client.get_or_create_collection("polvos", embedding_function=embedding_func),
+    "otras": client.get_or_create_collection("otras", embedding_function=embedding_func)
+}
+print(f"✅ {len(cols)} colecciones cargadas")
+
+# ============================================================================
+# MEMORIA PERSISTENTE
+# ============================================================================
+class MemoriaPersistente:
+    def __init__(self, archivo=MEMORIA_PATH):
+        self.archivo = archivo
+        self.datos = self._cargar()
+    
+    def _cargar(self):
+        if os.path.exists(self.archivo):
+            try:
+                with open(self.archivo, 'rb') as f: return pickle.load(f)
+            except: return {}
+        return {}
+    
+    def guardar(self):
+        with open(self.archivo, 'wb') as f:
+            pickle.dump(self.datos, f)
+    
+    def obtener(self, usuario_id):
+        if usuario_id not in self.datos:
+            self.datos[usuario_id] = {
+                "nombre": "", 
+                "m2_proyecto": 0, 
+                "cotizaciones": [], 
+                "ultima_visita": None, 
+                "interacciones": 0,
+                "ultima_respuesta": "",
+                "timestamp_ultima": 0,
+                "ultimo_mensaje_procesado": "",
+                "productos_cotizados": {},
+                "ultimos_mensajes": [],
+                # flags/estado de diálogo
+                "ultima_pregunta": None,            # e.g., "confirmar_cantidad", "elegir_pegamento"
+                "ultimo_producto_mostrado": None   # guardamos dict con campos clave del producto
+            }
+        else:
+            # asegurar claves
+            if "productos_cotizados" not in self.datos[usuario_id]:
+                self.datos[usuario_id]["productos_cotizados"] = {}
+            if "ultimo_mensaje_procesado" not in self.datos[usuario_id]:
+                self.datos[usuario_id]["ultimo_mensaje_procesado"] = ""
+            if "ultimos_mensajes" not in self.datos[usuario_id]:
+                self.datos[usuario_id]["ultimos_mensajes"] = []
+            if "ultima_pregunta" not in self.datos[usuario_id]:
+                self.datos[usuario_id]["ultima_pregunta"] = None
+            if "ultimo_producto_mostrado" not in self.datos[usuario_id]:
+                self.datos[usuario_id]["ultimo_producto_mostrado"] = None
+        
+        return self.datos[usuario_id]
+
+memoria_largo_plazo = MemoriaPersistente()
+
+# ============================================================================
+# SESIONES
+# ============================================================================
+class EstadoConversacion:
+    def __init__(self, usuario_id, nombre, m2_previos=0):
+        self.usuario_id = usuario_id
+        self.nombre = nombre
+        self.ultimos_productos = []
+        self.m2_proyecto = m2_previos
+        self.ultimo_mensaje = datetime.now()
+        self.ultima_respuesta_enviada = ""
+
+    def actualizar(self): self.ultimo_mensaje = datetime.now()
+    def guardar_productos(self, productos): self.ultimos_productos = productos
+
+class GestorSesiones:
+    def __init__(self): self.sesiones = {}
+    
+    def obtener(self, usuario_id, nombre_webhook):
+        hist = memoria_largo_plazo.obtener(usuario_id)
+        if usuario_id not in self.sesiones:
+            nombre_real = hist["nombre"] or nombre_webhook
+            self.sesiones[usuario_id] = EstadoConversacion(usuario_id, nombre_real, hist.get("m2_proyecto", 0))
+        self.sesiones[usuario_id].actualizar()
+        return self.sesiones[usuario_id]
+
+gestor_sesiones = GestorSesiones()
+
+# ============================================================================
+# BÚSQUEDA
+# ============================================================================
+class DB:
+    def buscar(self, query, colecciones=None, top_k=5):
+        if colecciones is None:
+            colecciones = list(cols.keys())
+        resultados = []
+        for nombre in colecciones:
+            if nombre not in cols: continue
+            try:
+                r = cols[nombre].query(query_texts=[query], n_results=top_k)
+                for meta in r["metadatas"][0]:
+                    meta['coleccion'] = nombre
+                    resultados.append(meta)
+            except Exception as e:
+                print(f"Error buscando en {nombre}: {e}")
+                continue
+        return resultados
+
+db = DB()
+
+# ============================================================================
+# FORMATEADOR PARA PROMPT (VERSIÓN RUSS)
+# ============================================================================
+def formatear_productos_russ(productos):
+    if not productos: return "Ninguno"
+    texto = ""
+    for i, p in enumerate(productos[:3], 1):
+        codigo = p.get('codigo', 'N/A')
+        desc = p.get('descripcion', 'Producto')
+        formato = p.get('formato', 'N/A')
+        precio = "Por confirmar"
+        for k, v in p.items():
+            if any(x in k.upper() for x in ["PRECIO", "OFERTA", "FINAL", "SISTEMA", "UNITARIO"]):
+                if v and str(v).strip() not in ["0", "0.0", "", "None"]:
+                    precio = f"${v}"
+                    break
+        texto += f"{i}. Código: {codigo} | {desc} | Formato: {formato} | Precio: {precio}\n"
+    return texto.strip()
+
+# ============================================================================
+# UTILIDADES
+# ============================================================================
+def extraer_precio_de_meta(prod):
+    precio = None
+    for k, v in prod.items():
+        if any(x in k.upper() for x in ["PRECIO", "OFERTA", "FINAL", "UNITARIO"]):
+            try:
+                precio = float(v)
+                return precio
+            except:
+                continue
+    # fallback
+    for key in ['precio_unitario', 'precio_m2', 'precio_caja']:
+        if prod.get(key):
+            try:
+                return float(prod.get(key))
+            except:
+                continue
+    return None
+
+def descripcion_corta(prod):
+    return prod.get('descripcion') or prod.get('codigo') or "Producto"
+
+# ============================================================================
+# CEREBRO - FINAL CON PROMPT RUSS (con manejo de afirmativos y flags)
+# ============================================================================
+def generar_respuesta_llm(mensaje, estado, usuario_id):
+    msg_limpio = mensaje.strip() if mensaje else ""
+    msg_low = msg_limpio.lower()
+    hist = memoria_largo_plazo.obtener(usuario_id)
+    
+    num_interaccion = hist.get("interacciones", 0)
+    cache_key = f"{usuario_id}:{msg_limpio}"
+    tiempo_actual = time.time()
+
+    # ===== Manejo de respuestas afirmativas cortas y confirmaciones =====
+    afirmativos = {"si", "sí", "claro", "ok", "vale", "correcto", "sí.", "si.", "si,", "sí,"}
+    # Si el usuario responde afirmativamente y hay una ultima pregunta relevante, procesarla
+    if msg_low in afirmativos and hist.get("ultima_pregunta"):
+        ultima = hist.get("ultima_pregunta")
+        # Confirmar cantidad para ultimo producto mostrado
+        if ultima == "confirmar_cantidad" and hist.get("ultimo_producto_mostrado"):
+            prod = hist["ultimo_producto_mostrado"]
+            desc = descripcion_corta(prod)
+            precio = extraer_precio_de_meta(prod)
+            # calcular cantidad según metraje por caja si existe y si hay m2 en estado
+            cantidad = 1
+            try:
+                if estado.m2_proyecto and prod.get('metraje_caja'):
+                    metraje_caja = float(prod.get('metraje_caja') or 0)
+                    if metraje_caja > 0:
+                        cantidad = math.ceil(estado.m2_proyecto / metraje_caja)
+            except:
+                cantidad = 1
+            # guardar en cotización (precio puede ser None)
+            if desc in hist["productos_cotizados"]:
+                hist["productos_cotizados"][desc]["cantidad"] += cantidad
+            else:
+                hist["productos_cotizados"][desc] = {"precio": precio if precio not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}
+            # limpiar flag de pregunta
+            hist["ultima_pregunta"] = None
+            memoria_largo_plazo.guardar()
+            if hist["productos_cotizados"][desc]["precio"] is None:
+                return f"✅ Perfecto, agregué {cantidad} de {desc} a tu cotización (precio por confirmar). ¿Quieres que agregue pegamento o te paso el resumen parcial? Equipo VAMA."
+            else:
+                subtotal = hist["productos_cotizados"][desc]["precio"] * hist["productos_cotizados"][desc]["cantidad"]
+                return f"✅ Perfecto, agregué {cantidad} de {desc} a tu cotización. Subtotal: ${subtotal:.2f}. ¿Quieres algo más o te paso el total? Equipo VAMA."
+        # Confirmación para pegamento u otra pregunta simple
+        if ultima == "confirmar_pegamento" and hist.get("ultimo_producto_mostrado"):
+            # si la pregunta era "¿Quieres pegamento?" y responde si -> sugerir opciones
+            hist["ultima_pregunta"] = "elegir_pegamento"
+            memoria_largo_plazo.guardar()
+            return "Perfecto. Te muestro opciones de pegamento: CMX01 - PEGAZULEJO BLANCO 20KG ($169), CMX134 - CEMIX PEGAZULEJO GRIS 20KG ($143). ¿Cuál prefieres? Equipo VAMA."
+        # Si no hay manejo específico, continuar (no bloquear)
+    
+    # ========================================================================
+    # CACHÉ
+    # ========================================================================
+    if cache_key in CACHE_SIMPLES:
+        timestamp, respuesta_cache = CACHE_SIMPLES[cache_key]
+        if time.time() - timestamp < CACHE_TTL:
+            print(f"DEBUG: Respuesta desde caché")
+            return respuesta_cache
+    
+    # ========================================================================
+    # ANTI-DUPLICADO (solo después de manejar afirmativos)
+    # ========================================================================
+    if len(msg_limpio) < 3:
+        print(f"DEBUG: Mensaje muy corto")
+        if estado.ultima_respuesta_enviada:
+            return estado.ultima_respuesta_enviada
+        return "Estoy aquí para ayudarte. ¿Qué producto necesitas? Equipo VAMA."
+    
+    tiempo_ultimo = hist.get("timestamp_ultima", 0)
+    if tiempo_actual - tiempo_ultimo < 5 and msg_limpio == hist.get("ultimo_mensaje_procesado", ""):
+        print(f"DEBUG: Duplicado detectado")
+        return estado.ultima_respuesta_enviada or "Procesando..."
+    
+    hist["ultimo_mensaje_procesado"] = msg_limpio
+    hist["timestamp_ultima"] = tiempo_actual
+
+    # ========================================================================
+    # DETECCIÓN DE REPETICIÓN
+    # ========================================================================
+    if "ultimos_mensajes" in hist and len(hist["ultimos_mensajes"]) >= 4:
+        ultimos_3 = hist["ultimos_mensajes"][-3:]
+        mensajes_usuario = [m["content"] for m in ultimos_3 if m["role"] == "user"]
+        if len(mensajes_usuario) >= 2 and mensajes_usuario[-1] == mensajes_usuario[-2]:
+            print("DEBUG: Cliente repitiendo mensaje, forzando respuesta directa")
+            if estado.ultimos_productos:
+                total = 0.0
+                respuesta = "**Resumen de tu cotización:**\n"
+                for prod in estado.ultimos_productos[:3]:
+                    desc = descripcion_corta(prod)
+                    precio = extraer_precio_de_meta(prod) or 0
+                    if estado.m2_proyecto > 0 and prod.get('metraje_caja', 0) > 0:
+                        cajas = math.ceil(estado.m2_proyecto / prod['metraje_caja'])
+                        subtotal = cajas * precio
+                        total += subtotal
+                        respuesta += f"- {desc}: {cajas} cajas x ${precio:.2f} = ${subtotal:.2f}\n"
+                    else:
+                        respuesta += f"- {desc}: ${precio:.2f} (precio unitario)\n"
+                respuesta += f"\n**TOTAL: ${total:.2f}**\n\n¿Te confirmo disponibilidad? Equipo VAMA."
+                hist["ultimos_mensajes"].append({"role": "assistant", "content": respuesta})
+                memoria_largo_plazo.guardar()
+                CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)
+                return respuesta
+    
+    # ========================================================================
+    # COMANDOS ESPECIALES
+    # ========================================================================
+    if any(w in msg_low for w in ['nueva cotizacion', 'nueva cotización', 'empezar de nuevo', 'reiniciar', 'borrar todo']):
+        hist["productos_cotizados"] = {}
+        hist["m2_proyecto"] = 0
+        hist["interacciones"] = 0
+        estado.m2_proyecto = 0
+        hist["ultima_pregunta"] = None
+        hist["ultimo_producto_mostrado"] = None
+        memoria_largo_plazo.guardar()
+        respuesta = "Listo, hemos reiniciado tu cotización. ¿Qué necesitas cotizar hoy? Equipo VAMA."
+        CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)
+        return respuesta
+
+    if "interacciones" not in hist: hist["interacciones"] = 0
+    if "m2_proyecto" not in hist: hist["m2_proyecto"] = estado.m2_proyecto
+    
+    # ========================================================================
+    # DETECCIÓN DE TOTAL
+    # ========================================================================
+    es_pedido_total = any(p in msg_low for p in ["total", "cotización", "cuánto es", "suma", "precio final"])
+    if es_pedido_total and hist["productos_cotizados"]:
+        total = 0.0
+        detalle = "**Resumen de tu cotización:**\n"
+        for desc, data in hist["productos_cotizados"].items():
+            if data["precio"] is None:
+                detalle += f"- {desc}: {data['cantidad']} (precio por confirmar)\n"
+            else:
+                subtotal = data["precio"] * data["cantidad"]
+                total += subtotal
+                detalle += f"- {desc}: {data['cantidad']} x ${data['precio']} = ${subtotal:.2f}\n"
+        if total > 0:
+            detalle += f"\n**TOTAL: ${total:.2f}**\n\n¿Te confirmo disponibilidad o agregamos algo más? Equipo VAMA."
+        else:
+            detalle += "\n**TOTAL: por confirmar (faltan precios)**\n\n¿Quieres que te avise en cuanto tenga los precios? Equipo VAMA."
+        CACHE_SIMPLES[cache_key] = (tiempo_actual, detalle)
+        return detalle
+
+    # ========================================================================
+    # CAPTURAR M2
+    # ========================================================================
+    match_m2 = re.findall(r'(\d+)\s*(?:m2|metros|mts|cuadrados)', msg_low)
+    if match_m2:
+        estado.m2_proyecto = int(match_m2[0])
+        hist["m2_proyecto"] = estado.m2_proyecto
+    
+    nombre_cliente = hist["nombre"] or "Cliente"
+
+    # ========================================================================
+    # DETECCIÓN DE OFERTAS Y SALUDOS
+    # ========================================================================
+    es_oferta = any(w in msg_low for w in ['oferta', 'promo', 'descuento', 'barato', 'ofertas', 'promociones'])
+    saludos = ['hola', 'buenos dias', 'buenas tardes', 'buenas noches', 'que tal', 'hey', 'saludos', 'buen dia']
+    es_saludo = any(s in msg_low for s in saludos) and len(msg_low) < 50
+
+    # ========================================================================
+    # CATEGORÍAS Y BÚSQUEDA
+    # ========================================================================
+    if not es_saludo:
+        es_griferia = any(w in msg_low for w in ['monomando', 'grifo', 'mezcladora', 'llave', 'regadera'])
+        es_lavabo = any(w in msg_low for w in ['lavabo', 'lavamanos'])
+        es_sanitario = any(w in msg_low for w in ['wc', 'inodoro', 'taza', 'sanitario', 'tanque', 'pedestal'])
+        es_mueble = any(w in msg_low for w in ['mueble', 'gabinete', 'armario'])
+        es_tinaco = any(w in msg_low for w in ['tinaco', 'cisterna', 'tanque de agua'])
+        es_espejo = any(w in msg_low for w in ['espejo'])
+        es_tarja = any(w in msg_low for w in ['tarja', 'fregadero', 'lavaplatos'])
+        es_herramienta = any(w in msg_low for w in ['herramienta', 'redtools'])
+        es_pegamento = any(w in msg_low for w in ['pegazulejo', 'pegamento', 'pega', 'adhesivo', 'polvo', 'boquilla', 'pastina', 'lechada', 'junta', 'cemento', 'mortero'])
+        es_piso = any(w in msg_low for w in ['piso', 'azulejo', 'malla', 'porcelanato', 'ceramica', 'marmol', 'loseta', 'gres'])
+        
+        colecciones_buscar = []
+        if es_oferta:
+            colecciones_buscar = ["nacionales", "importados"]
+        else:
+            if es_pegamento:
+                colecciones_buscar.extend(["polvos", "otras"])
+            else:
+                if es_griferia: colecciones_buscar.append("griferia")
+                if es_lavabo: colecciones_buscar.append("lavabos")
+                if es_sanitario: colecciones_buscar.append("sanitarios")
+                if es_mueble: colecciones_buscar.append("muebles")
+                if es_tinaco: colecciones_buscar.append("tinacos")
+                if es_espejo: colecciones_buscar.append("espejos")
+                if es_tarja: colecciones_buscar.append("tarjas")
+                if es_herramienta: colecciones_buscar.append("herramientas")
+                if es_piso: colecciones_buscar.extend(["nacionales", "importados"])
+        
+        if not colecciones_buscar:
+            colecciones_buscar = list(cols.keys())
+        
+        colecciones_buscar = list(set(colecciones_buscar))
+        
+        resultados = []
+        for coleccion in colecciones_buscar:
+            if coleccion in cols:
+                try:
+                    k = 3 if coleccion in ["nacionales", "importados"] else 5
+                    r = cols[coleccion].query(query_texts=[msg_limpio], n_results=k)
+                    for meta in r["metadatas"][0]:
+                        meta['coleccion'] = coleccion
+                        resultados.append(meta)
+                except Exception as e:
+                    continue
+        
+        query_words = [w for w in re.sub(r'[^\w\s]', '', msg_low).split() if len(w) > 3]
+        if resultados:
+            resultados.sort(key=lambda x: sum(w in x.get('descripcion','').lower() for w in query_words), reverse=True)
+        
+        estado.guardar_productos(resultados[:6])
+        print(f"DEBUG: {len(resultados)} resultados")
+        
+        # ========================================================================
+        # GUARDAR COMPRA (CORREGIDO: permite agregar sin precio y usa flags)
+        # ========================================================================
+        es_compra = any(w in msg_low for w in [
+            'me llevo', 'quiero', 'agrega', 'compro', 'añade', 
+            'cotiza', 'incluye', 'pon', 'agregar', 'comprame',
+            'deme', 'dame', 'selecciona', 'escojo', 'elijo',
+            'prefiero', 'me quedo', 'llevo'
+        ])
+        
+        # Si el usuario pide pegamento explícitamente y hay resultados de polvos, mostrar opciones
+        if es_pegamento and resultados:
+            # mostrar opciones de pegamento (hasta 5)
+            opciones = []
+            for p in resultados[:5]:
+                codigo = p.get('codigo', 'N/A')
+                desc = descripcion_corta(p)
+                precio = extraer_precio_de_meta(p)
+                precio_txt = f"${precio}" if precio else "Precio: por confirmar"
+                opciones.append(f"{codigo} - {desc} - {precio_txt}")
+            # marcar que la ultima pregunta es elegir pegamento
+            hist["ultima_pregunta"] = "elegir_pegamento"
+            memoria_largo_plazo.guardar()
+            respuesta = "Precio de pegamento: " + ", ".join(opciones) + ". ¿Cuántos necesitas? Equipo VAMA."
+            CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)
+            return respuesta
+        
+        if es_compra and resultados:
+            print("DEBUG: Detectada compra")
+            match_precio = re.search(r'\$?(\d+(?:\.\d+)?)', msg_low)
+            precio_mencionado = float(match_precio.group(1)) if match_precio else None
+            producto_agregado = None
+            # Intentar identificar producto por coincidencia en descripción o código
+            for prod in resultados[:8]:
+                desc = descripcion_corta(prod)
+                codigo = prod.get('codigo','').lower()
+                # si el mensaje menciona el código o parte de la descripción, priorizar
+                if codigo and codigo in msg_low:
+                    seleccionado = prod
+                elif any(word in desc.lower() for word in re.sub(r'[^\w\s]', '', msg_low).split()):
+                    seleccionado = prod
+                else:
+                    seleccionado = None
+                
+                precio = extraer_precio_de_meta(prod)
+                if precio_mencionado and precio and abs(precio - precio_mencionado) < 1:
+                    seleccionado = prod
+                
+                if seleccionado:
+                    desc_sel = descripcion_corta(seleccionado)
+                    precio_sel = extraer_precio_de_meta(seleccionado)
+                    # calcular cantidad: si usuario dio m2 y hay metraje por caja
+                    cantidad = 1
+                    try:
+                        if estado.m2_proyecto and seleccionado.get('metraje_caja'):
+                            metraje_caja = float(seleccionado.get('metraje_caja') or 0)
+                            if metraje_caja > 0:
+                                cantidad = math.ceil(estado.m2_proyecto / metraje_caja)
+                    except:
+                        cantidad = 1
+                    if desc_sel in hist["productos_cotizados"]:
+                        hist["productos_cotizados"][desc_sel]["cantidad"] += cantidad
+                    else:
+                        hist["productos_cotizados"][desc_sel] = {"precio": precio_sel if precio_sel not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}
+                    producto_agregado = desc_sel
+                    # limpiar flags
+                    hist["ultima_pregunta"] = None
+                    hist["ultimo_producto_mostrado"] = None
+                    memoria_largo_plazo.guardar()
+                    break
+            
+            # Si no se identificó por texto, tomar el primer resultado mostrado
+            if not producto_agregado and resultados:
+                prod = resultados[0]
+                desc = descripcion_corta(prod)
+                precio = extraer_precio_de_meta(prod)
+                cantidad = 1
+                try:
+                    if estado.m2_proyecto and prod.get('metraje_caja'):
+                        metraje_caja = float(prod.get('metraje_caja') or 0)
+                        if metraje_caja > 0:
+                            cantidad = math.ceil(estado.m2_proyecto / metraje_caja)
+                except:
+                    cantidad = 1
+                if desc in hist["productos_cotizados"]:
+                    hist["productos_cotizados"][desc]["cantidad"] += cantidad
+                else:
+                    hist["productos_cotizados"][desc] = {"precio": precio if precio not in [0, "0", "0.0", ""] else None, "cantidad": cantidad}
+                producto_agregado = desc
+                hist["ultima_pregunta"] = None
+                hist["ultimo_producto_mostrado"] = None
+                memoria_largo_plazo.guardar()
+            
+            if producto_agregado:
+                if hist["productos_cotizados"][producto_agregado]["precio"] is None:
+                    respuesta = f"✅ Agregado: {producto_agregado} a tu cotización (precio por confirmar). ¿Quieres algo más o te paso el total parcial? Equipo VAMA."
+                else:
+                    respuesta = f"✅ Agregado: {producto_agregado} a tu cotización. ¿Quieres algo más o te paso el total? Equipo VAMA."
+                CACHE_SIMPLES[cache_key] = (tiempo_actual, respuesta)
+                return respuesta
+
+    # ========================================================================
+    # Si llegamos aquí, vamos a preparar prompt para LLM (si aplica)
+    # Guardar ultimo producto mostrado para confirmar después si el LLM muestra productos
+    productos_russ = formatear_productos_russ(estado.ultimos_productos[:3])
+    # Si hay productos en estado.ultimos_productos, guardamos el primero como 'ultimo_producto_mostrado'
+    if estado.ultimos_productos:
+        # guardamos una copia ligera (solo campos necesarios)
+        p0 = estado.ultimos_productos[0]
+        hist["ultimo_producto_mostrado"] = {
+            "codigo": p0.get("codigo"),
+            "descripcion": p0.get("descripcion"),
+            "formato": p0.get("formato"),
+            "metraje_caja": p0.get("metraje_caja"),
+            "precio_unitario": p0.get("precio_unitario"),
+            "precio_m2": p0.get("precio_m2"),
+            "precio_caja": p0.get("precio_caja"),
+            # incluir cualquier campo de precio bruto que venga en metadatas
+            **{k: v for k, v in p0.items() if "precio" in k.lower() or "oferta" in k.lower()}
+        }
+        # marcar que la ultima pregunta puede ser confirmar cantidad si el bot pregunta "¿Necesitas X m2?"
+        # No forzamos aquí; se seteará cuando el LLM pregunte explícitamente.
+    memoria_largo_plazo.guardar()
+
+    # Obtener historial reciente
+    historial_reciente = ""
+    if "ultimos_mensajes" in hist and hist["ultimos_mensajes"]:
+        ultimos = hist["ultimos_mensajes"][-6:]
+        for m in ultimos:
+            role = "Cliente" if m["role"] == "user" else "Russ"
+            historial_reciente += f"{role}: {m['content']}\n"
+    else:
+        historial_reciente = "Sin historial"
+
+    # ========================================================================
+    # PROMPT - VERSIÓN FINAL (igual que antes)
+    # ========================================================================
+    prompt = f"""Eres VAMA, asistente de ventas por WhatsApp de VAMA, una tienda de materiales y acabados (pisos, cerámicos, recubrimientos, muros, baños/grifería).
+
+Tu tarea es orientar, recomendar y cerrar una cotización rápida, sin inventar datos.
+
+CONTEXTO ACTUAL:
+- Cliente: {nombre_cliente}
+- Historial de la conversación: {historial_reciente}
+- Productos encontrados: {productos_russ if estado.ultimos_productos else 'Ninguno'}
+- Metraje del cliente: {estado.m2_proyecto} m2
+
+REGLAS DE ESTILO:
+- Responde en español, texto plano listo para WhatsApp (sin markdown).
+- Mensajes cortos: ideal 2 a 6 líneas. Si listas opciones, hasta 10 líneas.
+- Tono humano, profesional y cercano.
+- No uses tecnicismos innecesarios.
+
+RESTRICCIONES (OBLIGATORIAS):
+- No inventes precios, existencias, tiempos, descuentos, marcas, formatos ni metrajes.
+- Solo usa información de los productos listados arriba.
+- Si falta un dato (ej. precio), dilo exactamente así: "Precio: por confirmar".
+
+USO DE CONTEXTO:
+- Usa el historial para no repetir preguntas.
+- Si el cliente ya dio formato/uso/área/cantidad, NO lo vuelvas a preguntar.
+- Si el nombre existe, úsalo naturalmente máximo 1 vez por mensaje.
+
+Tu respuesta debe ser SOLO el mensaje final para WhatsApp."""
+
+    hist["interacciones"] = num_interaccion + 1
+    hist["ultima_visita"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+    memoria_largo_plazo.guardar()
+
+    try:
+        res = ollama.generate(
+            model=MODELO, 
+            prompt=prompt,
+            options={
+                "temperature": 0.6, 
+                "num_predict": 300, 
+                "num_ctx": 2048,
+                "stop": ["CLIENTE:", "USUARIO:", "\n\n\n"]
+            }
+        )['response'].strip()
+        
+        # Limpieza básica
+        res = re.sub(r'\*\*?|\*|__|\|', '', res)
+        res = res.replace("  ", " ").strip()
+        
+        # Guardar en historial
+        if "ultimos_mensajes" not in hist:
+            hist["ultimos_mensajes"] = []
+        hist["ultimos_mensajes"].append({"role": "user", "content": msg_limpio})
+        hist["ultimos_mensajes"].append({"role": "assistant", "content": res})
+        if len(hist["ultimos_mensajes"]) > 10:
+            hist["ultimos_mensajes"] = hist["ultimos_mensajes"][-10:]
+        
+        # Si el LLM pregunta "¿Necesitas X m2?" o "¿Necesitas 7 m2?" detectarlo y setear ultima_pregunta
+        if re.search(r'¿.*necesit.*\s*\d+\s*(m2|metros|mts|cuadrados)\?', res.lower()):
+            hist["ultima_pregunta"] = "confirmar_cantidad"
+        # Si el LLM pregunta por pegamento explícitamente
+        if re.search(r'pegamento|pegazulejo|adhesivo', res.lower()) and "¿" in res:
+            hist["ultima_pregunta"] = "confirmar_pegamento"
+        memoria_largo_plazo.guardar()
+
+        estado.ultima_respuesta_enviada = res
+        hist["ultima_respuesta"] = res
+        memoria_largo_plazo.guardar()
+        CACHE_SIMPLES[cache_key] = (tiempo_actual, res)
+        
+        return res
+        
+    except Exception as e:
+        print(f"DEBUG: Error: {e}")
+        fallback = f"Entendido {nombre_cliente}, revisando disponibilidad. Equipo VAMA."
+        estado.ultima_respuesta_enviada = fallback
+        return fallback
+
+# ============================================================================
+# API
+# ============================================================================
+app = Flask(__name__)
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    data = request.get_json() or {}
+    tel = str(data.get('telefono') or '0')
+    nom = data.get('nombre') or 'Cliente'
+    msg = data.get('mensaje') or ""
+    
+    print(f"\n[WEBHOOK] {datetime.now().strftime('%H:%M:%S')} | {nom} ({tel}): {msg[:60]}")
+    
+    sesion = gestor_sesiones.obtener(tel, nom)
+    respuesta = generar_respuesta_llm(msg, sesion, tel)
+    
+    print(f"[RESPONSE] {respuesta[:80]}...\n")
+    return jsonify({"respuesta": respuesta})
+
+if __name__ == "__main__":
+    print(f"🚀 VAMA AGENT 2.3 RUSS | Modelo: {MODELO} | Puerto: 5000")
+    print(f"📚 Colecciones: {list(cols.keys())}")
+    print(f"🧠 Memoria de cliente: ACTIVADA")
+    print(f"🤖 Prompt estilo Russ: ACTIVADO")
+    app.run(host='0.0.0.0', port=5000, debug=False)

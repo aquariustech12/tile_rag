@@ -74,11 +74,11 @@ def ingest_nacionales(filepath):
             
             tipo = "muro" if es_muro(row.get("Descripcion", "")) else "piso"
             
-            doc = f"{row['Descripcion']} {row.get('Color', '')} {row.get('Tipologia', '')} {row.get('Acabado', '')}"
+            doc = f"{row['Descripcion']} {row.get('Color', '')} ${precio}"
             
             metadata = {
                 "codigo": str(row.get("Codigo", "")),
-                "descripcion": str(row.get("Descripcion", "")),
+                "descripcion": f"{row.get('Descripcion', '')} ${precio}",
                 "proveedor": str(row.get("Proveedor", "")),
                 "tipo": tipo,
                 "precio_m2": precio_final,

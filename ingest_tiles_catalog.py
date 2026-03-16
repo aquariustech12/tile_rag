@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 VAMA - Ingesta respetando nombres originales del catálogo
+Versión con colecciones separadas: lavabos, sanitarios, muebles, etc.
 """
 
 import pandas as pd
@@ -187,11 +188,11 @@ def ingest_importados(filepath):
     return "importados", len(productos)
 
 # ============================================================================
-# GRIFERIA
+# GRIFERIA PURA (solo llaves, monomandos, regaderas)
 # ============================================================================
 
 def ingest_griferia(filepath):
-    print(f"\n📦 Ingestando GRIFERIA: {filepath}")
+    print(f"\n📦 Ingestando GRIFERIA PURA: {filepath}")
     
     try:
         client.delete_collection(name="griferia")
@@ -227,7 +228,8 @@ def ingest_griferia(filepath):
                 "precio_unitario": precio,
                 "unidad": "pieza",
                 "color": normalizar_texto(row.get("Color", "")),
-                "acabado": normalizar_texto(row.get("Acabado", ""))
+                "acabado": normalizar_texto(row.get("Acabado", "")),
+                "es_promo": False
             }
             
             productos.append({
@@ -252,19 +254,19 @@ def ingest_griferia(filepath):
     return "griferia", len(productos)
 
 # ============================================================================
-# POLVOS (pegamentos, boquillas, etc)
+# LAVABOS
 # ============================================================================
 
-def ingest_polvos(filepath):
-    print(f"\n📦 Ingestando POLVOS: {filepath}")
+def ingest_lavabos(filepath):
+    print(f"\n📦 Ingestando LAVABOS: {filepath}")
     
     try:
-        client.delete_collection(name="polvos")
+        client.delete_collection(name="lavabos")
     except:
         pass
     
     collection = client.create_collection(
-        name="polvos",
+        name="lavabos",
         embedding_function=embedding_func
     )
     
@@ -274,30 +276,30 @@ def ingest_polvos(filepath):
     productos = []
     for _, row in df.iterrows():
         try:
-            # CORRECCIÓN: columna correcta es "Precio venta Final"
-            precio = limpiar_precio(row.get("Precio venta Final", 0))
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
             if precio == 0:
                 precio = limpiar_precio(row.get("Precio sistema", 0))
             
             if precio == 0:
                 continue
             
-            doc = f"{row.get('Descripcion', '')} {row.get('Subcategoria', '')}"
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoria', '')}"
             
             metadata = {
                 "codigo": str(row.get("Codigo", "")),
                 "descripcion": str(row.get("Descripcion", "")),
                 "proveedor": str(row.get("Proveedor", "")),
-                "categoria": str(row.get("Categoría", "")),
+                "categoria": str(row.get("Categoria", "")),
                 "subcategoria": str(row.get("Subcategoria", "")),
                 "precio_unitario": precio,
-                "unidad": str(row.get("Udm", "saco")),
-                "presentacion": str(row.get("Presentación", "")),
-                "color": normalizar_texto(row.get("Color", ""))
+                "unidad": "pieza",
+                "color": normalizar_texto(row.get("Color", "")),
+                "acabado": normalizar_texto(row.get("Acabado", "")),
+                "es_promo": False
             }
             
             productos.append({
-                "id": f"pol_{row.get('Codigo', '')}_{_}",
+                "id": f"lav_{row.get('Codigo', '')}_{_}",
                 "document": doc,
                 "metadata": metadata
             })
@@ -313,24 +315,156 @@ def ingest_polvos(filepath):
                 documents=[p["document"] for p in batch],
                 metadatas=[p["metadata"] for p in batch]
             )
-        print(f"   ✅ {len(productos)} productos en 'polvos'")
+        print(f"   ✅ {len(productos)} productos en 'lavabos'")
     
-    return "polvos", len(productos)
+    return "lavabos", len(productos)
 
 # ============================================================================
-# OTRAS (complementos: muebles, espejos, tinacos, etc)
+# SANITARIOS (WC, tazas, tanques, pedestales)
 # ============================================================================
 
-def ingest_otras(filepath):
-    print(f"\n📦 Ingestando OTRAS: {filepath}")
+def ingest_sanitarios(filepath):
+    print(f"\n📦 Ingestando SANITARIOS: {filepath}")
     
     try:
-        client.delete_collection(name="otras")
+        client.delete_collection(name="sanitarios")
     except:
         pass
     
     collection = client.create_collection(
-        name="otras",
+        name="sanitarios",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                precio = limpiar_precio(row.get("Precio sistema", 0))
+            
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoria', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoria", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": "pieza",
+                "color": normalizar_texto(row.get("Color", "")),
+                "acabado": normalizar_texto(row.get("Acabado", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"san_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'sanitarios'")
+    
+    return "sanitarios", len(productos)
+
+# ============================================================================
+# MUEBLES (de baño)
+# ============================================================================
+
+def ingest_muebles(filepath):
+    print(f"\n📦 Ingestando MUEBLES: {filepath}")
+    
+    try:
+        client.delete_collection(name="muebles")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="muebles",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                precio = limpiar_precio(row.get("Precio sistema", 0))
+            
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoria', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoria", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": "pieza",
+                "color": normalizar_texto(row.get("Color", "")),
+                "acabado": normalizar_texto(row.get("Acabado", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"mue_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'muebles'")
+    
+    return "muebles", len(productos)
+
+# ============================================================================
+# TINACOS
+# ============================================================================
+
+def ingest_tinacos(filepath):
+    print(f"\n📦 Ingestando TINACOS: {filepath}")
+    
+    try:
+        client.delete_collection(name="tinacos")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="tinacos",
         embedding_function=embedding_func
     )
     
@@ -355,7 +489,329 @@ def ingest_otras(filepath):
                 "precio_unitario": precio,
                 "unidad": str(row.get("Udm", "pieza")),
                 "medida": str(row.get("Medida", "")),
-                "color": normalizar_texto(row.get("Color", ""))
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"tin_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'tinacos'")
+    
+    return "tinacos", len(productos)
+
+# ============================================================================
+# ESPEJOS
+# ============================================================================
+
+def ingest_espejos(filepath):
+    print(f"\n📦 Ingestando ESPEJOS: {filepath}")
+    
+    try:
+        client.delete_collection(name="espejos")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="espejos",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoría', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoría", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": str(row.get("Udm", "pieza")),
+                "medida": str(row.get("Medida", "")),
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"esp_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'espejos'")
+    
+    return "espejos", len(productos)
+
+# ============================================================================
+# TARJAS (fregaderos, lavaplatos)
+# ============================================================================
+
+def ingest_tarjas(filepath):
+    print(f"\n📦 Ingestando TARJAS: {filepath}")
+    
+    try:
+        client.delete_collection(name="tarjas")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="tarjas",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoría', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoría", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": str(row.get("Udm", "pieza")),
+                "medida": str(row.get("Medida", "")),
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"tar_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'tarjas'")
+    
+    return "tarjas", len(productos)
+
+# ============================================================================
+# HERRAMIENTAS
+# ============================================================================
+
+def ingest_herramientas(filepath):
+    print(f"\n📦 Ingestando HERRAMIENTAS: {filepath}")
+    
+    try:
+        client.delete_collection(name="herramientas")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="herramientas",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoría', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoría", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": str(row.get("Udm", "pieza")),
+                "medida": str(row.get("Medida", "")),
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"her_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'herramientas'")
+    
+    return "herramientas", len(productos)
+
+# ============================================================================
+# POLVOS (pegamentos, boquillas, etc)
+# ============================================================================
+
+def ingest_polvos(filepath):
+    print(f"\n📦 Ingestando POLVOS: {filepath}")
+    
+    try:
+        client.delete_collection(name="polvos")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="polvos",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio venta Final", 0))
+            if precio == 0:
+                precio = limpiar_precio(row.get("Precio sistema", 0))
+            
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Subcategoria', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoría", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": str(row.get("Udm", "saco")),
+                "presentacion": str(row.get("Presentación", "")),
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
+            }
+            
+            productos.append({
+                "id": f"pol_{row.get('Codigo', '')}_{_}",
+                "document": doc,
+                "metadata": metadata
+            })
+            
+        except Exception as e:
+            continue
+    
+    if productos:
+        for i in range(0, len(productos), 100):
+            batch = productos[i:i+100]
+            collection.add(
+                ids=[p["id"] for p in batch],
+                documents=[p["document"] for p in batch],
+                metadatas=[p["metadata"] for p in batch]
+            )
+        print(f"   ✅ {len(productos)} productos en 'polvos'")
+    
+    return "polvos", len(productos)
+
+# ============================================================================
+# OTRAS RESTANTES (lo que no clasificó en categorías específicas)
+# ============================================================================
+
+def ingest_otras(filepath):
+    print(f"\n📦 Ingestando OTRAS RESTANTES: {filepath}")
+    
+    try:
+        client.delete_collection(name="otras")
+    except:
+        pass
+    
+    collection = client.create_collection(
+        name="otras",
+        embedding_function=embedding_func
+    )
+    
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    
+    productos = []
+    for _, row in df.iterrows():
+        try:
+            precio = limpiar_precio(row.get("Precio autorizado", 0))
+            if precio == 0:
+                precio = limpiar_precio(row.get("Precio sistema", 0))
+            
+            if precio == 0:
+                continue
+            
+            doc = f"{row.get('Descripcion', '')} {row.get('Categoría', '')}"
+            
+            metadata = {
+                "codigo": str(row.get("Codigo", "")),
+                "descripcion": str(row.get("Descripcion", "")),
+                "proveedor": str(row.get("Proveedor", "")),
+                "categoria": str(row.get("Categoría", "")),
+                "subcategoria": str(row.get("Subcategoria", "")),
+                "precio_unitario": precio,
+                "unidad": str(row.get("Udm", "pieza")),
+                "medida": str(row.get("Medida", "")),
+                "color": normalizar_texto(row.get("Color", "")),
+                "es_promo": False
             }
             
             productos.append({
@@ -380,71 +836,113 @@ def ingest_otras(filepath):
     return "otras", len(productos)
 
 # ============================================================================
-# PROMO (marcar productos en promoción)
+# PROMO (marcar productos en promoción en TODAS las colecciones)
 # ============================================================================
 
 def marcar_promos(filepath):
-    print(f"\n🏷️  Marcando promociones: {filepath}")
+    print(f"\n🏷️  Marcando promociones en TODAS las colecciones: {filepath}")
     
     df = pd.read_csv(filepath)
     codigos_promo = set(df["Codigo"].astype(str).tolist())
     
-    for coleccion in ["nacionales", "importados"]:
+    # Lista de todas las colecciones donde buscar
+    colecciones = ["nacionales", "importados", "griferia", "lavabos", "sanitarios", 
+                   "muebles", "tinacos", "espejos", "tarjas", "herramientas", "polvos", "otras"]
+    
+    total_promos = 0
+    for coleccion in colecciones:
         try:
             collection = client.get_collection(name=coleccion)
             result = collection.get()
             
             actualizados = 0
             for i, metadata in enumerate(result["metadatas"]):
-                if metadata.get("codigo") in codigos_promo:
+                if metadata and metadata.get("codigo") in codigos_promo:
                     metadata["es_promo"] = True
                     collection.update(
                         ids=[result["ids"][i]],
                         metadatas=[metadata]
                     )
                     actualizados += 1
+                    total_promos += 1
             
-            print(f"   ✅ {actualizados} promos en '{coleccion}'")
+            if actualizados > 0:
+                print(f"   ✅ {actualizados} promos en '{coleccion}'")
         except Exception as e:
-            print(f"   ⚠️  Error en {coleccion}: {e}")
+            # La colección puede no existir aún, ignorar
+            pass
+    
+    print(f"   🏷️  TOTAL: {total_promos} productos marcados como promoción")
 
 # ============================================================================
 # MAIN
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="Ingesta VAMA")
+    parser = argparse.ArgumentParser(description="Ingesta VAMA - Versión con categorías separadas")
     parser.add_argument("--tipo", required=True, 
-                       choices=["nacionales", "importados", "griferia", "polvos", "otras", "promos", "todo"],
+                       choices=["nacionales", "importados", "griferia", "lavabos", "sanitarios", 
+                               "muebles", "tinacos", "espejos", "tarjas", "herramientas", 
+                               "polvos", "otras", "promos", "todo"],
                        help="Tipo de ingesta")
     parser.add_argument("--file", help="Ruta al archivo CSV")
     
     args = parser.parse_args()
     
+    data_dir = "data"
+    
     if args.tipo == "todo":
-        print("🚀 INGESTA COMPLETA VAMA")
-        print("=" * 50)
+        print("🚀 INGESTA COMPLETA VAMA - CATEGORÍAS SEPARADAS")
+        print("=" * 60)
         
-        if os.path.exists("data/nacionales.csv"):
-            ingest_nacionales("data/nacionales.csv")
+        # Nacionales e importados (pisos)
+        if os.path.exists(f"{data_dir}/nacionales.csv"):
+            ingest_nacionales(f"{data_dir}/nacionales.csv")
         
-        if os.path.exists("data/importados.csv"):
-            ingest_importados("data/importados.csv")
+        if os.path.exists(f"{data_dir}/importados.csv"):
+            ingest_importados(f"{data_dir}/importados.csv")
         
-        if os.path.exists("data/griferia.csv"):
-            ingest_griferia("data/griferia.csv")
+        # Nuevas categorías de grifería
+        if os.path.exists(f"{data_dir}/griferia_pura.csv"):
+            ingest_griferia(f"{data_dir}/griferia_pura.csv")
         
-        if os.path.exists("data/polvos.csv"):
-            ingest_polvos("data/polvos.csv")
+        if os.path.exists(f"{data_dir}/lavabos.csv"):
+            ingest_lavabos(f"{data_dir}/lavabos.csv")
         
-        if os.path.exists("data/otras.csv"):
-            ingest_otras("data/otras.csv")
+        if os.path.exists(f"{data_dir}/sanitarios.csv"):
+            ingest_sanitarios(f"{data_dir}/sanitarios.csv")
         
-        if os.path.exists("data/promo.csv"):
-            marcar_promos("data/promo.csv")
+        # Muebles (unificados)
+        if os.path.exists(f"{data_dir}/muebles.csv"):
+            ingest_muebles(f"{data_dir}/muebles.csv")
         
-        print("\n" + "=" * 50)
-        print("✅ INGESTA COMPLETA")
+        # Nuevas categorías de otras.csv
+        if os.path.exists(f"{data_dir}/tinacos.csv"):
+            ingest_tinacos(f"{data_dir}/tinacos.csv")
+        
+        if os.path.exists(f"{data_dir}/espejos.csv"):
+            ingest_espejos(f"{data_dir}/espejos.csv")
+        
+        if os.path.exists(f"{data_dir}/tarjas.csv"):
+            ingest_tarjas(f"{data_dir}/tarjas.csv")
+        
+        if os.path.exists(f"{data_dir}/herramientas.csv"):
+            ingest_herramientas(f"{data_dir}/herramientas.csv")
+        
+        # Polvos
+        if os.path.exists(f"{data_dir}/polvos.csv"):
+            ingest_polvos(f"{data_dir}/polvos.csv")
+        
+        # Otras restantes
+        if os.path.exists(f"{data_dir}/otras_restantes.csv"):
+            ingest_otras(f"{data_dir}/otras_restantes.csv")
+        
+        # Marcar promociones en todas las colecciones
+        if os.path.exists(f"{data_dir}/promo.csv"):
+            marcar_promos(f"{data_dir}/promo.csv")
+        
+        print("\n" + "=" * 60)
+        print("✅ INGESTA COMPLETA CON CATEGORÍAS SEPARADAS")
         
     elif args.tipo == "nacionales":
         ingest_nacionales(args.file)
@@ -452,6 +950,20 @@ def main():
         ingest_importados(args.file)
     elif args.tipo == "griferia":
         ingest_griferia(args.file)
+    elif args.tipo == "lavabos":
+        ingest_lavabos(args.file)
+    elif args.tipo == "sanitarios":
+        ingest_sanitarios(args.file)
+    elif args.tipo == "muebles":
+        ingest_muebles(args.file)
+    elif args.tipo == "tinacos":
+        ingest_tinacos(args.file)
+    elif args.tipo == "espejos":
+        ingest_espejos(args.file)
+    elif args.tipo == "tarjas":
+        ingest_tarjas(args.file)
+    elif args.tipo == "herramientas":
+        ingest_herramientas(args.file)
     elif args.tipo == "polvos":
         ingest_polvos(args.file)
     elif args.tipo == "otras":

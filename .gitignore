@@ -5,3 +5,5 @@ chroma_db_v3/
 *.pkl
 *.pyc
 cotizaciones/
+*.csv
+data/

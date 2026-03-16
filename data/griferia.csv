@@ -1,0 +1,37 @@
+"Proveedor","Estatus","Categoría","Subcategoria","Codigo","Descripcion","Udm","Color","Precio sistema","Descuento autorizado","Precio autorizado","Precio paquete"
+"Urrea","Master","Grifería Urrea","Gifería Urrea",,"GRIFERÍA URREA",,,,30.00%,,
+"Urrea","Master","Grifería Dica","Gifería Dica",,"GRIFERÍA DICA",,,,20.00%,,
+"Castel","Master","Ceramica Castel","Sanitarios","CAS382","SANITARIO ONE PIECE VENUS BLANCO","PIEZA","Blanco"," $3,718.80 ",43.56%," $2,099.00 ",
+"Castel","Master","Ceramica Castel","Ovalin","CAS395","OVALIN CONSTANZA BLANCO 425*425*160","PIEZA","Blanco"," $887.29 ",9.95%," $799.00 ",
+"Castel","Master","Griferia ","Monomando","CAS459","MONOMANDO ALTO DAMASCO 3210C","PIEZA","Gris"," $848.47 ",18.80%," $689.00 ",
+"Castel","Master","Ceramica Castel","Lavabo con pedestal","CAS100221","LAVABO LUANDA 510*860*405","PIEZA","Blanco"," $1,149.00 ",13.05%," $999.00 ",
+"Castel","Master","Ceramica Castel","Monomando ","CAS461","MONOMANDO LAVABO BAJO DAMASCO 3212C","PIEZA","Gris"," $688.53 ",14.46%," $589.00 ",
+"Castel","Master","Ceramica Castel","Ovalin","CAS1351","CONSTANZA BLANCO +MONOMANDO ALTO DAMASCO ","PIEZA","Blanco"," $1,856.00 ",30.01%," $1,299.00 ",
+"Castel","Master","Paquete Castel","CASPAQ259","CAS100221","LAVABO LUANDA 510*860*405","PIEZA","Blanco"," $1,149.00 ",19.15%," $929.00 "," $3,409.00 "
+"Castel","Master","Paquete Castel","CASPAQ259","CAS461","MONOMANDO LAVABO BAJO DAMASCO 3212C","PIEZA","Gris"," $688.53 ",30.29%," $480.00 ",
+"Castel","Master","Paquete Castel","CASPAQ259","CAS382","SANITARIO ONE PIECE VENUS BLANCO","PIEZA","Blanco"," $3,718.80 ",46.22%," $2,000.00 ",
+"Castel","Master","Paquete Castel","CASPAQ260","CAS100221","LAVABO LUANDA 510*860*405","PIEZA","Blanco"," $1,149.00 ",23.50%," $879.00 "," $1,429.00 "
+"Castel","Master","Paquete Castel","CASPAQ260","CAS461","MONOMANDO LAVABO BAJO DAMASCO 3212C","PIEZA","Gris"," $688.53 ",20.12%," $550.00 ",
+"Castel","Master","Muebles castel ","CASPAQ261","CAS25754","GALICIA 40 HAYA 400X500X220mm (INCLUYE LAVABO )","PIEZA","Haya"," $2,219.00 ",14.42%," $1,899.00 "," $2,399.00 "
+"Castel","Master","Griferia castel ","CASPAQ261","CAS461","MONOMANDO LAVABO BAJO DAMASCO 3212C","PIEZA","Gris"," $688.53 ",27.38%," $500.00 ",
+"Castel","Master","Paquete Castel","CASPAQ262","CAS382","SANITARIO ONE PIECE VENUS BLANCO","PIEZA","Blanco"," $3,718.80 ",46.22%," $2,000.00 "," $3,279.00 "
+"Castel","Master","Paquete Castel","CASPAQ262","CAS1351","CONSTANZA BLANCO +MONOMANDO ALTO DAMASCO ","PIEZA","Gris"," $1,856.00 ",31.09%," $1,279.00 ",
+"Urrea","Master","Cerámica Urrea","PAQALHSO1",50106043,"TAZA MONET AL HUESO","PIEZA","Beige"," $979.00 ",," $2,799.00 "," $2,799.00 "
+"Urrea","Master","Cerámica Urrea","PAQALHSO1",51455042,"TANQUE ANDROMEDA GS 4.8 AL","PIEZA","Beige"," $1,437.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQALHSO1",52010042,"LAVABO AUSTRIA 4"" HUESO","PIEZA","Beige"," $1,321.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQALHSO1",53010042,"PEDESTAL AUSTRIA HUESO","PIEZA","Beige"," $915.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQALCORZOBCO",50455022,"TAZA ANDROMEDA BLANCO","PIEZA","Blanco"," $2,052.00 ",," $2,699.00 "," $2,699.00 "
+"Urrea","Master","Cerámica Urrea","PAQALCORZOBCO",52009021,"LAVABO AUSTRIA 1 TAL BLANCO","PIEZA","Blanco"," $1,259.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQALCORZOBCO","TQ1033A021","TANQUE CORZO","PIEZA","Blanco"," $655.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQALCORZOBCO",53010022,"Pedestal Austria blanco","PIEZA","Blanco"," $875.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQEHSO",50083043,"TAZA NAVIA STAR HUESO","PIEZA","Beige"," $1,479.00 ",," $1,599.00 "," $1,599.00 "
+"Urrea","Master","Cerámica Urrea","PAQEHSO",51453042,"TANQUE FÉNIX RD HUESO","PIEZA","Beige"," $769.00 ",,,
+"Urrea","Master","Cerámica Urrea","PAQEHSO",52006042,"LAVABO COSMOS 4"" HUESO","PIEZA","Beige"," $815.00 ",,,
+"Urrea","Master","Cerámica Urrea","Sanitarios","TZ2051A021","ONE PIECE QUADRO II","PIEZA","Blanco"," $7,314.00 ",46.69%," $3,899.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","TZ2053A021","ONE PÍECE VIESCA","PIEZA","Blanco"," $6,927.00 ",46.60%," $3,699.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","TZ2060A021","ONE PIECE SERRA","PIEZA","Blanco"," $6,024.00 ",45.24%," $3,299.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","TZ2061A021","ONE PIECE ATLANTICA BLANCO II","PIEZA","Blanco"," $4,777.00 ",58.15%," $1,999.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","WC.4006.01","SANITARIO ONE PIECE DICA BLANCO ALARGADO","PIEZA","Blanco"," $4,408.00 ",55.78%," $1,949.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","WC.4007.01","One piece Dica 4007","PIEZA","Blanco"," $4,232.00 ",55.13%," $1,899.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","KLM1003A021","Paquete Lavabo Kuun más Monomando","PIEZA","Blanco"," $3,108.00 ",31.18%," $2,139.00 ",
+"Urrea","Master","Cerámica Urrea","Sanitarios","LV.4008.01","Lavabo Cuadrado de 1 Taladro (Blanco)","PIEZA","Blanco"," $1,583.00 ",43.21%," $899.00 ",

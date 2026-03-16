@@ -1,0 +1,4124 @@
+{
+  "520256440010061": {
+    "codigo": "520256440010061",
+    "descripcion": "PISO ROMA HUESO 37X37 CM 2.11 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256440011061": {
+    "codigo": "520256440011061",
+    "descripcion": "PISO ROMA GRIS 37X37 CM 2.11 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256440026061": {
+    "codigo": "520256440026061",
+    "descripcion": "PISO ROMA ARENA 37X37CM 2.11M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256427010131lot": {
+    "codigo": "520256427010131LOT",
+    "descripcion": "MURO ROMA HUESO 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256427011131": {
+    "codigo": "520256427011131",
+    "descripcion": "MURO ROMA GRIS 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256427026131lot": {
+    "codigo": "520256427026131LOT",
+    "descripcion": "MURO ROMA ARENA 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521606425007901": {
+    "codigo": "521606425007901",
+    "descripcion": "PISO BRUMA BLANCO 35.7X35.7 1.78 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522910425028901": {
+    "codigo": "522910425028901",
+    "descripcion": "PISO MILA BEIGE35.7x35.7 1.78 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gz3515151p7": {
+    "codigo": "GZ3515151P7",
+    "descripcion": "GZ35 37x37cm Navia Beige 1a. Cal  2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gz3615151p7": {
+    "codigo": "GZ3615151P7",
+    "descripcion": "GZ36 37x37cm Navia Gris 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520963427010131lot": {
+    "codigo": "520963427010131LOT",
+    "descripcion": "MURO ASPEN HUESO 20.1X30.2CM 1.82M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520963425010261lot": {
+    "codigo": "520963425010261LOT",
+    "descripcion": "PISO ASPEN HUESO 35.7X35.7 CM 1.78 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520963425007261": {
+    "codigo": "520963425007261",
+    "descripcion": "PISO ASPEN BLANCO 35.7X35.7 CM 1.78 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522593425284261": {
+    "codigo": "522593425284261",
+    "descripcion": "PISO COSALA HAYA 35.7X35.7 CM 1.78 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522595425007261": {
+    "codigo": "522595425007261",
+    "descripcion": "PISO XILITLA BLANCO 35.7X35.7 CM 1.78 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522924440011061": {
+    "codigo": "522924440011061",
+    "descripcion": "PISO MARISMA NEGRO 37x37 CM 2.11 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520906025010031": {
+    "codigo": "520906025010031",
+    "descripcion": "PISO ROMA HUESO 40.3X40.3 CM 1.62 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520906025026131": {
+    "codigo": "520906025026131",
+    "descripcion": "PISO ROMA GRIS 40.3X40.3 CM 1.62 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520906025026031": {
+    "codigo": "520906025026031",
+    "descripcion": "PISO ROMA ARENA 40.3X40.3 CM 1.62 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522676325343061": {
+    "codigo": "522676325343061",
+    "descripcion": "PISO CHAPALA FRESNO 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522676325074061": {
+    "codigo": "522676325074061",
+    "descripcion": "PISO CHAPALA PINO 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522676325863061": {
+    "codigo": "522676325863061",
+    "descripcion": "PISO CHAPALA ALBINO 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522676325111061": {
+    "codigo": "522676325111061",
+    "descripcion": "PISO CHAPALA MIEL 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522838427124131": {
+    "codigo": "522838427124131",
+    "descripcion": "MURO MAZAMITLA AZUL 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522838427125131": {
+    "codigo": "522838427125131",
+    "descripcion": "MURO MAZAMITLA CREMA 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522838427011131": {
+    "codigo": "522838427011131",
+    "descripcion": "MURO MAZAMITLA GRIS 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522838427098131": {
+    "codigo": "522838427098131",
+    "descripcion": "MURO MAZAMITLA VERDE 20.1X30.2 CM 1.82 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522979425007901": {
+    "codigo": "522979425007901",
+    "descripcion": "PISO MARMOLIZA BLANCO 35.7X35.7 1.78 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522676325847061": {
+    "codigo": "522676325847061",
+    "descripcion": "PISO CHAPALA ABEDUL 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gsz12424c1p7": {
+    "codigo": "GSZ12424C1P7",
+    "descripcion": "GSZ1 60.5 cm x 60.5 cm Spazio Cream 1a. Cal. 1.825M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522531090011021": {
+    "codigo": "522531090011021",
+    "descripcion": "PISO CANEA GRIS 45X45 CM 1.62 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522531090003021": {
+    "codigo": "522531090003021",
+    "descripcion": "PISO CANEA MARRON 45X45 CM 1.62 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522546090028021": {
+    "codigo": "522546090028021",
+    "descripcion": "PISO CORFÚ BEIGE 45X45 CM 1.62 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522546090567021": {
+    "codigo": "522546090567021",
+    "descripcion": "PISO CORFÚ GRAFITO 45X45 CM 1.62M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521282090056021": {
+    "codigo": "521282090056021",
+    "descripcion": "PISO VELVET MARFIL 45X45 CM 1.62 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zlc015151p7": {
+    "codigo": "ZLC015151P7",
+    "descripcion": "ZLC0 37cm x 37cm Lucca Bianco 1a Cal. 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2005": {
+    "codigo": "CAS2005 ",
+    "descripcion": "PISO OLYMPIA BIANCO 47X47 1.99M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas20008": {
+    "codigo": "CAS20008",
+    "descripcion": "PISO CARRARA GOLD 47X47 1.99M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024510": {
+    "codigo": "CAS10024510",
+    "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024511": {
+    "codigo": "CAS10024511",
+    "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522125413496351": {
+    "codigo": "522125413496351",
+    "descripcion": "PISO AMAZONIAN CLIFF 18X60.6 CM 1.64 M2/CAJA TE",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100138": {
+    "codigo": "CAS100138",
+    "descripcion": "TANGER 26 ROBLE 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100192": {
+    "codigo": "CAS100192",
+    "descripcion": "TANGER 26 NOGAL 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100144": {
+    "codigo": "CAS100144",
+    "descripcion": "TANGER 26 GRIS 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100184": {
+    "codigo": "CAS100184",
+    "descripcion": "PISO FRESNO 26 NUEZ 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas7694": {
+    "codigo": "CAS7694",
+    "descripcion": "PISO AMAZONAS HONEY 22.5X60 1.89 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zdm1720b1p2": {
+    "codigo": "ZDM1720B1P2",
+    "descripcion": "ZDM1 18X50 Sunwood Natural 1a. Cal 1.08M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gld3720b1p2": {
+    "codigo": "GLD3720B1P2",
+    "descripcion": "GLD3 18 cm x 50 cm Legend Natural 1a. Cal 1.08M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zdm27241": {
+    "codigo": "ZDM27241",
+    "descripcion": "ZDM2 18 cm x 60 cm Sunwood Miel 1a. Cal 1.64 m2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zlw57241": {
+    "codigo": "ZLW57241",
+    "descripcion": "ZLW5 18 cm x 60 cm Living Wood Gray 1a. Cal 1.64 m2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas7695": {
+    "codigo": "CAS7695",
+    "descripcion": "PISO AMAZONAS GREY 22.5X60 1.89 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas7693": {
+    "codigo": "CAS7693",
+    "descripcion": "PISO AMAZONAS CHERRY 22.5X60 1.89 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100145": {
+    "codigo": "CAS100145",
+    "descripcion": "FRESNO 26 GRIS 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100137": {
+    "codigo": "CAS100137",
+    "descripcion": "FRESNO 26 CHERRY 22.5X60 14PZ 1.89M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gz3518181p7": {
+    "codigo": "GZ3518181P7",
+    "descripcion": "GZ35 45x45 Navia Beige 1a. Cal 1.63M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gz3618181p7": {
+    "codigo": "GZ3618181P7",
+    "descripcion": "GZ36 45x45 Navia Gris 1a. Cal 1.63M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zlc018181p7": {
+    "codigo": "ZLC018181P7",
+    "descripcion": "ZLC0 45x45 Lucca Bianco 1a Cal 1.63M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024503": {
+    "codigo": "CAS10024503",
+    "descripcion": "CALI 66 IVORY 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520256251026151": {
+    "codigo": "520256251026151",
+    "descripcion": "PISO ROMA ARENA 20.1X20.1 CM 1.53 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521821408011151": {
+    "codigo": "521821408011151",
+    "descripcion": "PISO PERLAGE GRIS 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521106090564351": {
+    "codigo": "521106090564351",
+    "descripcion": "PISO ALASKA BLACKBURN 45X45CM 1.62M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521666090473021": {
+    "codigo": "521666090473021",
+    "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522610090056021": {
+    "codigo": "522610090056021",
+    "descripcion": "PISO SENA MARFIL 45X45 CM 1.62 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522607279011201": {
+    "codigo": "522607279011201",
+    "descripcion": "PISO PETRERA GRIS 55.5X55.5 CM 1.54 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024505": {
+    "codigo": "CAS10024505",
+    "descripcion": "CALI 66 GREY 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024504": {
+    "codigo": "CAS10024504",
+    "descripcion": "CALI 66 WHITE 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024501": {
+    "codigo": "CAS10024501",
+    "descripcion": "GEO 66 IVORY 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024502": {
+    "codigo": "CAS10024502",
+    "descripcion": "GEO 66 SILVER 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas7691": {
+    "codigo": "CAS7691",
+    "descripcion": "ACURA 66 GREY 60X60 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024509": {
+    "codigo": "CAS10024509",
+    "descripcion": "CALEDONIA 66 HAYA 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10024508": {
+    "codigo": "CAS10024508",
+    "descripcion": "CALEDONIA 66 ROBLE 60X60 5 PZS 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522863279007201": {
+    "codigo": "522863279007201",
+    "descripcion": "PISO ARCTIC BLANCO 55.5x55.5 1.54 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas786": {
+    "codigo": "CAS786",
+    "descripcion": "TULUM 60 STAR 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas7692": {
+    "codigo": "CAS7692",
+    "descripcion": "ACURA 66 TERRA 60X60 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100154": {
+    "codigo": "CAS100154",
+    "descripcion": "PISO CERAMICO TRAVERTINO BIANCO 60X60 1.80M2 5PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas775": {
+    "codigo": "CAS775",
+    "descripcion": "DOLOMITTI 66 IVORY 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas774": {
+    "codigo": "CAS774",
+    "descripcion": "DOLOMITTI 66 BLACK 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521938251743151": {
+    "codigo": "521938251743151",
+    "descripcion": "PISO VERONA GREY 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520090251011151": {
+    "codigo": "520090251011151",
+    "descripcion": "PISO MONACO GRIS 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520090251715151": {
+    "codigo": "520090251715151",
+    "descripcion": "PISO MONACO CAFE 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520432251011151": {
+    "codigo": "520432251011151",
+    "descripcion": "PISO LISBOA GRIS 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520432251722151": {
+    "codigo": "520432251722151",
+    "descripcion": "PISO LISBOA ALMENDRA 20.1X20.1 CM 1.53 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521172251028151": {
+    "codigo": "521172251028151",
+    "descripcion": "PISO LEMAT BEIGE 20.1X20.1 CM 1.53 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522023251315151": {
+    "codigo": "522023251315151",
+    "descripcion": "TESSUTI MIX 20.1X20.1 1.53M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522623279010201": {
+    "codigo": "522623279010201",
+    "descripcion": "PISO RODANO HUESO 55.5X55.5 CM 1.54 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522786279028201lote": {
+    "codigo": "522786279028201LOTE",
+    "descripcion": "PISO NOVARA BEIGE 55.5X55.5 CM 1.54 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522786279292201": {
+    "codigo": "522786279292201",
+    "descripcion": "PISO NOVARA GRIGIO 55.5X55.5 CM 1.54 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522786279669201": {
+    "codigo": "522786279669201",
+    "descripcion": "PISO NOVARA NUBE 55.5X55.55 1.54 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521957143683011": {
+    "codigo": "521957143683011",
+    "descripcion": "PISO BOUTIQUE CEMENTO 60.5X60.5 CM 1.83 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521817143007011": {
+    "codigo": "521817143007011",
+    "descripcion": "PISO MARMARA BLANCO 60.5X60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas769": {
+    "codigo": "CAS769",
+    "descripcion": "VOSS 66 IVORY 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522125413779351": {
+    "codigo": "522125413779351",
+    "descripcion": "PISO AMAZONIAN CAVE 18X60.6 CM 1.64 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522125413778351": {
+    "codigo": "522125413778351",
+    "descripcion": "PISO AMAZONIAN RIVER 18X60.6 CM 1.64 M2/CAJA TE",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520721428007031": {
+    "codigo": "520721428007031",
+    "descripcion": "MURO OSLO BLANCO 35.7X50.2 CM 1.79 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522785143478011": {
+    "codigo": "522785143478011",
+    "descripcion": "PISO MARSALA ANTRACITA 60.5X60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522785143912011": {
+    "codigo": "522785143912011",
+    "descripcion": "PISO MARSALA NIEVE 60.5X60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522901143016011": {
+    "codigo": "522901143016011",
+    "descripcion": "PISO KAISER BR NEGRO 60.5X60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522837260016271": {
+    "codigo": "522837260016271",
+    "descripcion": "PISO EDIMBURGO NEGRO 60 CM X120 CM 1.44 M2/CAJA PUL Y RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522785417026201": {
+    "codigo": "522785417026201",
+    "descripcion": "PISO MARSALA ARENA 62.1X62.1 CM 1.93M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522785417912201": {
+    "codigo": "522785417912201",
+    "descripcion": "PISO MARSALA NIEVE 62.1X62.1CM 1.93M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas768": {
+    "codigo": "CAS768",
+    "descripcion": "DOM WHITE SATINADO 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas771": {
+    "codigo": "CAS771",
+    "descripcion": "DOLOMITTI 66 GRAY 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas777": {
+    "codigo": "CAS777",
+    "descripcion": "MYST 66 GRAY 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gss11224rc1p7": {
+    "codigo": "GSS11224RC1P7",
+    "descripcion": "GSS1 30 cm x 60 cm Rect. Sandstone Beige 1a. Cal 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zkl615151p7": {
+    "codigo": "ZKL615151P7",
+    "descripcion": "ZKL6 37 cm x 37 cm Kalei Retro Black 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zaa715151p7": {
+    "codigo": "ZAA715151P7",
+    "descripcion": "ZAA7 37cm x 37 cm Alpha Gris 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zaa515151p7": {
+    "codigo": "ZAA515151P7",
+    "descripcion": "ZAA5 37 cm x 37 cm Alpha Rojo 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zcn815151p7": {
+    "codigo": "ZCN815151P7",
+    "descripcion": "ZCN8 37 cm x 37 cm Colonial Elena 1a. Cal. 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zcn915151p7": {
+    "codigo": "ZCN915151P7",
+    "descripcion": "ZCN9 37 cm x 37 cm Colonial Frida 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zlm215151p7": {
+    "codigo": "ZLM215151P7",
+    "descripcion": "ZLM2 37cm x 37 cm Lumiere Blanco 1a. Cal 2.11M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zca52424c1p7": {
+    "codigo": "ZCA52424C1P7",
+    "descripcion": "ZCA5 60.5 cm x 60.5 cm Cantabria Avorio 1a. Cal 1.82M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas785": {
+    "codigo": "CAS785",
+    "descripcion": "TULUM 60 SAND 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520224251007151": {
+    "codigo": "520224251007151",
+    "descripcion": "PISO MALIBU-AD BLANCO 20.1X20.1 CM 1.53 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522915408067151": {
+    "codigo": "522915408067151",
+    "descripcion": "PISO SPRITZ WHITE 20.1X20.1CM 1.53 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522915408156151": {
+    "codigo": "522915408156151",
+    "descripcion": "PISO SPRITZ BLACK 20.1x20.1CM 1.53 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522841143931201": {
+    "codigo": "522841143931201",
+    "descripcion": "PISO ALPINO BR ORO 60.5x60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas776": {
+    "codigo": "CAS776",
+    "descripcion": "MYST 66 BLACK 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas772": {
+    "codigo": "CAS772",
+    "descripcion": "DOM WHITE BRILLO 60X60 5PZ 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1411": {
+    "codigo": "CAS1411",
+    "descripcion": "PISO CIPRIANI GREY 30X60 11PZ 1.98 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "za612424rc1p7": {
+    "codigo": "ZA612424RC1P7",
+    "descripcion": "ZA61 60x60 cm Rect. Aurora Bianco 1a. Cal 1.8M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zlc02424rc1p7": {
+    "codigo": "ZLC02424RC1P7",
+    "descripcion": "ZLC0 60 cm x 60 cm Rect. Lucca Bianco 1a. Cal. 1.8M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411124031": {
+    "codigo": "521424411124031",
+    "descripcion": "MURO MEDITERRANEO AZUL 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411007031": {
+    "codigo": "521424411007031",
+    "descripcion": "MURO MEDITERRANEO BLANCO 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411125031": {
+    "codigo": "521424411125031",
+    "descripcion": "MURO MEDITERRANEO CREMA 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411011031": {
+    "codigo": "521424411011031",
+    "descripcion": "MURO MEDITERRANEO GRIS 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411016031": {
+    "codigo": "521424411016031",
+    "descripcion": "MURO MEDITERRANEO NEGRO 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521424411098031": {
+    "codigo": "521424411098031",
+    "descripcion": "MURO MEDITERRANEO VERDE 28X60 CM 1.68 M2/CAJA 10 PZ",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522533143067011": {
+    "codigo": "522533143067011",
+    "descripcion": "PISO NAPA BR WHITE 60X60 CM 1.8 M2/CAJA RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gld4848rb1p7": {
+    "codigo": "GLD4848RB1P7",
+    "descripcion": "GLD4 20 cm x 120 Rect. Legend Brown 1a. Cal 1.19M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas9407": {
+    "codigo": "CAS9407",
+    "descripcion": "PISO MADEIRA 32 COFFE 30X120 1.76 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas9408": {
+    "codigo": "CAS9408",
+    "descripcion": "PISO MADEIRA 32 SAND 30X120 1.76 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100147": {
+    "codigo": "CAS100147",
+    "descripcion": "PISO BLUES CAFE 60X120 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100134": {
+    "codigo": "CAS100134",
+    "descripcion": "PISO VOLCANO OXFORD 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522065143011011": {
+    "codigo": "522065143011011",
+    "descripcion": "PISO BERNAL GRIS 60.5X60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522065143567011": {
+    "codigo": "522065143567011",
+    "descripcion": "PISO BERNAL GRAFITO 60.5x60.5 CM 1.83 M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas9409": {
+    "codigo": "CAS9409",
+    "descripcion": "PISO MADEIRA 32 SILVER 30X120 1.76 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas94010": {
+    "codigo": "CAS94010",
+    "descripcion": "PISO RECT NORUEGA 22 GRIS 20X120 1.83M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100133": {
+    "codigo": "CAS100133",
+    "descripcion": "PISO VOLCANO GREY 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100123": {
+    "codigo": "CAS100123",
+    "descripcion": "PISO MOON SILVER 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522065441011481": {
+    "codigo": "522065441011481",
+    "descripcion": "PISO BERNAL GRIS 51X102 1.57 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522065441567481": {
+    "codigo": "522065441567481",
+    "descripcion": "PISO BERNAL GRAFITO 51X102 1.57 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522837438016271": {
+    "codigo": "522837438016271",
+    "descripcion": "PISO EDIMBURGO NEGRO 80 CM X160 CM 2.56 M2/CAJA PUL Y RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012403294211": {
+    "codigo": "520012403294211",
+    "descripcion": "PISO MONET CEDRO 16.5X100 CM 0.99 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012403284931": {
+    "codigo": "520012403284931",
+    "descripcion": "PISO MONET HAYA 16.5X100 1.49 M2 CTDO Y RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012403027931": {
+    "codigo": "520012403027931",
+    "descripcion": "PISO MONET NOGAL 16.5X100 1.49 M2 RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012403810931": {
+    "codigo": "520012403810931",
+    "descripcion": "PISO MONET CENIZA 16.5X100 1.49 M2 CTDO Y RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012402294921": {
+    "codigo": "520012402294921",
+    "descripcion": "PISO MONET CEDRO 25X100 2.25 M2 RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012402027921": {
+    "codigo": "520012402027921",
+    "descripcion": "PISO MONET NOGAL 25X100 2.25 M2 RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012402810921": {
+    "codigo": "520012402810921",
+    "descripcion": "PISO MONET CENIZA 25X100 2.25 M2 RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520012402284921": {
+    "codigo": "520012402284921",
+    "descripcion": "PISO MONET HAYA 25X100 2.25 M2 RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522514254282681": {
+    "codigo": "522514254282681",
+    "descripcion": "PISO SAN GABRIEL GRAY 50X100 CM 1.5 M2/CAJA RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522370254011481": {
+    "codigo": "522370254011481",
+    "descripcion": "PISO AMBERES GRIS 50X100 CM 1.5 M2/CAJA RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522370254264481": {
+    "codigo": "522370254264481",
+    "descripcion": "PISO AMBERES NATURAL 50X100 CM 1.5 M2/CAJA RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521921254282911": {
+    "codigo": "521921254282911",
+    "descripcion": "PISO CHICAGO GRAY 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522683254478911": {
+    "codigo": "522683254478911",
+    "descripcion": "PISO TOREO ANTRACITA 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522515254863911": {
+    "codigo": "522515254863911",
+    "descripcion": "PISO SOHO ALBINO 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522799254011911": {
+    "codigo": "522799254011911",
+    "descripcion": "PISO LIVING GRIS 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522513254282911": {
+    "codigo": "522513254282911",
+    "descripcion": "PISO SCANNO GRAY 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522187254806911": {
+    "codigo": "522187254806911",
+    "descripcion": "PISO MONARCA NIEBLA 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas94012": {
+    "codigo": "CAS94012",
+    "descripcion": "PISO RECT NORUEGA 22 ROBLE 20X120 1.83M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas94018": {
+    "codigo": "CAS94018",
+    "descripcion": "PISO YUNN 32 NUEZ 30X120 1.76M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100118": {
+    "codigo": "CAS100118",
+    "descripcion": "PISO IBIZA 62 GOLD SATINADO 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2512": {
+    "codigo": "CAS2512",
+    "descripcion": "PISO GINZA 62 PEARL 60X120 2 PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100116": {
+    "codigo": "CAS100116",
+    "descripcion": "PISO ARES SATINADO 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2510": {
+    "codigo": "CAS2510",
+    "descripcion": "PISO GRECIA 62 BRILLO 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100194": {
+    "codigo": "CAS100194",
+    "descripcion": "AMSTERDAM 62 GREY 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100195": {
+    "codigo": "CAS100195",
+    "descripcion": "AMSTERDAM 62 OXFORD 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2513": {
+    "codigo": "CAS2513",
+    "descripcion": "PISO IONIC 62 SILVER 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2511": {
+    "codigo": "CAS2511",
+    "descripcion": "PISO MARSELLA 62 BRILLO 60X120 2 PZS 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100167": {
+    "codigo": "CAS100167",
+    "descripcion": "EVOKE 62 BLACK 60X120 2 PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522715254007911": {
+    "codigo": "522715254007911",
+    "descripcion": "PISO MARMARA PL BLANCO 50X100 2 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522975254125911": {
+    "codigo": "522975254125911",
+    "descripcion": "PISO RAFAELLO PL CREMA 50X100 2 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522214254305911": {
+    "codigo": "522214254305911",
+    "descripcion": "PISO SOBERANO PL NERO 50X100 2 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522974254021911": {
+    "codigo": "522974254021911",
+    "descripcion": "PISO ALPINO PL ORO 50X100 2 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522975254011911": {
+    "codigo": "522975254011911",
+    "descripcion": "PISO RAFAELLO PL GRIS 50X100 2 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522839353007271": {
+    "codigo": "522839353007271",
+    "descripcion": "PISO TUNDRA BLANCO 60 CM X 120CM 1.44 M2/CAJA PUL Y RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522990442067441": {
+    "codigo": "522990442067441",
+    "descripcion": "PISO EVANDER WHITE 60x120 1.44 M2 PUL Y RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100120": {
+    "codigo": "CAS100120",
+    "descripcion": "PISO CANTABRIA BEIGE 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100178": {
+    "codigo": "CAS100178",
+    "descripcion": "PISO EVOKE GREY 60X120 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100188": {
+    "codigo": "CAS100188",
+    "descripcion": "PISO VOLCANO 62 MARFIL 60X120 2PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100189": {
+    "codigo": "CAS100189",
+    "descripcion": "PISO MINIMAL 62 IVORY 60X120 2PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100115": {
+    "codigo": "CAS100115",
+    "descripcion": "PISO ARES BRILLO 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100207": {
+    "codigo": "CAS100207",
+    "descripcion": "PISO MINIMAL 62 SILVER 60X120 2PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100121": {
+    "codigo": "CAS100121",
+    "descripcion": "PISO MOON IVORY 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100218": {
+    "codigo": "CAS100218",
+    "descripcion": "PISO PIETRA 62 GRIGIO 60X120 2PZ 1.42 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522991442067441": {
+    "codigo": "522991442067441",
+    "descripcion": "PISO TARANTO WHITE 60x120 1.44 M2 PUL Y RECT",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "522834254567711": {
+    "codigo": "522834254567711",
+    "descripcion": "PISO ATACAMA GRAFITO 50X100 CM 1.5 M2/CAJA RECTIFICADO 36 CAJAS",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100128": {
+    "codigo": "CAS100128",
+    "descripcion": "PISO 62 PIETRA NERO 60X120 2PZ 1.42M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100172": {
+    "codigo": "CAS100172",
+    "descripcion": "PISO PORCELANICO THASSOS 120 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zms62424rc1p7": {
+    "codigo": "ZMS62424RC1P7",
+    "descripcion": "ZMS6 60 cm x 60 cm Rect. Magnus Black 1a. Cal 1.80M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas100273": {
+    "codigo": "CAS100273",
+    "descripcion": "PISO CARRARA GOLD PL 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10074": {
+    "codigo": "CAS10074",
+    "descripcion": "KAPLAN 60X120 2PZ (1.44m2)V.P.",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas10088": {
+    "codigo": "CAS10088",
+    "descripcion": "PISO BUSAN MATE WHITE 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1240": {
+    "codigo": "CAS1240",
+    "descripcion": "PISO VITRIFICADO PULPIS GREY 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gsn11320l1p2": {
+    "codigo": "GSN11320L1P2",
+    "descripcion": "GSN1 34 cm X 50 cm Stonefort Gold 1a.Cal. 1.20M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas137": {
+    "codigo": "CAS137",
+    "descripcion": "PISO PORCELANICO VITRIFICADO DIAMOND CARRARA  60X60 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "520904419305271": {
+    "codigo": "520904419305271",
+    "descripcion": "PISO MILANO NERO 61.2X122.6 CM 1.5 M2/CAJA RECTIFICADO 40 CAJAS",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "ga842424rc1p7": {
+    "codigo": "GA842424RC1P7",
+    "descripcion": "GA84 60x60 cm Rect. Amore Carlotta 1a. Cal 1.8M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "ga852424rc1p7": {
+    "codigo": "GA852424RC1P7",
+    "descripcion": "GA85 60x60 cm Rect. Amore Julieta 1a. Cal 1.8M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2113": {
+    "codigo": "CAS2113",
+    "descripcion": "PISO AMANI PL WHITHE 60X120CM 1.44M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2213": {
+    "codigo": "CAS2213",
+    "descripcion": "PISO STATUARIO GOLDEN BLANCO 60X120 CAJA 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2220": {
+    "codigo": "CAS2220",
+    "descripcion": "PISO PORC.TORONTO WHITE 60X120 CAJA 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas2228": {
+    "codigo": "CAS2228",
+    "descripcion": "PISO TORONTO GRAY 60X120 CAJA 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas254794": {
+    "codigo": "CAS254794",
+    "descripcion": "EVEREST 62 PULIDO  59.5X119.5 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas254795": {
+    "codigo": "CAS254795",
+    "descripcion": "CARRARA 62 POLARIS PULIDO  59.5X119.5 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas254796": {
+    "codigo": "CAS254796",
+    "descripcion": "THASSOS 62 WHITE PULIDO 59.5X119.5 3PZ 2.13 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas254797": {
+    "codigo": "CAS254797",
+    "descripcion": "AMANI GREY 59.5X119.5 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas3040": {
+    "codigo": "CAS3040",
+    "descripcion": "PISO SAINT LAURENT NEGRO 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas4040": {
+    "codigo": "CAS4040",
+    "descripcion": "PISO CARRARA POLARIS PL 60X120CM 1.44M2/CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas734": {
+    "codigo": "CAS734",
+    "descripcion": "PISO WACOM 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas739": {
+    "codigo": "CAS739",
+    "descripcion": "ORCHESTRA GOLD 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas757": {
+    "codigo": "CAS757",
+    "descripcion": "AMANI WHITE 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas758": {
+    "codigo": "CAS758",
+    "descripcion": "AMANI OXFORD 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas8794": {
+    "codigo": "CAS8794",
+    "descripcion": "PISO CASTEL NAPOLES  BEIGE 60X60 1.44M2 4PZAS",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas886": {
+    "codigo": "CAS886",
+    "descripcion": "PISO PORCELANICO REC VITRIFICADO THASSOS 60X60 1.44 M2 CAJA",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zas81060r1p7": {
+    "codigo": "ZAS81060R1P7",
+    "descripcion": "ZAS8 25 cm x 153 cm Rect. Aspen Castaño 1a. Cal. 1.16 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gpr11836frc1p7": {
+    "codigo": "GPR11836FRC1P7",
+    "descripcion": "GPR1 45 cm x 90 cm Rect Pure Fiore White 1a Cal 1.6M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas900": {
+    "codigo": "CAS900",
+    "descripcion": "PISO PORC REC STATUARIO MATE 60X60",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas94016": {
+    "codigo": "CAS94016",
+    "descripcion": "PISO VENETIAN BLANCO 60X60 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "ggs12448pr1sl": {
+    "codigo": "GGS12448PR1SL",
+    "descripcion": "GGS1 59.6 x 119.4 Rect. Galastone Turquoise 1a Cal 1.42m2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zas61060r1p7": {
+    "codigo": "ZAS61060R1P7",
+    "descripcion": "ZAS6 25 cm x 153 cm Rect. Aspen Gris 1a. Cal 1.16 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zas51060r1p7": {
+    "codigo": "ZAS51060R1P7",
+    "descripcion": "ZAS5 25 cm x 153 cm Rect. Aspen Natural 1a. Cal 1.16 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "gmk13264pr1": {
+    "codigo": "GMK13264PR1",
+    "descripcion": "GMK1 80 CM X 160 CM RECT. MAKIA BLANCO PULIDO 1a. CAL.",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zad83264pr1sl": {
+    "codigo": "ZAD83264PR1SL",
+    "descripcion": "ZAD8 80 cm x 160 cm Rect. Andara Marfil 1a. Cal. 2.56 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zbs432641pd": {
+    "codigo": "ZBS432641PD",
+    "descripcion": "ZBS4 80 cm X 160 cm Rect.Botanic Sens Green 1a. Cal 2.56M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zcg63264pr1sl": {
+    "codigo": "ZCG63264PR1SL",
+    "descripcion": "ZCG6 80 CM X 160 CM RECT. CARRARA GOLD BLANCO PUL. 1a.",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zct63264pr1sl": {
+    "codigo": "ZCT63264PR1SL",
+    "descripcion": "ZCT6 80 CM X 160 CM RECT. CATALIA IVORY 1a. CAL. 2.56 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zct73264pr1sl": {
+    "codigo": "ZCT73264PR1SL",
+    "descripcion": "ZCT7 80 CM X 160 CM RECT. CATALIA LIGHT GRAY 1a. CAL. 2.56 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zct83264pr1sl": {
+    "codigo": "ZCT83264PR1SL",
+    "descripcion": "ZCT8 80 CM X 160 CM RECT CATALIA DARK GRAY 1a. CAL. 2.56 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zkt23264pr1sl": {
+    "codigo": "ZKT23264PR1SL",
+    "descripcion": "ZKT2 80 CM X 160 CM RECT. KATALONIA BEIGE 1a. CAL. 2.52 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zmq132641pd": {
+    "codigo": "ZMQ132641PD",
+    "descripcion": "ZMQ1 80x160 Marquina Negro Rect. 1a. Cal 2.56M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zn0924481pd": {
+    "codigo": "ZN0924481PD",
+    "descripcion": "ZN09 60x120 Rect. Black Marble Black 1a. Cal 1.44M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zs0932641pd": {
+    "codigo": "ZS0932641PD",
+    "descripcion": "ZS09 80x160 cm. Rect. Silver River Gray 1a. Cal. 2.56M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zss532641pd": {
+    "codigo": "ZSS532641PD",
+    "descripcion": "ZSS5 80 cm X 160 cm Rect.Sky Sens Blue 1a. Cal. 2.56M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "za0515hexms1p2": {
+    "codigo": "ZA0515HEXMS1P2",
+    "descripcion": "ZA05 3.8 Alida1a.Cal. 0.9M2 (12 piezas por caja)",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "pt2415hexms1p2": {
+    "codigo": "PT2415HEXMS1P2",
+    "descripcion": "PT24 3.8 HEX NEGRO MT INFINITO 0.90M2 (12 piezas por caja)",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zdl224481pa": {
+    "codigo": "ZDL224481PA",
+    "descripcion": "ZDL2 60 CM X 120 CM CLAUDEL WHITE PL 1a. CAL. 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "zvn224481pa": {
+    "codigo": "ZVN224481PA",
+    "descripcion": "ZVN2 60 CM X 120 CM NUVEM WHITE PULIDO 1a. CAL. 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas251078": {
+    "codigo": "CAS251078",
+    "descripcion": "CARRARA POLARIS SATIN 59.5X119.5 3PZ 2.13M2 C.C",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas756": {
+    "codigo": "CAS756",
+    "descripcion": "SYMPHONY PL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001216": {
+    "codigo": "CAS1001216",
+    "descripcion": "PISO MOON IVORY 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001212": {
+    "codigo": "CAS1001212",
+    "descripcion": "PISO IONIC 62 SILVER 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001348": {
+    "codigo": "CAS1001348",
+    "descripcion": "PISO GRECIA 62 BRILLO 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001213": {
+    "codigo": "CAS1001213",
+    "descripcion": "PISO CANTABRIA BEIGE 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001211": {
+    "codigo": "CAS1001211",
+    "descripcion": "PISO MINIMAL 62 IVORY 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001210": {
+    "codigo": "CAS1001210",
+    "descripcion": "PISO MOON SILVER 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "cas1001349": {
+    "codigo": "CAS1001349",
+    "descripcion": "PISO VOLCANO OXFORD 60X120 3PZ 2.13M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "521499425178901": {
+    "codigo": "521499425178901",
+    "descripcion": "PISO ALBA BIANCO 35.7X35.7 1.78 M2",
+    "precio": "",
+    "source": "chroma:nacionales"
+  },
+  "beige35": {
+    "codigo": "BEIGE35",
+    "descripcion": "PISO MILA BEIGE35.7x35.7 1.78 M2 Beige Marmol Brillante",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gz35": {
+    "codigo": "GZ35",
+    "descripcion": "GZ35 37x37cm Navia Beige 1a. Cal  2.11M2 Beige Marmol Brillante",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gz36": {
+    "codigo": "GZ36",
+    "descripcion": "GZ36 37x37cm Navia Gris 1a. Cal 2.11M2 Gris Marmol Brillante",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gsz1": {
+    "codigo": "GSZ1",
+    "descripcion": "GSZ1 60.5 cm x 60.5 cm Spazio Cream 1a. Cal. 1.825M2 Beige Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zlc0": {
+    "codigo": "ZLC0",
+    "descripcion": "ZLC0 37cm x 37cm Lucca Bianco 1a Cal. 2.11M2 Blanco Marmol Brillante",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zdm1": {
+    "codigo": "ZDM1",
+    "descripcion": "ZDM1 18X50 Sunwood Natural 1a. Cal 1.08M2 Beige Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gld3": {
+    "codigo": "GLD3",
+    "descripcion": "GLD3 18 cm x 50 cm Legend Natural 1a. Cal 1.08M2 Beige Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zdm2": {
+    "codigo": "ZDM2",
+    "descripcion": "ZDM2 18 cm x 60 cm Sunwood Miel 1a. Cal 1.64 m2 Beige Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zlw5": {
+    "codigo": "ZLW5",
+    "descripcion": "ZLW5 18 cm x 60 cm Living Wood Gray 1a. Cal 1.64 m2 Gris Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gss1": {
+    "codigo": "GSS1",
+    "descripcion": "GSS1 30 cm x 60 cm Rect. Sandstone Beige 1a. Cal 1.44M2 Beige Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zkl6": {
+    "codigo": "ZKL6",
+    "descripcion": "ZKL6 37 cm x 37 cm Kalei Retro Black 1a. Cal 2.11M2 Negro Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zaa7": {
+    "codigo": "ZAA7",
+    "descripcion": "ZAA7 37cm x 37 cm Alpha Gris 1a. Cal 2.11M2 Gris Monocolor Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zaa5": {
+    "codigo": "ZAA5",
+    "descripcion": "ZAA5 37 cm x 37 cm Alpha Rojo 1a. Cal 2.11M2 Rojo Monocolor Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zcn8": {
+    "codigo": "ZCN8",
+    "descripcion": "ZCN8 37 cm x 37 cm Colonial Elena 1a. Cal. 2.11M2 Multicolor Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zcn9": {
+    "codigo": "ZCN9",
+    "descripcion": "ZCN9 37 cm x 37 cm Colonial Frida 1a. Cal 2.11M2 Multicolor Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zlm2": {
+    "codigo": "ZLM2",
+    "descripcion": "ZLM2 37cm x 37 cm Lumiere Blanco 1a. Cal 2.11M2 Blanco Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zca5": {
+    "codigo": "ZCA5",
+    "descripcion": "ZCA5 60.5 cm x 60.5 cm Cantabria Avorio 1a. Cal 1.82M2 Beige Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "za61": {
+    "codigo": "ZA61",
+    "descripcion": "ZA61 60x60 cm Rect. Aurora Bianco 1a. Cal 1.8M2 Blanco Marmol Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gld4": {
+    "codigo": "GLD4",
+    "descripcion": "GLD4 20 cm x 120 Rect. Legend Brown 1a. Cal 1.19M2 Café Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zms6": {
+    "codigo": "ZMS6",
+    "descripcion": "ZMS6 60 cm x 60 cm Rect. Magnus Black 1a. Cal 1.80M2 Negro Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gsn1": {
+    "codigo": "GSN1",
+    "descripcion": "GSN1 34 cm X 50 cm Stonefort Gold 1a.Cal. 1.20M2 Blanco Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "ga84": {
+    "codigo": "GA84",
+    "descripcion": "GA84 60x60 cm Rect. Amore Carlotta 1a. Cal 1.8M2 Multicolor Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "ga85": {
+    "codigo": "GA85",
+    "descripcion": "GA85 60x60 cm Rect. Amore Julieta 1a. Cal 1.8M2 Multicolor Geométrico Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zas8": {
+    "codigo": "ZAS8",
+    "descripcion": "ZAS8 25 cm x 153 cm Rect. Aspen Castaño 1a. Cal. 1.16 M2 Café Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gpr1": {
+    "codigo": "GPR1",
+    "descripcion": "GPR1 45 cm x 90 cm Rect Pure Fiore White 1a Cal 1.6M2 Blanco Monocolor Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "ggs1": {
+    "codigo": "GGS1",
+    "descripcion": "GGS1 59.6 x 119.4 Rect. Galastone Turquoise 1a Cal 1.42m2 Azul Piedra Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zas6": {
+    "codigo": "ZAS6",
+    "descripcion": "ZAS6 25 cm x 153 cm Rect. Aspen Gris 1a. Cal 1.16 M2 Gris Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zas5": {
+    "codigo": "ZAS5",
+    "descripcion": "ZAS5 25 cm x 153 cm Rect. Aspen Natural 1a. Cal 1.16 M2 Beige Madera Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "gmk1": {
+    "codigo": "GMK1",
+    "descripcion": "GMK1 80 CM X 160 CM RECT. MAKIA BLANCO PULIDO 1a. CAL. Blanco Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zad8": {
+    "codigo": "ZAD8",
+    "descripcion": "ZAD8 80 cm x 160 cm Rect. Andara Marfil 1a. Cal. 2.56 M2 Beige Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zbs4": {
+    "codigo": "ZBS4",
+    "descripcion": "ZBS4 80 cm X 160 cm Rect.Botanic Sens Green 1a. Cal 2.56M2 Verde Piedra Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zcg6": {
+    "codigo": "ZCG6",
+    "descripcion": "ZCG6 80 CM X 160 CM RECT. CARRARA GOLD BLANCO PUL. 1a. Blanco Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zct6": {
+    "codigo": "ZCT6",
+    "descripcion": "ZCT6 80 CM X 160 CM RECT. CATALIA IVORY 1a. CAL. 2.56 M2 Beige Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zct7": {
+    "codigo": "ZCT7",
+    "descripcion": "ZCT7 80 CM X 160 CM RECT. CATALIA LIGHT GRAY 1a. CAL. 2.56 M2 Gris Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zct8": {
+    "codigo": "ZCT8",
+    "descripcion": "ZCT8 80 CM X 160 CM RECT CATALIA DARK GRAY 1a. CAL. 2.56 M2 Gris Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zkt2": {
+    "codigo": "ZKT2",
+    "descripcion": "ZKT2 80 CM X 160 CM RECT. KATALONIA BEIGE 1a. CAL. 2.52 M2 Beige Piedra Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zmq1": {
+    "codigo": "ZMQ1",
+    "descripcion": "ZMQ1 80x160 Marquina Negro Rect. 1a. Cal 2.56M2 Negro Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zn09": {
+    "codigo": "ZN09",
+    "descripcion": "ZN09 60x120 Rect. Black Marble Black 1a. Cal 1.44M2 Negro Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zs09": {
+    "codigo": "ZS09",
+    "descripcion": "ZS09 80x160 cm. Rect. Silver River Gray 1a. Cal. 2.56M2 Gris Piedra Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zss5": {
+    "codigo": "ZSS5",
+    "descripcion": "ZSS5 80 cm X 160 cm Rect.Sky Sens Blue 1a. Cal. 2.56M2 Azul Piedra Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "za05": {
+    "codigo": "ZA05",
+    "descripcion": "ZA05 3.8 Alida1a.Cal. 0.9M2 (12 piezas por caja) Blanco Marmol Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "alida1": {
+    "codigo": "ALIDA1",
+    "descripcion": "ZA05 3.8 Alida1a.Cal. 0.9M2 (12 piezas por caja) Blanco Marmol Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "pt24": {
+    "codigo": "PT24",
+    "descripcion": "PT24 3.8 HEX NEGRO MT INFINITO 0.90M2 (12 piezas por caja) Negro Marmol Mate",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zdl2": {
+    "codigo": "ZDL2",
+    "descripcion": "ZDL2 60 CM X 120 CM CLAUDEL WHITE PL 1a. CAL. 1.44 M2 Beie Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "zvn2": {
+    "codigo": "ZVN2",
+    "descripcion": "ZVN2 60 CM X 120 CM NUVEM WHITE PULIDO 1a. CAL. 1.44 M2 Blanco Marmol Pulido",
+    "precio": "",
+    "source": "chroma_doc:nacionales"
+  },
+  "cas382": {
+    "codigo": "CAS382",
+    "descripcion": "SANITARIO ONE PIECE VENUS BLANCO",
+    "precio": 2099.0,
+    "source": "chroma:griferia"
+  },
+  "cas395": {
+    "codigo": "CAS395",
+    "descripcion": "OVALIN CONSTANZA BLANCO 425*425*160",
+    "precio": 799.0,
+    "source": "chroma:griferia"
+  },
+  "cas459": {
+    "codigo": "CAS459",
+    "descripcion": "MONOMANDO ALTO DAMASCO 3210C",
+    "precio": 689.0,
+    "source": "chroma:griferia"
+  },
+  "cas100221": {
+    "codigo": "CAS100221",
+    "descripcion": "LAVABO LUANDA 510*860*405",
+    "precio": 999.0,
+    "source": "chroma:griferia"
+  },
+  "cas461": {
+    "codigo": "CAS461",
+    "descripcion": "MONOMANDO LAVABO BAJO DAMASCO 3212C",
+    "precio": 589.0,
+    "source": "chroma:griferia"
+  },
+  "cas1351": {
+    "codigo": "CAS1351",
+    "descripcion": "CONSTANZA BLANCO +MONOMANDO ALTO DAMASCO ",
+    "precio": 1299.0,
+    "source": "chroma:griferia"
+  },
+  "cas25754": {
+    "codigo": "CAS25754",
+    "descripcion": "GALICIA 40 HAYA 400X500X220mm (INCLUYE LAVABO )",
+    "precio": 1899.0,
+    "source": "chroma:griferia"
+  },
+  "50106043": {
+    "codigo": "50106043",
+    "descripcion": "TAZA MONET AL HUESO",
+    "precio": 2799.0,
+    "source": "chroma:griferia"
+  },
+  "51455042": {
+    "codigo": "51455042",
+    "descripcion": "TANQUE ANDROMEDA GS 4.8 AL",
+    "precio": 1437.0,
+    "source": "chroma:griferia"
+  },
+  "52010042": {
+    "codigo": "52010042",
+    "descripcion": "LAVABO AUSTRIA 4\" HUESO",
+    "precio": 1321.0,
+    "source": "chroma:griferia"
+  },
+  "53010042": {
+    "codigo": "53010042",
+    "descripcion": "PEDESTAL AUSTRIA HUESO",
+    "precio": 915.0,
+    "source": "chroma:griferia"
+  },
+  "50455022": {
+    "codigo": "50455022",
+    "descripcion": "TAZA ANDROMEDA BLANCO",
+    "precio": 2699.0,
+    "source": "chroma:griferia"
+  },
+  "52009021": {
+    "codigo": "52009021",
+    "descripcion": "LAVABO AUSTRIA 1 TAL BLANCO",
+    "precio": 1259.0,
+    "source": "chroma:griferia"
+  },
+  "tq1033a021": {
+    "codigo": "TQ1033A021",
+    "descripcion": "TANQUE CORZO",
+    "precio": 655.0,
+    "source": "chroma:griferia"
+  },
+  "53010022": {
+    "codigo": "53010022",
+    "descripcion": "Pedestal Austria blanco",
+    "precio": 875.0,
+    "source": "chroma:griferia"
+  },
+  "50083043": {
+    "codigo": "50083043",
+    "descripcion": "TAZA NAVIA STAR HUESO",
+    "precio": 1599.0,
+    "source": "chroma:griferia"
+  },
+  "51453042": {
+    "codigo": "51453042",
+    "descripcion": "TANQUE FÉNIX RD HUESO",
+    "precio": 769.0,
+    "source": "chroma:griferia"
+  },
+  "52006042": {
+    "codigo": "52006042",
+    "descripcion": "LAVABO COSMOS 4\" HUESO",
+    "precio": 815.0,
+    "source": "chroma:griferia"
+  },
+  "tz2051a021": {
+    "codigo": "TZ2051A021",
+    "descripcion": "ONE PIECE QUADRO II",
+    "precio": 3899.0,
+    "source": "chroma:griferia"
+  },
+  "tz2053a021": {
+    "codigo": "TZ2053A021",
+    "descripcion": "ONE PÍECE VIESCA",
+    "precio": 3699.0,
+    "source": "chroma:griferia"
+  },
+  "tz2060a021": {
+    "codigo": "TZ2060A021",
+    "descripcion": "ONE PIECE SERRA",
+    "precio": 3299.0,
+    "source": "chroma:griferia"
+  },
+  "tz2061a021": {
+    "codigo": "TZ2061A021",
+    "descripcion": "ONE PIECE ATLANTICA BLANCO II",
+    "precio": 1999.0,
+    "source": "chroma:griferia"
+  },
+  "wc400601": {
+    "codigo": "WC.4006.01",
+    "descripcion": "SANITARIO ONE PIECE DICA BLANCO ALARGADO",
+    "precio": 1949.0,
+    "source": "chroma:griferia"
+  },
+  "wc400701": {
+    "codigo": "WC.4007.01",
+    "descripcion": "One piece Dica 4007",
+    "precio": 1899.0,
+    "source": "chroma:griferia"
+  },
+  "klm1003a021": {
+    "codigo": "KLM1003A021",
+    "descripcion": "Paquete Lavabo Kuun más Monomando",
+    "precio": 2139.0,
+    "source": "chroma:griferia"
+  },
+  "lv400801": {
+    "codigo": "LV.4008.01",
+    "descripcion": "Lavabo Cuadrado de 1 Taladro (Blanco)",
+    "precio": 899.0,
+    "source": "chroma:griferia"
+  },
+  "cmx200": {
+    "codigo": "CMX200",
+    "descripcion": "TINACO TRICAPA NEGRO 750 LT",
+    "precio": 2359.0,
+    "source": "chroma:otras"
+  },
+  "cmx26": {
+    "codigo": "CMX26",
+    "descripcion": "TINACO TRICAPA NEGRO 450 LT BASICO",
+    "precio": 1599.0,
+    "source": "chroma:otras"
+  },
+  "cmx171": {
+    "codigo": "CMX171",
+    "descripcion": "TINACO TRICAPA NEGRO 1100 LT",
+    "precio": 2359.0,
+    "source": "chroma:otras"
+  },
+  "cmx42": {
+    "codigo": "CMX42",
+    "descripcion": "TINACO TRICAPA BEIGE 750 LT BASICO",
+    "precio": 2329.0,
+    "source": "chroma:otras"
+  },
+  "mckendra": {
+    "codigo": "MCKENDRA",
+    "descripcion": "TARJA MULTIFUNCIONAL KENDRA",
+    "precio": 8029.0,
+    "source": "chroma:otras"
+  },
+  "mckendall": {
+    "codigo": "MCKENDALL",
+    "descripcion": "TARJA MULTIFUNCIONAL KENDALL",
+    "precio": 7299.0,
+    "source": "chroma:otras"
+  },
+  "mcplatino": {
+    "codigo": "MCPLATINO",
+    "descripcion": "MUEBLE CABINET PLATINO",
+    "precio": 6178.65,
+    "source": "chroma:otras"
+  },
+  "mcdaliso": {
+    "codigo": "MCDALISO",
+    "descripcion": "MUEBLE ALUMINIO DALISO",
+    "precio": 3611.65,
+    "source": "chroma:otras"
+  },
+  "mcukesh": {
+    "codigo": "MCUKESH",
+    "descripcion": "Mueble Aluminio Ukesh",
+    "precio": 2753.15,
+    "source": "chroma:otras"
+  },
+  "mcagni": {
+    "codigo": "MCAGNI",
+    "descripcion": "MUEBLE CABINET AGNI",
+    "precio": 7028.65,
+    "source": "chroma:otras"
+  },
+  "mcrubi": {
+    "codigo": "MCRUBI",
+    "descripcion": "MUEBLE CABINET RUBI (ESPEJO LED RECTANGULAR)",
+    "precio": 11006.65,
+    "source": "chroma:otras"
+  },
+  "mconix": {
+    "codigo": "MCONIX",
+    "descripcion": "MUEBLE CABINET ONIX (ESPEJO)",
+    "precio": 13293.15,
+    "source": "chroma:otras"
+  },
+  "mcforcism": {
+    "codigo": "MCFORCISM",
+    "descripcion": "MUEBLE CABINET FORCIS M",
+    "precio": 4499.0,
+    "source": "chroma:otras"
+  },
+  "mcagro": {
+    "codigo": "MCAGRO",
+    "descripcion": "MUEBLE CABINET AGRO",
+    "precio": 10979.0,
+    "source": "chroma:otras"
+  },
+  "mcluther": {
+    "codigo": "MCLUTHER",
+    "descripcion": "MUEBLE CABINET LUTHER",
+    "precio": 10979.0,
+    "source": "chroma:otras"
+  },
+  "mclaton": {
+    "codigo": "MCLATON",
+    "descripcion": "MUEBLE CABINET LATON",
+    "precio": 8359.0,
+    "source": "chroma:otras"
+  },
+  "gre126": {
+    "codigo": "GRE126",
+    "descripcion": "PERFIL DE ALUMINIO (L) A350 PLATA 10 ML X 2.44 MTS",
+    "precio": 119.0,
+    "source": "chroma:otras"
+  },
+  "gre01": {
+    "codigo": "GRE01",
+    "descripcion": "PERFIL DE ALUMINIO SILVER POLISHED 2.44X10ML",
+    "precio": 119.0,
+    "source": "chroma:otras"
+  },
+  "gre03": {
+    "codigo": "GRE03",
+    "descripcion": "PERFIL DE ALUMINIO SILVER MATT 2.44X10ML",
+    "precio": 119.0,
+    "source": "chroma:otras"
+  },
+  "gre47": {
+    "codigo": "GRE47",
+    "descripcion": "PERFIL DE ALUMINIO BLACK POLISHED 2.44X10ML",
+    "precio": 119.0,
+    "source": "chroma:otras"
+  },
+  "qd003": {
+    "codigo": "QD003",
+    "descripcion": "ESPEJO VERIN 80X60 CM BT LED",
+    "precio": 3200.0,
+    "source": "chroma:otras"
+  },
+  "qd006": {
+    "codigo": "QD006",
+    "descripcion": "ESPEJO AROSA 60 CM DECO LED",
+    "precio": 2119.0,
+    "source": "chroma:otras"
+  },
+  "qd0073": {
+    "codigo": "QD0073",
+    "descripcion": "ESPEJO SARIEGO ",
+    "precio": 1919.0,
+    "source": "chroma:otras"
+  },
+  "qd0074": {
+    "codigo": "QD0074",
+    "descripcion": "ESPEJO RIOSA",
+    "precio": 1919.0,
+    "source": "chroma:otras"
+  },
+  "qd0075": {
+    "codigo": "QD0075",
+    "descripcion": "ESPEJO TINEO ",
+    "precio": 1579.0,
+    "source": "chroma:otras"
+  },
+  "qd0076": {
+    "codigo": "QD0076",
+    "descripcion": "ESPEJO LANGREO ",
+    "precio": 2229.0,
+    "source": "chroma:otras"
+  },
+  "qd0077": {
+    "codigo": "QD0077",
+    "descripcion": "ESPEJO PRAVIA",
+    "precio": 2699.0,
+    "source": "chroma:otras"
+  },
+  "71058": {
+    "codigo": "71058",
+    "descripcion": "ESPEJO LED REDONDO 60CM 3 TONOS-ANTIEMPAÑANTE ROALVOLT",
+    "precio": 755.0,
+    "source": "chroma:otras"
+  },
+  "71059": {
+    "codigo": "71059",
+    "descripcion": "ESPEJO LED RECTANGULAR 50x70CM TONOS-ANTIEMPAÑANTE ROALVOLT",
+    "precio": 755.0,
+    "source": "chroma:otras"
+  },
+  "deb10": {
+    "codigo": "DEB10",
+    "descripcion": "LAVADERO DE GRANITO EMPOTRABLE CON PILA 61*61CM",
+    "precio": 999.0,
+    "source": "chroma:otras"
+  },
+  "deb11": {
+    "codigo": "DEB11",
+    "descripcion": "Lavadero Granito ND sin pila para empotrar 51 * 65 cm",
+    "precio": 1399.0,
+    "source": "chroma:otras"
+  },
+  "deb12": {
+    "codigo": "DEB12",
+    "descripcion": "Lavadero Granito sin pila para empotrar 60*40 CM",
+    "precio": 1699.0,
+    "source": "chroma:otras"
+  },
+  "deb8": {
+    "codigo": "DEB8",
+    "descripcion": "Lavadero Granito ND Chico para empotrar 75 * 70 cm",
+    "precio": 999.0,
+    "source": "chroma:otras"
+  },
+  "neos322": {
+    "codigo": "NEOS322",
+    "descripcion": "DIAMOND BLACK GLOSSY 10X20 1M2 (50 PZ)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos452": {
+    "codigo": "NEOS452",
+    "descripcion": "DIAMOND BLACK MATT10X20 1M2 (50 PZ)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos323": {
+    "codigo": "NEOS323",
+    "descripcion": "DIAMOND WHITE GLOSSY 10X20 1M2 (50 PZ)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos451": {
+    "codigo": "NEOS451",
+    "descripcion": "DIAMOND WHITE MATT 10X20 1M2 (50 PZ)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos361": {
+    "codigo": "NEOS361",
+    "descripcion": "SAN MARINO PL 120X120 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos109": {
+    "codigo": "NEOS109",
+    "descripcion": "ARABELL ELITE 120X240 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos519": {
+    "codigo": "NEOS519",
+    "descripcion": "CARACARA WHITE 120X240 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos518": {
+    "codigo": "NEOS518",
+    "descripcion": "CARRARA WHITE 120x240 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos111": {
+    "codigo": "NEOS111",
+    "descripcion": "BLACK SYMPHONY 120X240 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "calacatta120x240": {
+    "codigo": "CALACATTA 120X240",
+    "descripcion": "CALACATTA ELITE 120X240 PUL. 2.88 MTS",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos314": {
+    "codigo": "NEOS314",
+    "descripcion": "MONET WHITE 120X240 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos099": {
+    "codigo": "NEOS099",
+    "descripcion": "SAINT LAURENT ELITE 120X240 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos493": {
+    "codigo": "NEOS493",
+    "descripcion": "KENAI GREY (TORO GREY) 20X120 1.20m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos359": {
+    "codigo": "NEOS359",
+    "descripcion": "GREY BRICH WOOD 20x120",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos492": {
+    "codigo": "NEOS492",
+    "descripcion": "KENAI BROWN (TORO BROWN) 20X120 1.20m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos491": {
+    "codigo": "NEOS491",
+    "descripcion": "KENAI NATURAL (CASTELO MONEY) 20X120 1.20m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos465": {
+    "codigo": "NEOS465",
+    "descripcion": "MOUNTAIN BROWN 20X120 1.20M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "royalwoodb20x120": {
+    "codigo": "ROYALWOODB20X120",
+    "descripcion": "ROYAL WOOD BROWN 20X120CM 1.20M2/CJ",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos377": {
+    "codigo": "NEOS377",
+    "descripcion": "MALLA SINTRA 30X30",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos382": {
+    "codigo": "NEOS382",
+    "descripcion": "MALLA NAZARÉ 30X30",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos224": {
+    "codigo": "NEOS224",
+    "descripcion": "MOSAICO ARMAN BLUE 30X30 0.74 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos441": {
+    "codigo": "NEOS441",
+    "descripcion": "MOSAICO BLACK STORM MATT 30X30 0.74M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos226": {
+    "codigo": "NEOS226",
+    "descripcion": "MOSAICO CARAMEL WHITE 30X30 0.74 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos440": {
+    "codigo": "NEOS440",
+    "descripcion": "MOSAICO LENART BLACK MATT 30X30 0.74 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos227": {
+    "codigo": "NEOS227",
+    "descripcion": "MOSAICO STATUARIO EVA 30X30 0.74 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos422": {
+    "codigo": "NEOS422",
+    "descripcion": "MOSAICO STATUARIO EVA MATT 30X30 0.74 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos369": {
+    "codigo": "NEOS369",
+    "descripcion": "LUGO BIANCO GL 30X60 0.9M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos368": {
+    "codigo": "NEOS368",
+    "descripcion": "MERIDA BLACK GL 30X60 0.9M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos367": {
+    "codigo": "NEOS367",
+    "descripcion": "MERIDA STATUARIO GL 30X60 0.9M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos366": {
+    "codigo": "NEOS366",
+    "descripcion": "MERIDA WHITE GL 30X60 0.9M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos370": {
+    "codigo": "NEOS370",
+    "descripcion": "MURCIA STATUARIO GL 30X60 0.9M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos030": {
+    "codigo": "NEOS030",
+    "descripcion": "ANTIQUE BLACK 33 33X33 1M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos189": {
+    "codigo": "NEOS189",
+    "descripcion": "ANTIQUE WHITE 33 33X33 1M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos249": {
+    "codigo": "NEOS249",
+    "descripcion": "EVEREST 60X120 1.44 M2 2DA CALIDAD",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos302": {
+    "codigo": "NEOS302",
+    "descripcion": "SANDSTONE GREY MT 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos301": {
+    "codigo": "NEOS301",
+    "descripcion": "SANDSTONE BLACK MT 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos248": {
+    "codigo": "NEOS248",
+    "descripcion": "STATUARIO EVA 60X120 1.44M2 2DA CALIDAD",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos437": {
+    "codigo": "NEOS437",
+    "descripcion": "SIG STATUARIO MT 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos220": {
+    "codigo": "NEOS220",
+    "descripcion": "ATENAS BIANCO MATTE 60X120CM 5MM 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos216": {
+    "codigo": "NEOS216",
+    "descripcion": "MONT BIANCO MATTE 60X120 CM 5MM 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos213": {
+    "codigo": "NEOS213",
+    "descripcion": "ATENAS BIANCO GLOSSY 60 X 120 CM 5MM 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos201": {
+    "codigo": "NEOS201",
+    "descripcion": "ARMANI CASTAL 5MM 60X120 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos200": {
+    "codigo": "NEOS200",
+    "descripcion": "CASTANO WOOD 5 MM 60X120 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos202": {
+    "codigo": "NEOS202",
+    "descripcion": "SIG STATUARIO PL 5MM 60X120 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos221": {
+    "codigo": "NEOS221",
+    "descripcion": "SIG STATUARIO MT 5MM 60X120 2.88M3",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos305": {
+    "codigo": "NEOS305",
+    "descripcion": "MORDAN SILVER GL 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos303": {
+    "codigo": "NEOS303",
+    "descripcion": "INDEX GREY MT 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos304": {
+    "codigo": "NEOS304",
+    "descripcion": "CLASSIC STATUARIO MT 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos215": {
+    "codigo": "NEOS215",
+    "descripcion": "SIDNEY GREY GLOSSY 60 X 120 5MM 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos203": {
+    "codigo": "NEOS203",
+    "descripcion": "MARMOL CARRARA 5MM 60X120 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos306": {
+    "codigo": "NEOS306",
+    "descripcion": "PARIS WHITE GL 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos300": {
+    "codigo": "NEOS300",
+    "descripcion": "NOIR STATUARIO GL 7MM 60X120 2.16M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos315": {
+    "codigo": "NEOS315",
+    "descripcion": "CALACATTA CLASSIC (PY126929) 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos209": {
+    "codigo": "NEOS209",
+    "descripcion": "CARAMEL WHITE 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos418": {
+    "codigo": "NEOS418",
+    "descripcion": "BUCAREST SILVER MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos160": {
+    "codigo": "NEOS160",
+    "descripcion": "NEO CARRARA PL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos223": {
+    "codigo": "NEOS223",
+    "descripcion": "COILCHIPS GREY 9MM 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos383": {
+    "codigo": "NEOS383",
+    "descripcion": "SIG STATUARIO PL 9MM 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos436": {
+    "codigo": "NEOS436",
+    "descripcion": "SIG STATUARIO MT 9MM 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos373": {
+    "codigo": "NEOS373",
+    "descripcion": "ARABELL SATIN MATT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos142": {
+    "codigo": "NEOS142",
+    "descripcion": "ALDEN BIANCO 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos374": {
+    "codigo": "NEOS374",
+    "descripcion": "MONTCALM SATIN MATT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos059": {
+    "codigo": "NEOS059",
+    "descripcion": "STENCIL LT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos376": {
+    "codigo": "NEOS376",
+    "descripcion": "SIG STATUARIO PL 7MM 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos178": {
+    "codigo": "NEOS178",
+    "descripcion": "EVEREST RUSTIC 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos413": {
+    "codigo": "NEOS413",
+    "descripcion": "FERRARA BIANCO MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos414": {
+    "codigo": "NEOS414",
+    "descripcion": "FERRARA IVORY MATT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos415": {
+    "codigo": "NEOS415",
+    "descripcion": "FERARRA NERO MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos416": {
+    "codigo": "NEOS416",
+    "descripcion": "BUCAREST CREMA MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos419": {
+    "codigo": "NEOS419",
+    "descripcion": "SAN REMO GREY MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos420": {
+    "codigo": "NEOS420",
+    "descripcion": "SAN GALO BIANCO MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos421": {
+    "codigo": "NEOS421",
+    "descripcion": "SAN GALO GREY MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos143": {
+    "codigo": "NEOS143",
+    "descripcion": "MURANO GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos192": {
+    "codigo": "NEOS192",
+    "descripcion": "MARQUINA BLACK 60x120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos193": {
+    "codigo": "NEOS193",
+    "descripcion": "MARQUINA GOLD 60x120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "ara60x120": {
+    "codigo": "ARA60X120",
+    "descripcion": "PISO ARABELL 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "everest60x120": {
+    "codigo": "EVEREST60X120",
+    "descripcion": "EVEREST 60x120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos146": {
+    "codigo": "NEOS146",
+    "descripcion": "STATUARIO EVA 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos155": {
+    "codigo": "NEOS155",
+    "descripcion": "PETRA NOVA GREY PL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos137": {
+    "codigo": "NEOS137",
+    "descripcion": "PETRA NOVA GREY SATIN 60x120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos371": {
+    "codigo": "NEOS371",
+    "descripcion": "MESINA GREY MATT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos372": {
+    "codigo": "NEOS372",
+    "descripcion": "MESINA NATURAL MATT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos210": {
+    "codigo": "NEOS210",
+    "descripcion": "ARMAN BLUE 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "mont60x120": {
+    "codigo": "MONT60X120",
+    "descripcion": "PISO MONTCALM 60X120 1.44M",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos081": {
+    "codigo": "NEOS081",
+    "descripcion": "OSIRIS BIANCO 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos082": {
+    "codigo": "NEOS082",
+    "descripcion": "OSIRIS GREY 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos162": {
+    "codigo": "NEOS162",
+    "descripcion": "NEPTUNE STATUARIO POLISH 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos417": {
+    "codigo": "NEOS417",
+    "descripcion": "BUCAREST GREY MATT 60X120 1.44 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos438": {
+    "codigo": "NEOS438",
+    "descripcion": "SAN REMO GREY PL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos450": {
+    "codigo": "NEOS450",
+    "descripcion": "EVEREST MATT 60x120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos501": {
+    "codigo": "NEOS501",
+    "descripcion": "DEVICI BIANCO 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos502": {
+    "codigo": "NEOS502",
+    "descripcion": "FLAVIA GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos503": {
+    "codigo": "NEOS503",
+    "descripcion": "FLAVIA BEIGE 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos504": {
+    "codigo": "NEOS504",
+    "descripcion": "GYPSUM SILVER 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos505": {
+    "codigo": "NEOS505",
+    "descripcion": "GYPSUM MULTY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos506": {
+    "codigo": "NEOS506",
+    "descripcion": "FARO PISTA 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos507": {
+    "codigo": "NEOS507",
+    "descripcion": "DEVICI SEPIA 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos508": {
+    "codigo": "NEOS508",
+    "descripcion": "FLOW GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos509": {
+    "codigo": "NEOS509",
+    "descripcion": "FLOW WHITE 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos510": {
+    "codigo": "NEOS510",
+    "descripcion": "FARO GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos511": {
+    "codigo": "NEOS511",
+    "descripcion": "DEVICI GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos512": {
+    "codigo": "NEOS512",
+    "descripcion": "DEVICI CREMA 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos513": {
+    "codigo": "NEOS513",
+    "descripcion": "DEVICI DESERT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos514": {
+    "codigo": "NEOS514",
+    "descripcion": "FLAVIA 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos515": {
+    "codigo": "NEOS515",
+    "descripcion": "FLAVIA ROSE 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos516": {
+    "codigo": "NEOS516",
+    "descripcion": "GLACIER ONYX 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos517": {
+    "codigo": "NEOS517",
+    "descripcion": "GLACIER ONYX GREY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos520": {
+    "codigo": "NEOS520",
+    "descripcion": "DEVICI GRIS 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos521": {
+    "codigo": "NEOS521",
+    "descripcion": "SIERRA NEVADA (C126G0000QB) 60X120 2.16M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos522": {
+    "codigo": "NEOS522",
+    "descripcion": "GOBLIN GREY (SH6121401Q) 60X120 2.16M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos523": {
+    "codigo": "NEOS523",
+    "descripcion": "CLOUD SILVER (JA612010Q) 60X120 2.16M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos524": {
+    "codigo": "NEOS524",
+    "descripcion": "ORLOK BIANCO (SH6126101Q) 60X120 2.16 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos148": {
+    "codigo": "NEOS148",
+    "descripcion": "ZET CORAL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos247": {
+    "codigo": "NEOS247",
+    "descripcion": "COAL MATT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos424": {
+    "codigo": "NEOS424",
+    "descripcion": "BLACK STORM DARK MATT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos423": {
+    "codigo": "NEOS423",
+    "descripcion": "LENART BLACK DARK MATT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos060": {
+    "codigo": "NEOS060",
+    "descripcion": "STENCIL DECOR 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos360": {
+    "codigo": "NEOS360",
+    "descripcion": "ELITE STATUARIO PL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos208": {
+    "codigo": "NEOS208",
+    "descripcion": "IMPERIAL PEARL 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos395": {
+    "codigo": "NEOS395",
+    "descripcion": "ARMANI CASTAL 9MM 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos442": {
+    "codigo": "NEOS442",
+    "descripcion": "RICHEN BLUE HG 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "malaga60x120": {
+    "codigo": "MALAGA60X120",
+    "descripcion": "MALAGA MATT 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos163": {
+    "codigo": "NEOS163",
+    "descripcion": "PANDORA LIGHT 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos164": {
+    "codigo": "NEOS164",
+    "descripcion": "PANDORA DARK 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos144": {
+    "codigo": "NEOS144",
+    "descripcion": "IMPERIAL SMOKY 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos141": {
+    "codigo": "NEOS141",
+    "descripcion": "HK099 BLACK ANTHRACITE 60X120 1.44 M2 CLN LMOCHIS",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos118": {
+    "codigo": "NEOS118",
+    "descripcion": "BLACK ANTHRACITE 60X120 1.44 M2 SOLO MAZATLAN",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cordo60x120": {
+    "codigo": "CORDO60X120",
+    "descripcion": "CORDOBA 60X120 1.44M2 ",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos444": {
+    "codigo": "NEOS444",
+    "descripcion": "STATUARIO ENFOLD GL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos445": {
+    "codigo": "NEOS445",
+    "descripcion": "BRANCO WHITE GL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos446": {
+    "codigo": "NEOS446",
+    "descripcion": "STARRY SILVER GL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos447": {
+    "codigo": "NEOS447",
+    "descripcion": "STARRY GREY GL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos448": {
+    "codigo": "NEOS448",
+    "descripcion": "ESMERALD STONE BL 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos449": {
+    "codigo": "NEOS449",
+    "descripcion": "GUANXI WHITE HG 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos439": {
+    "codigo": "NEOS439",
+    "descripcion": "PLAIN BLACK 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "rode60x120": {
+    "codigo": "RODE60X120",
+    "descripcion": "RODEIRO 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos499": {
+    "codigo": "NEOS499",
+    "descripcion": "ABSOLUTE BLACK 60X120 CM 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos500": {
+    "codigo": "NEOS500",
+    "descripcion": "MISTICEO BLACK 60X120 CM 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos097": {
+    "codigo": "NEOS097",
+    "descripcion": "BLACK MARQUINA 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos125": {
+    "codigo": "NEOS125",
+    "descripcion": "LENART BLACK 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos212": {
+    "codigo": "NEOS212",
+    "descripcion": "BLACK STORM 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos443": {
+    "codigo": "NEOS443",
+    "descripcion": "GOLDEN STORM 60X120 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos211": {
+    "codigo": "NEOS211",
+    "descripcion": "DARK PHOENIX 60X120 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos454": {
+    "codigo": "NEOS454",
+    "descripcion": "DALLAS GREY MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos455": {
+    "codigo": "NEOS455",
+    "descripcion": "MARMOL ITALIA MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos456": {
+    "codigo": "NEOS456",
+    "descripcion": "AUSTIN DARK GREY MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos457": {
+    "codigo": "NEOS457",
+    "descripcion": "AUSTIN LIGHT GREY MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos458": {
+    "codigo": "NEOS458",
+    "descripcion": "ONYX MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos495": {
+    "codigo": "NEOS495",
+    "descripcion": "SAN  ANTONIO MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos460": {
+    "codigo": "NEOS460",
+    "descripcion": "PARADISO BIANCO MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos461": {
+    "codigo": "NEOS461",
+    "descripcion": "SAN ANGELO MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cpm001": {
+    "codigo": "CPM001",
+    "descripcion": "PISO PORCELANICO RECT Mieres 60X60 CAJA 1.44",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos018": {
+    "codigo": "NEOS018",
+    "descripcion": "OCEAN 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos338": {
+    "codigo": "NEOS338",
+    "descripcion": "TERUEL 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos140": {
+    "codigo": "NEOS140",
+    "descripcion": "PETRA NOVA GREY SATIN 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos058": {
+    "codigo": "NEOS058",
+    "descripcion": "NEPTUNE STATUARIO MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "malaga60x60": {
+    "codigo": "MALAGA60X60",
+    "descripcion": "MALAGA 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos019": {
+    "codigo": "NEOS019",
+    "descripcion": "STENCIL LT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos057": {
+    "codigo": "NEOS057",
+    "descripcion": "NEPTUNE STATUARIO POLISH 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cgp027": {
+    "codigo": "CGP027",
+    "descripcion": "SIERRA NEVADA 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "everest60x60": {
+    "codigo": "EVEREST60X60",
+    "descripcion": "EVEREST 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cordo60x60": {
+    "codigo": "CORDO60X60",
+    "descripcion": "CORDOBA 60x60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos154": {
+    "codigo": "NEOS154",
+    "descripcion": "PETRA NOVA GREY PL 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cgp002": {
+    "codigo": "CGP002",
+    "descripcion": "BILBAO 60x60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cpl0060": {
+    "codigo": "CPL0060",
+    "descripcion": "LANJARON 60X60 CAJA 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos333": {
+    "codigo": "NEOS333",
+    "descripcion": "CREMA VALENCIA 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos362": {
+    "codigo": "NEOS362",
+    "descripcion": "CALABRIA BEIGE MATT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos363": {
+    "codigo": "NEOS363",
+    "descripcion": "CALABRIA GREY MATT 60x60 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos364": {
+    "codigo": "NEOS364",
+    "descripcion": "CALABRIA WHITE MATT 60X60 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos207": {
+    "codigo": "NEOS207",
+    "descripcion": "MIDNIGHT 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos365": {
+    "codigo": "NEOS365",
+    "descripcion": "CALABRIA BLACK MATT 60X60 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos225": {
+    "codigo": "NEOS225",
+    "descripcion": "BLACK STORM 60X60 1.44 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos321": {
+    "codigo": "NEOS321",
+    "descripcion": "IMPERIAL (NERO ABSOLUTE) 60X60 1.44M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incn417": {
+    "codigo": "INCN417",
+    "descripcion": "PONTA DO MEL 63X63 2.79m2 (PSI-63290R)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incf415": {
+    "codigo": "INCF415",
+    "descripcion": "HERMÉS 74X74 2.19m2 (PHD70510R)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incf413": {
+    "codigo": "INCF413",
+    "descripcion": "RENATO 74X74 2.19m2 (PHD70200R)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos462": {
+    "codigo": "NEOS462",
+    "descripcion": "PRETORIA MATT (715009) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos317": {
+    "codigo": "NEOS317",
+    "descripcion": "CARRARA GLOSSY (75BT811) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos319": {
+    "codigo": "NEOS319",
+    "descripcion": "VICTORIA DARK GREY (XYN715FY203) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos320": {
+    "codigo": "NEOS320",
+    "descripcion": "VICTORIA LIGHT GREY (XYN715FY107) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos463": {
+    "codigo": "NEOS463",
+    "descripcion": "CLASSIC STATUARIO MATT (XYN75BT820) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos464": {
+    "codigo": "NEOS464",
+    "descripcion": "SAN MARTIN MATT (TM2741) 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos425": {
+    "codigo": "NEOS425",
+    "descripcion": "CARRARA GOLD 75X150 2.25M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos161": {
+    "codigo": "NEOS161",
+    "descripcion": "NEO CARRARA 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos235": {
+    "codigo": "NEOS235",
+    "descripcion": "LAURENT BLUE 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos339": {
+    "codigo": "NEOS339",
+    "descripcion": "CLASSIC STATUARIO 80X160 2.56M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos490": {
+    "codigo": "NEOS490",
+    "descripcion": "TOLEDO IVORY 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos230": {
+    "codigo": "NEOS230",
+    "descripcion": "TOLEDO CREMA (ARMANI CREMA) 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos340": {
+    "codigo": "NEOS340",
+    "descripcion": "SIERRA NEVADA 80X160 2.56M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos341": {
+    "codigo": "NEOS341",
+    "descripcion": "STATUARIO ORO 80X160 2.56M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos228": {
+    "codigo": "NEOS228",
+    "descripcion": "DOWNTON GREY 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos229": {
+    "codigo": "NEOS229",
+    "descripcion": "CALCUTTA BIANCO 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos231": {
+    "codigo": "NEOS231",
+    "descripcion": "BAYONA SMOKE 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos232": {
+    "codigo": "NEOS232",
+    "descripcion": "TOLEDO BIANCO 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos233": {
+    "codigo": "NEOS233",
+    "descripcion": "TOLEDO GREY 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos234": {
+    "codigo": "NEOS234",
+    "descripcion": "AMAZONITE VERDE 80X160 2.56 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos453": {
+    "codigo": "NEOS453",
+    "descripcion": "LABRADORITE NATURAL HG 80x160 2.56 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos497": {
+    "codigo": "NEOS497",
+    "descripcion": "STATUARIO EVA  80X80 1.92 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cgp014": {
+    "codigo": "CGP014",
+    "descripcion": "SIERRA NEVADA 80X80 1.92 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos335": {
+    "codigo": "NEOS335",
+    "descripcion": "CARRARA GOLD (MT918005) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos332": {
+    "codigo": "NEOS332",
+    "descripcion": "GILACIER (XYN98BT016) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos330": {
+    "codigo": "NEOS330",
+    "descripcion": "STATUARIO I  90X180 3.24M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos427": {
+    "codigo": "NEOS427",
+    "descripcion": "STATUARIO I 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos336": {
+    "codigo": "NEOS336",
+    "descripcion": "STATUARIO II 90X180 3.24M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos337": {
+    "codigo": "NEOS337",
+    "descripcion": "TARRASA DARK GREY (DPN918FY203) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos334": {
+    "codigo": "NEOS334",
+    "descripcion": "TARRASA LIGHT GREY (DPN918FY102) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos331": {
+    "codigo": "NEOS331",
+    "descripcion": "TURKISH RED ROOT (DPN918L231) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos316": {
+    "codigo": "NEOS316",
+    "descripcion": "CARRARA GLOSSY (918L102) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos318": {
+    "codigo": "NEOS318",
+    "descripcion": "STATUARIO GLOSSY (918L008) 90X180 1.62M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos116": {
+    "codigo": "NEOS116",
+    "descripcion": "NEO CARRARA 90X180 3.24M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos308": {
+    "codigo": "NEOS308",
+    "descripcion": "Indoor Wall Panel Black 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos311": {
+    "codigo": "NEOS311",
+    "descripcion": "Indoor Wall Panel Brown 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos312": {
+    "codigo": "NEOS312",
+    "descripcion": "Indoor Wall Panel EPgreywood 2900x195x12 0.5655 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos313": {
+    "codigo": "NEOS313",
+    "descripcion": "Indoor Wall Panel Golden Teak 2900x195x12 0.5655 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos309": {
+    "codigo": "NEOS309",
+    "descripcion": "Indoor Wall Panel Grey 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos426": {
+    "codigo": "NEOS426",
+    "descripcion": "Indoor Wall Panel Nogal 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos310": {
+    "codigo": "NEOS310",
+    "descripcion": "Indoor Wall Panel Teak 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos307": {
+    "codigo": "NEOS307",
+    "descripcion": "Indoor Wall Panel White 2900x165x25 0.4785 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos399": {
+    "codigo": "NEOS399",
+    "descripcion": "PS Wall Panel Black Gold 2900x120x12 0.3480 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos400": {
+    "codigo": "NEOS400",
+    "descripcion": "PS Wall Panel Brown Gold 2900x120x12 0.3480 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos401": {
+    "codigo": "NEOS401",
+    "descripcion": "PS Wall Panel White Gold 2900x120x12 0.3480 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos486": {
+    "codigo": "NEOS486",
+    "descripcion": "Indoor Viga WPC Teak 2900x100x50",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos485": {
+    "codigo": "NEOS485",
+    "descripcion": "Indoor Viga WPC Walnut 2900x100x50",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos025": {
+    "codigo": "NEOS025",
+    "descripcion": "CALACATTA GOLD HEXAGON 28.5X33 1M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos190": {
+    "codigo": "NEOS190",
+    "descripcion": "MANHATTAN COTTO 31X56 1.21M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incf417": {
+    "codigo": "INCF417",
+    "descripcion": "BABEL GRAY BR HDM36920R 35x70 1.68 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incf416": {
+    "codigo": "INCF416",
+    "descripcion": "CALACATTA NATURAL BR HDM36910R 35x70 1.68 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incf419": {
+    "codigo": "INCF419",
+    "descripcion": "IROKO SATIN HDM37260R 35x70 1.68 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incn420": {
+    "codigo": "INCN420",
+    "descripcion": "ALTO DA SÉ 63X63 2.79m2 (PSI-63570R)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos380": {
+    "codigo": "NEOS380",
+    "descripcion": "MALLA AVEIRO 30.5X30.5",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos381": {
+    "codigo": "NEOS381",
+    "descripcion": "MALLA ÉVORA 30.5X30.5",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos378": {
+    "codigo": "NEOS378",
+    "descripcion": "MALLA LAGOS 30.2X26.2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos379": {
+    "codigo": "NEOS379",
+    "descripcion": "MALLA MADEIRA 30.2X26.2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos219": {
+    "codigo": "NEOS219",
+    "descripcion": "ANTICATO NERO CARVING  60 X 120 CM 5MM 2.88M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos217": {
+    "codigo": "NEOS217",
+    "descripcion": "CEMENT ICE  MATTE 60 X 120 CM 5MM 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos214": {
+    "codigo": "NEOS214",
+    "descripcion": "COTTI GREY MATTE 60 X 120 CM 5MM 2.88 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos205": {
+    "codigo": "NEOS205",
+    "descripcion": "BILBAO 80X80 1.92 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos206": {
+    "codigo": "NEOS206",
+    "descripcion": "CORN WHITE 80X80 1.92 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "cpl00180": {
+    "codigo": "CPL00180",
+    "descripcion": "LANJARON 80X80 1.92 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos024": {
+    "codigo": "NEOS024",
+    "descripcion": " RIOJA SLATE 31X56 1.21 M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos466": {
+    "codigo": "NEOS466",
+    "descripcion": "LIFE TORTORA MATT 20X120 1.20M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "marvalb20x120": {
+    "codigo": "MARVALB20X120",
+    "descripcion": "MARVAL BEIGE 20X120CM 1.20M2/CJ",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos397": {
+    "codigo": "NEOS397",
+    "descripcion": "Exterior WPC Wall Panel Grey 2900x220x26 0.6380 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos396": {
+    "codigo": "NEOS396",
+    "descripcion": "Exterior WPC Wall Panel Rosewood 2900x220x26 0.6380 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos398": {
+    "codigo": "NEOS398",
+    "descripcion": "Exterior WPC Wall Panel Teak 2900x220x26 0.6380 m2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos343": {
+    "codigo": "NEOS343",
+    "descripcion": " PISO VINÍLICO SPC DARK GREY 6006-8 1240X182X5MM 2.70M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos344": {
+    "codigo": "NEOS344",
+    "descripcion": " PISO VINÍLICO SPC NATURAL CD7331-2 1240X182X5MM 2.70M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos342": {
+    "codigo": "NEOS342",
+    "descripcion": " PISO VINÍLICO SPC TABACO 3736-3 1240X182X5MM 2.70M2",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos402": {
+    "codigo": "NEOS402",
+    "descripcion": "UV PVC Marble Board Albania White 1220x2800x3mm 3.1416 m2 (8232)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos404": {
+    "codigo": "NEOS404",
+    "descripcion": "UV PVC Marble Board Beijin Green 1220x2800x3mm 3.1416 m2 (S1221)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos403": {
+    "codigo": "NEOS403",
+    "descripcion": "UV PVC Marble Board Bélgica Grey 1220x2800x3mm 3.1416 m2 (S1350)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos405": {
+    "codigo": "NEOS405",
+    "descripcion": "UV PVC Marble Board Libano Black 1220x2800x3mm 3.1416 m2 (KL 8146)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "neos406": {
+    "codigo": "NEOS406",
+    "descripcion": "UV PVC Marble Board Singapur Dark 1220x2800x3mm 3.1416 m2 (8231-2)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "incn419": {
+    "codigo": "INCN419",
+    "descripcion": "TRAIRÍ 58X58 2.68m2 (PSI-66910)",
+    "precio": "",
+    "source": "chroma:importados"
+  },
+  "matt10": {
+    "codigo": "MATT10",
+    "descripcion": "DIAMOND BLACK MATT10X20 1M2 (50 PZ)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "py126929": {
+    "codigo": "PY126929",
+    "descripcion": "CALACATTA CLASSIC (PY126929) 60X120 2.16 M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "sh6121401": {
+    "codigo": "SH6121401",
+    "descripcion": "GOBLIN GREY (SH6121401Q) 60X120 2.16M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "ja612010": {
+    "codigo": "JA612010",
+    "descripcion": "CLOUD SILVER (JA612010Q) 60X120 2.16M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "sh6126101": {
+    "codigo": "SH6126101",
+    "descripcion": "ORLOK BIANCO (SH6126101Q) 60X120 2.16 M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "hk099": {
+    "codigo": "HK099",
+    "descripcion": "HK099 BLACK ANTHRACITE 60X120 1.44 M2 CLN LMOCHIS  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "psi63290": {
+    "codigo": "PSI-63290",
+    "descripcion": "PONTA DO MEL 63X63 2.79m2 (PSI-63290R)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "phd70510": {
+    "codigo": "PHD70510",
+    "descripcion": "HERMÉS 74X74 2.19m2 (PHD70510R)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "phd70200": {
+    "codigo": "PHD70200",
+    "descripcion": "RENATO 74X74 2.19m2 (PHD70200R)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "bt811": {
+    "codigo": "BT811",
+    "descripcion": "CARRARA GLOSSY (75BT811) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "xyn715": {
+    "codigo": "XYN715",
+    "descripcion": "VICTORIA DARK GREY (XYN715FY203) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "fy203": {
+    "codigo": "FY203",
+    "descripcion": "VICTORIA DARK GREY (XYN715FY203) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "fy107": {
+    "codigo": "FY107",
+    "descripcion": "VICTORIA LIGHT GREY (XYN715FY107) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "xyn75": {
+    "codigo": "XYN75",
+    "descripcion": "CLASSIC STATUARIO MATT (XYN75BT820) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "bt820": {
+    "codigo": "BT820",
+    "descripcion": "CLASSIC STATUARIO MATT (XYN75BT820) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "tm2741": {
+    "codigo": "TM2741",
+    "descripcion": "SAN MARTIN MATT (TM2741) 75X150 2.25M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "mt918005": {
+    "codigo": "MT918005",
+    "descripcion": "CARRARA GOLD (MT918005) 90X180 1.62M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "xyn98": {
+    "codigo": "XYN98",
+    "descripcion": "GILACIER (XYN98BT016) 90X180 1.62M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "bt016": {
+    "codigo": "BT016",
+    "descripcion": "GILACIER (XYN98BT016) 90X180 1.62M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "dpn918": {
+    "codigo": "DPN918",
+    "descripcion": "TARRASA DARK GREY (DPN918FY203) 90X180 1.62M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "fy102": {
+    "codigo": "FY102",
+    "descripcion": "TARRASA LIGHT GREY (DPN918FY102) 90X180 1.62M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "hdm36920": {
+    "codigo": "HDM36920",
+    "descripcion": "BABEL GRAY BR HDM36920R 35x70 1.68 m2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "hdm36910": {
+    "codigo": "HDM36910",
+    "descripcion": "CALACATTA NATURAL BR HDM36910R 35x70 1.68 m2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "hdm37260": {
+    "codigo": "HDM37260",
+    "descripcion": "IROKO SATIN HDM37260R 35x70 1.68 m2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "psi63570": {
+    "codigo": "PSI-63570",
+    "descripcion": "ALTO DA SÉ 63X63 2.79m2 (PSI-63570R)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "cd7331": {
+    "codigo": "CD7331",
+    "descripcion": " PISO VINÍLICO SPC NATURAL CD7331-2 1240X182X5MM 2.70M2  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "psi66910": {
+    "codigo": "PSI-66910",
+    "descripcion": "TRAIRÍ 58X58 2.68m2 (PSI-66910)  ",
+    "precio": "",
+    "source": "chroma_doc:importados"
+  },
+  "cmx77": {
+    "codigo": "CMX77",
+    "descripcion": " ADHESIVO PORCELANICO GRIS 20 KG",
+    "precio": 170.0,
+    "source": "chroma:polvos"
+  },
+  "cmx115": {
+    "codigo": "CMX115",
+    "descripcion": " BLANCO CERAMICO SACO 20KG",
+    "precio": 180.0,
+    "source": "chroma:polvos"
+  },
+  "cmx05": {
+    "codigo": "CMX05",
+    "descripcion": " BLANCO UNIVERSAL 20KG",
+    "precio": 229.0,
+    "source": "chroma:polvos"
+  },
+  "cmx02": {
+    "codigo": "CMX02",
+    "descripcion": " PEGAPISO Y MARMOL BLANCO  20 KG",
+    "precio": 169.0,
+    "source": "chroma:polvos"
+  },
+  "cmx01": {
+    "codigo": "CMX01",
+    "descripcion": " PEGAZULEJO BLANCO 20KG",
+    "precio": 169.0,
+    "source": "chroma:polvos"
+  },
+  "cmx202": {
+    "codigo": "CMX202",
+    "descripcion": " PORCELANICO GRIS PSP 20KG",
+    "precio": 219.0,
+    "source": "chroma:polvos"
+  },
+  "cmx691": {
+    "codigo": "CMX691",
+    "descripcion": "ADEBLOK PLUS AP 25 KG",
+    "precio": 169.0,
+    "source": "chroma:polvos"
+  },
+  "palbazul": {
+    "codigo": "PALBAZUL",
+    "descripcion": "ADHESIVO PARA ALBERCA AZUL 20 KG",
+    "precio": 503.0,
+    "source": "chroma:polvos"
+  },
+  "palbblc": {
+    "codigo": "PALBBLC",
+    "descripcion": "ADHESIVO PARA ALBERCA BLANCO 20 KG",
+    "precio": 503.0,
+    "source": "chroma:polvos"
+  },
+  "pmarblc": {
+    "codigo": "PMARBLC",
+    "descripcion": "ADHESIVO PEGAMARMOL BLANCO 20 KG",
+    "precio": 175.0,
+    "source": "chroma:polvos"
+  },
+  "pazblc": {
+    "codigo": "PAZBLC",
+    "descripcion": "ADHESIVO PEGAZULEJO BLANCO 20 KG",
+    "precio": 192.0,
+    "source": "chroma:polvos"
+  },
+  "pviblc": {
+    "codigo": "PVIBLC",
+    "descripcion": "ADHESIVO PISO SOBRE PISO PEGAVITRO BLANCO 20 KG",
+    "precio": 285.0,
+    "source": "chroma:polvos"
+  },
+  "poblc10": {
+    "codigo": "POBLC10",
+    "descripcion": "ADHESIVO POLIMOR BLANCO 10 KG",
+    "precio": 309.0,
+    "source": "chroma:polvos"
+  },
+  "polblc": {
+    "codigo": "POLBLC",
+    "descripcion": "ADHESIVO POLIMOR BLANCO 20 KG",
+    "precio": 618.0,
+    "source": "chroma:polvos"
+  },
+  "ptrad": {
+    "codigo": "PTRAD",
+    "descripcion": "ADHESIVO TRADICIONAL C-PEGA BLANCO 20 KG",
+    "precio": 139.0,
+    "source": "chroma:polvos"
+  },
+  "bfg": {
+    "codigo": "BFG",
+    "descripcion": "BLUE FENCE GALON",
+    "precio": 919.0,
+    "source": "chroma:polvos"
+  },
+  "bs": {
+    "codigo": "BS",
+    "descripcion": "BOQUICHAMP SELLADO CON ARENA 10 KG",
+    "precio": 207.0,
+    "source": "chroma:polvos"
+  },
+  "bf": {
+    "codigo": "BF",
+    "descripcion": "BOQUICHAMP ULTRAFINA SIN ARENA 5 KG",
+    "precio": 253.0,
+    "source": "chroma:polvos"
+  },
+  "cmx": {
+    "codigo": "CMX..",
+    "descripcion": "BOQUILLA EXTRAFINA 2KG",
+    "precio": 129.0,
+    "source": "chroma:polvos"
+  },
+  "cmx1022": {
+    "codigo": "CMX1022",
+    "descripcion": "CEMIX ADEBLOCK CONSTRUCTOR 25KG",
+    "precio": 110.0,
+    "source": "chroma:polvos"
+  },
+  "cmx102": {
+    "codigo": "CMX102",
+    "descripcion": "CEMIX ADEBLOCK CONSTRUCTOR 40KG",
+    "precio": 259.0,
+    "source": "chroma:polvos"
+  },
+  "cmx69": {
+    "codigo": "CMX69",
+    "descripcion": "CEMIX ADEBLOK PLUS 40KG",
+    "precio": 269.0,
+    "source": "chroma:polvos"
+  },
+  "cmx1200": {
+    "codigo": "CMX1200",
+    "descripcion": "CEMIX ADEBLOK PLUS FINO 25 KG",
+    "precio": 209.0,
+    "source": "chroma:polvos"
+  },
+  "cmx120": {
+    "codigo": "CMX120",
+    "descripcion": "CEMIX ADEBLOK PLUS FINO 40KG",
+    "precio": 299.0,
+    "source": "chroma:polvos"
+  },
+  "cmx116": {
+    "codigo": "CMX116",
+    "descripcion": "CEMIX AMU BLANCO 20KG",
+    "precio": 509.0,
+    "source": "chroma:polvos"
+  },
+  "cmx780": {
+    "codigo": "CMX780",
+    "descripcion": "CEMIX APLANADO 25 KG",
+    "precio": 219.0,
+    "source": "chroma:polvos"
+  },
+  "cmx78": {
+    "codigo": "CMX78",
+    "descripcion": "CEMIX APLANADO 40 KGS",
+    "precio": 309.0,
+    "source": "chroma:polvos"
+  },
+  "cmx49": {
+    "codigo": "CMX49",
+    "descripcion": "CEMIX BASECOAT GRIS PREMIUM 20KG.",
+    "precio": 249.0,
+    "source": "chroma:polvos"
+  },
+  "cmx177": {
+    "codigo": "CMX177",
+    "descripcion": "CEMIX DECON-CRETO 20KG",
+    "precio": 519.0,
+    "source": "chroma:polvos"
+  },
+  "cmx952": {
+    "codigo": "CMX952",
+    "descripcion": "CEMIX MORTERO SECO 25 KG",
+    "precio": 129.0,
+    "source": "chroma:polvos"
+  },
+  "cmx101": {
+    "codigo": "CMX101",
+    "descripcion": "CEMIX MORTERO SECO 40 KG",
+    "precio": 199.0,
+    "source": "chroma:polvos"
+  },
+  "cmx153": {
+    "codigo": "CMX153",
+    "descripcion": "CEMIX PASTA FINA PLUS 20 KG",
+    "precio": 319.0,
+    "source": "chroma:polvos"
+  },
+  "cmx134": {
+    "codigo": "CMX134",
+    "descripcion": "CEMIX PEGAZULEJO GRIS 20KG",
+    "precio": 143.0,
+    "source": "chroma:polvos"
+  },
+  "cmx175": {
+    "codigo": "CMX175",
+    "descripcion": "CHUKU-MIX CEMIX SACO 20KG",
+    "precio": 429.0,
+    "source": "chroma:polvos"
+  },
+  "fijaporc": {
+    "codigo": "FIJAPORC",
+    "descripcion": "FIJAPORCELANICO BLANCO 20 KG",
+    "precio": 291.0,
+    "source": "chroma:polvos"
+  },
+  "cmx68": {
+    "codigo": "CMX68",
+    "descripcion": "FORMATOS GRANDES 20KG",
+    "precio": 299.0,
+    "source": "chroma:polvos"
+  },
+  "yin02": {
+    "codigo": "YIN02",
+    "descripcion": "MORTERMAX ENJARRE EXTRAFINO 25 KG",
+    "precio": 149.0,
+    "source": "chroma:polvos"
+  },
+  "yin01": {
+    "codigo": "YIN01",
+    "descripcion": "MORTERMAX PEGUE DE BLOCK F100 25KG",
+    "precio": 99.0,
+    "source": "chroma:polvos"
+  },
+  "cmx100": {
+    "codigo": "CMX100",
+    "descripcion": "PEGAPISO Y MARMOL GRIS  20 KG",
+    "precio": 160.0,
+    "source": "chroma:polvos"
+  },
+  "cmx03": {
+    "codigo": "CMX03",
+    "descripcion": "PORCELANICO BLANCO PSP 20KG",
+    "precio": 239.0,
+    "source": "chroma:polvos"
+  },
+  "ug": {
+    "codigo": "UG",
+    "descripcion": "ULTRAGROUT BOQUICHAMP 1.25KG",
+    "precio": 625.0,
+    "source": "chroma:polvos"
+  },
+  "yin13": {
+    "codigo": "YIN13",
+    "descripcion": "YESO MAX YESO TIPO READYMIX 25KG",
+    "precio": 159.0,
+    "source": "chroma:polvos"
+  },
+  "yin11": {
+    "codigo": "YIN11",
+    "descripcion": "YESO MOCUZARI 25KG",
+    "precio": 109.0,
+    "source": "chroma:polvos"
+  },
+  "yin17": {
+    "codigo": "YIN17",
+    "descripcion": "YESO MOCUZARI FL 25KG",
+    "precio": 99.0,
+    "source": "chroma:polvos"
+  },
+  "fort001": {
+    "codigo": "FORT001",
+    "descripcion": "CEMENTO FORTALEZA PORTLAND 30 R RS 50KG",
+    "precio": 264.0,
+    "source": "chroma:polvos"
+  },
+  "fort002": {
+    "codigo": "FORT002",
+    "descripcion": "MORTERO FORTALEZA 50 KG",
+    "precio": 199.0,
+    "source": "chroma:polvos"
+  },
+  "fort005": {
+    "codigo": "FORT005",
+    "descripcion": "CEMENTO FORTALEZA PORTLAND 30 R RS 25KG",
+    "precio": 132.0,
+    "source": "chroma:polvos"
+  },
+  "fort006": {
+    "codigo": "FORT006",
+    "descripcion": "MORTERO FORTALEZA 25KG",
+    "precio": 99.0,
+    "source": "chroma:polvos"
+  },
+  "cca001": {
+    "codigo": "CCA001",
+    "descripcion": "CEMENTO CRUZ AZUL PORTLAND 30 R RS 50KG",
+    "precio": 260.0,
+    "source": "chroma:polvos"
+  },
+  "cca003": {
+    "codigo": "CCA003",
+    "descripcion": "MORTERO CRUZ AZUL 50 KG",
+    "precio": 199.0,
+    "source": "chroma:polvos"
+  },
+  "cca007": {
+    "codigo": "CCA007",
+    "descripcion": "CEMENTO CRUZ AZUL PORTLAND 30 R RS 25KG",
+    "precio": 130.0,
+    "source": "chroma:polvos"
+  },
+  "cca008": {
+    "codigo": "CCA008",
+    "descripcion": "MORTERO CRUZ AZUL 25KG",
+    "precio": 99.5,
+    "source": "chroma:polvos"
+  },
+  "cmx53": {
+    "codigo": "CMX53",
+    "descripcion": "BARNIZ SELLADOR BRILLO GALON ",
+    "precio": 949.0,
+    "source": "chroma:polvos"
+  },
+  "cmx32": {
+    "codigo": "CMX32",
+    "descripcion": "LIMPIADOR DE PISOS Y BOQUILLAS ",
+    "precio": 199.0,
+    "source": "chroma:polvos"
+  }
+}

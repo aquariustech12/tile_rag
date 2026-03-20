@@ -1,6 +1,6 @@
 from pathlib import Path
 from importlib import util
-p = Path('~/tile_rag/vama-agent.py').expanduser()
+p = Path('~/tile_rag/vama-agent2-fixed.py').expanduser()
 spec = util.spec_from_file_location("vama_agent_mod", p)
 mod = util.module_from_spec(spec)
 spec.loader.exec_module(mod)

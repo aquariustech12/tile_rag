@@ -1,0 +1,46 @@
+[
+  {
+    "fecha": "2026-03-18 07:17:45",
+    "cliente": "Julian",
+    "telefono": "5216444475422",
+    "total": 7110.0144,
+    "productos": 5,
+    "items": [
+      {
+        "codigo": "521424411124031",
+        "descripcion": "MURO MEDITERRANEO AZUL 28X60 CM 1.68 M2/CAJA 10 PZ",
+        "precio": 519.0024,
+        "cantidad": 6,
+        "subtotal": 3114.0144
+      },
+      {
+        "codigo": "CMX26",
+        "descripcion": "TINACO TRICAPA NEGRO 450 LT BASICO",
+        "precio": 1599.0,
+        "cantidad": 1,
+        "subtotal": 1599.0
+      },
+      {
+        "codigo": "CAS1351",
+        "descripcion": "CONSTANZA BLANCO +MONOMANDO ALTO DAMASCO ",
+        "precio": 1299.0,
+        "cantidad": 1,
+        "subtotal": 1299.0
+      },
+      {
+        "codigo": "CMX101",
+        "descripcion": "CEMIX MORTERO SECO 40 KG",
+        "precio": 199.0,
+        "cantidad": 1,
+        "subtotal": 199.0
+      },
+      {
+        "codigo": "LV.4008.01",
+        "descripcion": "Lavabo Cuadrado de 1 Taladro (Blanco)",
+        "precio": 899.0,
+        "cantidad": 1,
+        "subtotal": 899.0
+      }
+    ]
+  }
+]

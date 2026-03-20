@@ -1,0 +1,245 @@
+{
+  "5216444475422": {
+    "nombre": "Julian",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "520012403027931",
+        "descripcion": "PISO MONET NOGAL 16.5X100 1.49 M2 RECT",
+        "formato": "16.5x100",
+        "color": "beige",
+        "m2_caja": 1.49,
+        "precio": 538.9926,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "520012403284931",
+        "descripcion": "PISO MONET HAYA 16.5X100 1.49 M2 CTDO Y RECTIFICADO",
+        "formato": "16.5x100",
+        "color": "beige",
+        "m2_caja": 1.49,
+        "precio": 538.9926,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "520012403294211",
+        "descripcion": "PISO MONET CEDRO 16.5X100 CM 0.99 M2/CAJA RECTIFICADO",
+        "formato": "16.5x100",
+        "color": "caf\u00e9",
+        "m2_caja": 0.99,
+        "precio": 359.0037,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "buenos dias",
+        "time": "2026-03-19T15:42:08.723382"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola de nuevo Julian! Qu\u00e9 gusto verte otra vez. \u00bfC\u00f3mo est\u00e1s hoy? Esperamos que tengas un excelente d\u00eda. \ud83d\ude0a",
+        "time": "2026-03-19T15:42:13.739374"
+      },
+      {
+        "role": "user",
+        "content": "tengo una cotizacion pendiente",
+        "time": "2026-03-19T15:42:36.211161"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola de nuevo Julian! Qu\u00e9 gusto verte otra vez. \u00bfC\u00f3mo est\u00e1s hoy? He visto que tienes una cotizaci\u00f3n pendiente, \u00bfte gustar\u00eda revisarla o necesitas ayuda con algo m\u00e1s espec\u00edfico? \ud83d\ude0a",
+        "time": "2026-03-19T15:42:38.395023"
+      },
+      {
+        "role": "user",
+        "content": "quiero pagar",
+        "time": "2026-03-19T15:42:49.746359"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola de nuevo Julian! Qu\u00e9 gusto verte otra vez. Me alegro que est\u00e9s interesado en finalizar tu compra. \u00bfTe gustar\u00eda proceder al pago ahora? \ud83d\ude0a Si es as\u00ed, por favor di qu\u00e9 producto o servicio te gustar\u00eda agregar a tu carrito para poder ayudarte con el proceso de pago.",
+        "time": "2026-03-19T15:42:52.565744"
+      },
+      {
+        "role": "user",
+        "content": "si quiero pagar",
+        "time": "2026-03-19T15:43:06.650794"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola de nuevo Julian! Qu\u00e9 gusto verte otra vez. Me alegro que est\u00e9s interesado en finalizar tu compra. \u00bfPodr\u00edas indicarme cu\u00e1l es el producto o servicio espec\u00edfico con el que te gustar\u00eda comenzar el proceso de pago? Estoy aqu\u00ed para ayudarte. \ud83d\ude0a",
+        "time": "2026-03-19T15:43:09.337691"
+      },
+      {
+        "role": "user",
+        "content": "quiero pagar",
+        "time": "2026-03-19T15:43:25.608190"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola de nuevo Julian! Qu\u00e9 gusto verte otra vez. Me alegro que est\u00e9s interesado en finalizar tu compra. Parece que a\u00fan no has agregado productos a tu carrito. \u00bfPodr\u00edas indicarme qu\u00e9 producto o servicio te gustar\u00eda comprar hoy para poder ayudarte con el proceso de pago? \ud83d\ude0a",
+        "time": "2026-03-19T15:43:28.677030"
+      }
+    ],
+    "estado": "MOSTRANDO",
+    "telefono": "5216444475422",
+    "ultima_busqueda": "quiero pagar",
+    "primera_vez": false,
+    "ultima_visita": "2026-03-19T15:43:25.608172"
+  },
+  "5216675016225": {
+    "nombre": "Octavio",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "521666090473021",
+        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+        "formato": "45x45",
+        "color": "caf\u00e9",
+        "m2_caja": 1.62,
+        "precio": 388.9944,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024511",
+        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "gris",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024510",
+        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [],
+    "estado": "MOSTRANDO",
+    "telefono": "5216675016225",
+    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n"
+  },
+  "5216692252170": {
+    "nombre": "Sofia Riv.\ud83d\udda4",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "CAS94010",
+        "descripcion": "PISO RECT NORUEGA 22 GRIS 20X120 1.83M2",
+        "formato": "20X120",
+        "color": "gris",
+        "m2_caja": 1.83,
+        "precio": 629.0076,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "522799254011911",
+        "descripcion": "PISO LIVING GRIS 50X100 CM 2.0 M2/CAJA RECTIFICADO",
+        "formato": "50x100",
+        "color": "gris",
+        "m2_caja": 2.0,
+        "precio": 739.0,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS7695",
+        "descripcion": "PISO AMAZONAS GREY 22.5X60 1.89 M2",
+        "formato": "22.5X60",
+        "color": "gris",
+        "m2_caja": 1.89,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [],
+    "estado": "MOSTRANDO",
+    "telefono": "5216692252170",
+    "ultima_busqueda": "El piso noruega gris solo se vende en m2 ??  O en cajas tambi\u00e9n"
+  },
+  "5216671853169": {
+    "nombre": "\ud83d\udc95",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "521666090473021",
+        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+        "formato": "45x45",
+        "color": "caf\u00e9",
+        "m2_caja": 1.62,
+        "precio": 388.9944,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "520012403284931",
+        "descripcion": "PISO MONET HAYA 16.5X100 1.49 M2 CTDO Y RECTIFICADO",
+        "formato": "16.5x100",
+        "color": "beige",
+        "m2_caja": 1.49,
+        "precio": 538.9926,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "GSS11224RC1P7",
+        "descripcion": "GSS1 30 cm x 60 cm Rect. Sandstone Beige 1a. Cal 1.44M2",
+        "formato": "30x60",
+        "color": "beige",
+        "m2_caja": 1.44,
+        "precio": 569.0015999999999,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [],
+    "estado": "MOSTRANDO",
+    "telefono": "5216671853169",
+    "ultima_busqueda": "\u00a1Hola! Me gustar\u00eda conseguir m\u00e1s informaci\u00f3n sobre esto."
+  },
+  "5216672634501": {
+    "nombre": "\ud83d\udc3b\u200d\u2744\ufe0f\ud83d\udc23\ud83d\udc23",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "521666090473021",
+        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+        "formato": "45x45",
+        "color": "caf\u00e9",
+        "m2_caja": 1.62,
+        "precio": 388.9944,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024511",
+        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "gris",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024510",
+        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [],
+    "estado": "MOSTRANDO",
+    "telefono": "5216672634501",
+    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n"
+  }
+}

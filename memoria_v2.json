@@ -12565,5 +12565,52 @@
       }
     ],
     "ultima_busqueda": "Me puede mandar fotos de todos los tipos de vitropiso de 60\u00d760"
+  },
+  "5214642220750": {
+    "nombre": "Blanca S\u00e1nchez",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "NEOS030",
+        "descripcion": "ANTIQUE BLACK 33 33X33 1M2",
+        "formato": "33X33",
+        "color": "",
+        "m2_caja": 1.0,
+        "precio": 238.8,
+        "coleccion": "importados"
+      },
+      {
+        "codigo": "NEOS189",
+        "descripcion": "ANTIQUE WHITE 33 33X33 1M2",
+        "formato": "33X33",
+        "color": "",
+        "m2_caja": 1.0,
+        "precio": 238.8,
+        "coleccion": "importados"
+      },
+      {
+        "codigo": "INCF415",
+        "descripcion": "HERM\u00c9S 74X74 2.19m2 (PHD70510R)",
+        "formato": "74X74",
+        "color": "",
+        "m2_caja": 2.19,
+        "precio": 829.0026,
+        "coleccion": "importados"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n.",
+        "time": "2026-03-20T03:23:47.029092"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Blanca! \u00bfC\u00f3mo est\u00e1s? Me avisaste que quer\u00edas m\u00e1s informaci\u00f3n. Tengo algunas opciones de materiales que podr\u00edan interesarte para tu proyecto:\n\n1. ANTIQUE BLACK en formato 33x33 a $238.80 por m\u00b2.\n2. ANTIQUE WHITE tambi\u00e9n en formato 33x33 y el mismo precio.\n3. HERM\u00c9S en formato 74x74 que cuesta $829.00 pero cubre 2.19m\u00b2.\n\n\u00bfCu\u00e1l de estas opciones te llama m\u00e1s la atenci\u00f3n o tienes alguna otra preferencia? Estoy aqu\u00ed para ayudarte a elegir lo mejor para tu proyecto.",
+        "time": "2026-03-20T03:23:56.449766"
+      }
+    ],
+    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n."
   }
 }

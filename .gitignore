@@ -10,4 +10,5 @@ data/
 memoria_v2.json
 conversaciones/
 conversaciones_completas.jsonl
+dataset.jsonl
 

@@ -19473,30 +19473,30 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "CAS7692",
-        "descripcion": "ACURA 66 TERRA 60X60 1.80M2",
-        "formato": "60X60",
+        "codigo": "522593425284261",
+        "descripcion": "PISO COSALA HAYA 35.7X35.7 CM 1.78 M2/CAJA",
+        "formato": "35.7x35.7",
         "color": "caf\u00e9",
-        "m2_caja": 1.8,
-        "precio": 448.992,
+        "m2_caja": 1.78,
+        "precio": 328.9974,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS100147",
-        "descripcion": "PISO BLUES CAFE 60X120 1.42M2",
-        "formato": "60X120",
-        "color": "caf\u00e9",
-        "m2_caja": 1.42,
-        "precio": 529.0068,
-        "coleccion": "nacionales"
-      },
-      {
-        "codigo": "CAS7693",
-        "descripcion": "PISO AMAZONAS CHERRY 22.5X60 1.89 M2",
+        "codigo": "CAS7694",
+        "descripcion": "PISO AMAZONAS HONEY 22.5X60 1.89 M2",
         "formato": "22.5X60",
         "color": "caf\u00e9",
         "m2_caja": 1.89,
         "precio": 408.996,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "522125413496351",
+        "descripcion": "PISO AMAZONIAN CLIFF 18X60.6 CM 1.64 M2/CAJA TE",
+        "formato": "18x60.6",
+        "color": "beige",
+        "m2_caja": 1.64,
+        "precio": 448.9991999999999,
         "coleccion": "nacionales"
       }
     ],
@@ -19541,9 +19541,19 @@
         "role": "assistant",
         "content": "\u00a1Hola Elena! Me qued\u00f3 lejos pero eso me interes\u00f3 mucho. \u00bfTe interesa tambi\u00e9n la opci\u00f3n de 22.5X60 que es caf\u00e9? Si\u00e9ntete libre de decirme si quieres agregarlo al carrito o si tienes alguna otra consulta. Recuerda, estamos ubicados en CULIAC\u00c1N - IGNACIO RAM\u00cdREZ, Blvd. Ignacio Ram\u00edrez #981 pte, Jorge Almada, que est\u00e1 muy cerca de tu domicilio. \u00bfTienes un momento para hablar sobre cu\u00e1ntas cajas necesitar\u00edas?",
         "time": "2026-03-23T23:44:50.095106"
+      },
+      {
+        "role": "user",
+        "content": "Vivo en Mazatl\u00e1n lo pasa tengo ir en cami\u00f3n",
+        "time": "2026-03-23T23:52:56.643236"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Elena! Me qued\u00f3 lejos pero eso me interes\u00f3 mucho. \u00bfTe interesa tambi\u00e9n la opci\u00f3n de 22.5X60 que es caf\u00e9? Si\u00e9ntete libre de decirme si quieres agregarlo al carrito o si tienes alguna otra consulta. Recuerda, estamos ubicados en CULIAC\u00c1N - IGNACIO RAM\u00cdREZ, Blvd. Ignacio Ram\u00edrez #981 pte, Jorge Almada, que est\u00e1 muy cerca de tu domicilio. \u00bfTienes un momento para hablar sobre cu\u00e1ntas cajas necesitar\u00edas?",
+        "time": "2026-03-23T23:52:58.805170"
       }
     ],
-    "ultima_busqueda": "Me queda lejos",
+    "ultima_busqueda": "Vivo en Mazatl\u00e1n lo pasa tengo ir en cami\u00f3n",
     "estado": "inicio"
   },
   "5216424265671": {
@@ -23085,30 +23095,30 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "CAS9408",
-        "descripcion": "PISO MADEIRA 32 SAND 30X120 1.76 M2",
-        "formato": "30X120",
-        "color": "beige",
-        "m2_caja": 1.76,
-        "precio": 598.9984,
-        "coleccion": "nacionales"
-      },
-      {
-        "codigo": "CAS777",
-        "descripcion": "MYST 66 GRAY 60X60 5PZ 1.80M2",
-        "formato": "60X60",
+        "codigo": "522991442067441",
+        "descripcion": "PISO TARANTO WHITE 60x120 1.44 M2 PUL Y RECT",
+        "formato": "60x120",
         "color": "gris",
-        "m2_caja": 1.8,
-        "precio": 529.002,
+        "m2_caja": 1.44,
+        "precio": 499.00319999999994,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS94018",
-        "descripcion": "PISO YUNN 32 NUEZ 30X120 1.76M2",
-        "formato": "30X120",
-        "color": "caf\u00e9",
-        "m2_caja": 1.76,
-        "precio": 629.0064,
+        "codigo": "CAS100154",
+        "descripcion": "PISO CERAMICO TRAVERTINO BIANCO 60X60 1.80M2 5PZ",
+        "formato": "60X60",
+        "color": "blanco",
+        "m2_caja": 1.8,
+        "precio": 588.9960000000001,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS757",
+        "descripcion": "AMANI WHITE 60X60 1.44 M2",
+        "formato": "60X60",
+        "color": "blanco",
+        "m2_caja": 1.44,
+        "precio": 879.8831999999999,
         "coleccion": "nacionales"
       }
     ],
@@ -23133,9 +23143,19 @@
         "role": "assistant",
         "content": "\u00a1Hola IRIGOYEN! Estoy encantado de que hayas elegido este piso Madeira 32 Sand. Es una excelente opci\u00f3n para tu proyecto. \u00bfQuieres un presupuesto o necesitas m\u00e1s informaci\u00f3n sobre c\u00f3mo podemos ayudarte con esto?",
         "time": "2026-03-23T23:50:13.999830"
+      },
+      {
+        "role": "user",
+        "content": "Tar\u00e1nto white",
+        "time": "2026-03-23T23:51:12.522538"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Tar\u00e1nto white! \u00a1T\u00fa eligiste muy bien con este Piso Taranto White 60x120. Es un color que combina perfectamente con muchas decoraciones y su rendimiento es excelente, ofreciendo 1.44 m\u00b2 por caja.\n\n\u00bfTe interesa esta opci\u00f3n? Quiero asegurarme de que est\u00e9s completamente satisfecho antes de continuar. \u00bfQuieres agregarlo al carrito para obtener el detalle final o necesitas m\u00e1s informaci\u00f3n sobre c\u00f3mo podemos ayudarte con esto?\nSi tienes alguna pregunta o necesitas saber d\u00f3nde encontrar nuestra sucursal, estar\u00e9 encantado de darte esa informaci\u00f3n.\n\u00a1Gracias por elegir VAMA!",
+        "time": "2026-03-23T23:51:14.681567"
       }
     ],
-    "ultima_busqueda": "Esta",
+    "ultima_busqueda": "Tar\u00e1nto white",
     "estado": "inicio"
   }
 }

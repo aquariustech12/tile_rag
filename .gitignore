@@ -7,3 +7,7 @@ chroma_db_v3/
 cotizaciones/
 *.csv
 data/
+memoria_v2.json
+conversaciones/
+conversaciones_completas.jsonl
+

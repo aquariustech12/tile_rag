@@ -19473,31 +19473,31 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "NEOS030",
-        "descripcion": "ANTIQUE BLACK 33 33X33 1M2",
-        "formato": "33X33",
-        "color": "",
-        "m2_caja": 1.0,
-        "precio": 238.8,
-        "coleccion": "importados"
+        "codigo": "CAS7692",
+        "descripcion": "ACURA 66 TERRA 60X60 1.80M2",
+        "formato": "60X60",
+        "color": "caf\u00e9",
+        "m2_caja": 1.8,
+        "precio": 448.992,
+        "coleccion": "nacionales"
       },
       {
-        "codigo": "NEOS189",
-        "descripcion": "ANTIQUE WHITE 33 33X33 1M2",
-        "formato": "33X33",
-        "color": "",
-        "m2_caja": 1.0,
-        "precio": 238.8,
-        "coleccion": "importados"
+        "codigo": "CAS100147",
+        "descripcion": "PISO BLUES CAFE 60X120 1.42M2",
+        "formato": "60X120",
+        "color": "caf\u00e9",
+        "m2_caja": 1.42,
+        "precio": 529.0068,
+        "coleccion": "nacionales"
       },
       {
-        "codigo": "NEOS369",
-        "descripcion": "LUGO BIANCO GL 30X60 0.9M2",
-        "formato": "30X60",
-        "color": "",
-        "m2_caja": 0.9,
-        "precio": 308.997,
-        "coleccion": "importados"
+        "codigo": "CAS7693",
+        "descripcion": "PISO AMAZONAS CHERRY 22.5X60 1.89 M2",
+        "formato": "22.5X60",
+        "color": "caf\u00e9",
+        "m2_caja": 1.89,
+        "precio": 408.996,
+        "coleccion": "nacionales"
       }
     ],
     "m2": 0,
@@ -19531,9 +19531,19 @@
         "role": "assistant",
         "content": "\u00a1Hola Elena! Estamos ubicados en varias sucursales por toda la ciudad. \u00bfPodr\u00edas decirme en qu\u00e9 ciudad te encuentras o si necesitas informaci\u00f3n sobre una ubicaci\u00f3n espec\u00edfica? Aqu\u00ed te dejo las direcciones y horarios de nuestras principales sucursales para que puedas elegir la m\u00e1s cercana a ti:\n\n- CULIAC\u00c1N - TRES R\u00cdOS\n  \ud83d\udccd Blvd. Enrique S\u00e1nchez Alonso #1515, Desarrollo Urbano Tres R\u00edos\n  \ud83d\udcde (667) 752 20 78\n\n- LOS MOCHIS - INDEPENDENCIA\n  \ud83d\udccd Av. Independencia #2049 pte, Jardines del Country\n  \ud83d\udcde (668) 176 96 13\n\n- CULIAC\u00c1N - IGNACIO RAM\u00cdREZ\n  \ud83d\udccd Ignacio Ram\u00edrez #981 pte, Jorge Almada\n  \ud83d\udcde (667) 752 02 61\n\nSi necesitas m\u00e1s informaci\u00f3n o ayuda con algo m\u00e1s, d\u00e9jame saber. Estoy aqu\u00ed para ayudarte.",
         "time": "2026-03-22T02:16:00.257954"
+      },
+      {
+        "role": "user",
+        "content": "Me queda lejos",
+        "time": "2026-03-23T23:44:48.041625"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Elena! Me qued\u00f3 lejos pero eso me interes\u00f3 mucho. \u00bfTe interesa tambi\u00e9n la opci\u00f3n de 22.5X60 que es caf\u00e9? Si\u00e9ntete libre de decirme si quieres agregarlo al carrito o si tienes alguna otra consulta. Recuerda, estamos ubicados en CULIAC\u00c1N - IGNACIO RAM\u00cdREZ, Blvd. Ignacio Ram\u00edrez #981 pte, Jorge Almada, que est\u00e1 muy cerca de tu domicilio. \u00bfTienes un momento para hablar sobre cu\u00e1ntas cajas necesitar\u00edas?",
+        "time": "2026-03-23T23:44:50.095106"
       }
     ],
-    "ultima_busqueda": "Donde esta su negocio",
+    "ultima_busqueda": "Me queda lejos",
     "estado": "inicio"
   },
   "5216424265671": {
@@ -20567,19 +20577,37 @@
         "subtotal": 439.0029
       }
     ],
-    "ultimos_productos": [],
+    "ultimos_productos": [
+      {
+        "codigo": "520012402284921",
+        "descripcion": "PISO MONET HAYA 25X100 2.25 M2 RECTIFICADO",
+        "formato": "25x100",
+        "color": "beige",
+        "m2_caja": 2.25,
+        "precio": 809.01,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "520012402294921",
+        "descripcion": "PISO MONET CEDRO 25X100 2.25 M2 RECTIFICADO",
+        "formato": "25x100",
+        "color": "caf\u00e9",
+        "m2_caja": 2.25,
+        "precio": 809.01,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "520012403294211",
+        "descripcion": "PISO MONET CEDRO 16.5X100 CM 0.99 M2/CAJA RECTIFICADO",
+        "formato": "16.5x100",
+        "color": "caf\u00e9",
+        "m2_caja": 0.99,
+        "precio": 359.0037,
+        "coleccion": "nacionales"
+      }
+    ],
     "m2": 0,
     "historial": [
-      {
-        "role": "assistant",
-        "content": "\u00a1Buenos d\u00edas! Espero que est\u00e9 teniendo un excelente d\u00eda. He visto su solicitud sobre las 40 cajas de pisos de 60x60. \u00bfPodr\u00eda decirme cu\u00e1l de estas opciones le interesa o si prefiere alguna otra? Tambi\u00e9n, si no me ha dicho el \u00e1rea en metros cuadrados que planea cubrir con estos pisos, podr\u00eda proporcion\u00e1rmelo para ayudarlo mejor en su cotizaci\u00f3n.",
-        "time": "2026-03-23T18:20:58.828903"
-      },
-      {
-        "role": "user",
-        "content": "Estoy interesado en uno blanco  y uno negro  tendr\u00e1s fotos lo quiero para interio de una casa",
-        "time": "2026-03-23T18:44:11.951700"
-      },
       {
         "role": "user",
         "content": "Algo as\u00ed ando buscando",
@@ -20624,9 +20652,19 @@
         "role": "assistant",
         "content": "\u00a1Listo! Agregu\u00e9 1 unidad(es) de PISO SPRITZ BLACK 20.1x20.1CM 1.53 M2 a tu carrito.\nSubtotal: $439.00\nTotal acumulado: $851.35\n\n\u00bfNecesitas algo m\u00e1s o quieres ver el total?",
         "time": "2026-03-23T20:58:10.685216"
+      },
+      {
+        "role": "user",
+        "content": "Si",
+        "time": "2026-03-23T23:32:46.030673"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola! Veo que has dicho \u201cSi\u201d pero necesito aclarar un poco m\u00e1s. \u00bfTe gustar\u00eda ver el total de tu compra actual o est\u00e1s interesado en alguna de las opciones que te mostr\u00e9 recientemente? Si es la segunda opci\u00f3n, por favor d\u00e9jame saber cu\u00e1l de ellas te interesa para poder ayudarte mejor.",
+        "time": "2026-03-23T23:32:49.906972"
       }
     ],
-    "ultima_busqueda": "Tanvien buscaba uno  piso color negro nose si tendr\u00e1n  disponible",
+    "ultima_busqueda": "Si",
     "estado": "inicio"
   },
   "5216671776665": {
@@ -21734,31 +21772,31 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "50106043",
-        "descripcion": "TAZA MONET AL HUESO",
-        "formato": "",
-        "color": "beige",
-        "m2_caja": 1.0,
-        "precio": 2799.0,
-        "coleccion": "sanitarios"
+        "codigo": "522023251315151",
+        "descripcion": "TESSUTI MIX 20.1X20.1 1.53M2",
+        "formato": "20.1x20.1",
+        "color": "caf\u00e9",
+        "m2_caja": 1.53,
+        "precio": 398.9933999999999,
+        "coleccion": "nacionales"
       },
       {
-        "codigo": "WC.4007.01",
-        "descripcion": "One piece Dica 4007",
-        "formato": "",
-        "color": "blanco",
-        "m2_caja": 1.0,
-        "precio": 1899.0,
-        "coleccion": "sanitarios"
+        "codigo": "522065143567011",
+        "descripcion": "PISO BERNAL GRAFITO 60.5x60.5 CM 1.83 M2/CAJA",
+        "formato": "60.5x60.5",
+        "color": "gris",
+        "m2_caja": 1.83,
+        "precio": 589.0038000000001,
+        "coleccion": "nacionales"
       },
       {
-        "codigo": "TQ1033A021",
-        "descripcion": "TANQUE CORZO",
-        "formato": "",
-        "color": "blanco",
-        "m2_caja": 1.0,
-        "precio": 655.0,
-        "coleccion": "sanitarios"
+        "codigo": "522991442067441",
+        "descripcion": "PISO TARANTO WHITE 60x120 1.44 M2 PUL Y RECT",
+        "formato": "60x120",
+        "color": "gris",
+        "m2_caja": 1.44,
+        "precio": 499.00319999999994,
+        "coleccion": "nacionales"
       }
     ],
     "m2": 0,
@@ -21782,9 +21820,19 @@
         "role": "assistant",
         "content": "\u00a1Buenas tardes Magda! \u00bfC\u00f3mo est\u00e1s? Tengo varias opciones de tazas de ba\u00f1o con dep\u00f3sito disponibles. Aqu\u00ed te presento algunas:\n\n1. **TAZA MONET AL HUESO** - Color beige, precio $2799.00.\n2. **One piece Dica 4007** - Color blanco, precio $1899.00.\n3. **TANQUE CORZO** - Color blanco, precio $655.00.\n\n\u00bfCu\u00e1l de estas opciones te interesa? Si me dices el n\u00famero o nombre del producto, estar\u00e9 encantado de proporcionarte m\u00e1s detalles.",
         "time": "2026-03-23T22:19:41.571848"
+      },
+      {
+        "role": "user",
+        "content": "Junto",
+        "time": "2026-03-23T23:43:42.886311"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Magda! Parece que has estado mirando algunos productos. \u00bfQuieres m\u00e1s informaci\u00f3n sobre la TAZA MONET AL HUESO? Color beige, precio $2799.00. \u00bfTe interesa saber algo m\u00e1s sobre ella o quiz\u00e1s te gustar\u00eda ver una opci\u00f3n diferente?",
+        "time": "2026-03-23T23:43:44.373623"
       }
     ],
-    "ultima_busqueda": "Buenas  tardes  tendran  tazas  de  ba\u00f1o  con  depocito   y  cuanto  sale",
+    "ultima_busqueda": "Junto",
     "estado": "inicio"
   },
   "5216442392517": {
@@ -22515,30 +22563,30 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "522515254863911",
-        "descripcion": "PISO SOHO ALBINO 50X100 CM 2.0 M2/CAJA RECTIFICADO",
-        "formato": "50x100",
+        "codigo": "522676325863061",
+        "descripcion": "PISO CHAPALA ALBINO 18X60.6 CM 1.64 M2/CAJA",
+        "formato": "18x60.6",
         "color": "gris",
-        "m2_caja": 2.0,
-        "precio": 739.0,
+        "m2_caja": 1.64,
+        "precio": 379.004,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS100172",
-        "descripcion": "PISO PORCELANICO THASSOS 120 60X120 1.44M2",
-        "formato": "60X120",
+        "codigo": "522676325343061",
+        "descripcion": "PISO CHAPALA FRESNO 18X60.6 CM 1.64 M2/CAJA",
+        "formato": "18x60.6",
         "color": "beige",
-        "m2_caja": 1.44,
-        "precio": 984.4272,
+        "m2_caja": 1.64,
+        "precio": 379.004,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "522799254011911",
-        "descripcion": "PISO LIVING GRIS 50X100 CM 2.0 M2/CAJA RECTIFICADO",
-        "formato": "50x100",
-        "color": "gris",
-        "m2_caja": 2.0,
-        "precio": 739.0,
+        "codigo": "CAS10024509",
+        "descripcion": "CALEDONIA 66 HAYA 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 408.996,
         "coleccion": "nacionales"
       }
     ],
@@ -22563,9 +22611,19 @@
         "role": "assistant",
         "content": "\u00a1Hola Felix! Me alegro de que est\u00e9s interesado en nuestros pisos. \u00bfPodr\u00edas decirme un poco m\u00e1s sobre lo que buscas exactamente? Por ejemplo, si tienes en mente alg\u00fan estilo o color en particular, o si necesitas ayuda con alguna de las opciones que te mostr\u00e9 recientemente. Estoy aqu\u00ed para ayudarte a encontrar justo lo que necesitas.",
         "time": "2026-03-23T23:01:26.447639"
+      },
+      {
+        "role": "user",
+        "content": "Para la sala y cosina, duela tipo madera",
+        "time": "2026-03-23T23:32:22.125533"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola Felix! Me alegro de que est\u00e9s interesado en los pisos tipo madera. Veo que hay algunas opciones que podr\u00edan ser ideales para la sala y cocina. \u00bfPodr\u00edas darme un poco m\u00e1s de informaci\u00f3n sobre lo que buscas exactamente? Por ejemplo, si tienes alguna preferencia por el color o el formato de las baldosas. Estoy aqu\u00ed para ayudarte a encontrar justo lo que necesitas.",
+        "time": "2026-03-23T23:32:29.699448"
       }
     ],
-    "ultima_busqueda": "Pisos",
+    "ultima_busqueda": "Para la sala y cosina, duela tipo madera",
     "estado": "inicio"
   },
   "5213111476415": {
@@ -22846,6 +22904,218 @@
       }
     ],
     "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n",
+    "estado": "inicio"
+  },
+  "5216672688215": {
+    "nombre": "Consuelo",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "520012403284931",
+        "descripcion": "PISO MONET HAYA 16.5X100 1.49 M2 CTDO Y RECTIFICADO",
+        "formato": "16.5x100",
+        "color": "beige",
+        "m2_caja": 1.49,
+        "precio": 538.9926,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS94018",
+        "descripcion": "PISO YUNN 32 NUEZ 30X120 1.76M2",
+        "formato": "30X120",
+        "color": "caf\u00e9",
+        "m2_caja": 1.76,
+        "precio": 629.0064,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "ZCN815151P7",
+        "descripcion": "ZCN8 37 cm x 37 cm Colonial Elena 1a. Cal. 2.11M2",
+        "formato": "37x37",
+        "color": "multicolor",
+        "m2_caja": 2.11,
+        "precio": 559.0023,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n",
+        "time": "2026-03-23T23:37:29.505316"
+      },
+      {
+        "role": "assistant",
+        "content": "Hola Consuelo,\n\n\u00a1Qu\u00e9 gusto saludarte! Parece que est\u00e1s interesado en algunos de nuestros productos. Perm\u00edteme mostrarte una opci\u00f3n y asegurarme de que est\u00e9s satisfecho con ella.\n\n\u00bfTe interesa la pizarra Maya Multicolor, en color caf\u00e9? Es un formato 45x45 cm y cubre aproximadamente 1.62 metros cuadrados por caja. El precio es $388.99.\n\nOtra opci\u00f3n que podr\u00edas considerar es el Halo 66 Silver de color gris, con un formato de 60x60 cm y rendimiento del mismo: 1.8 m\u00b2 por caja. Su precio ser\u00eda $409.00.\n\n\u00bfQu\u00e9 te parece si revisamos la pizarra Maya Multicolor? Si tienes alguna duda o prefieres otra opci\u00f3n, estar\u00e9 encantado de ayudarte m\u00e1s.\n\n\u00a1Gracias por tu tiempo y espero poder asistirte!",
+        "time": "2026-03-23T23:37:35.237433"
+      },
+      {
+        "role": "user",
+        "content": "Ten\u00e9 m\u00e1s modelos?",
+        "time": "2026-03-23T23:37:38.269959"
+      },
+      {
+        "role": "assistant",
+        "content": "Hola Consuelo,\n\n\u00a1Qu\u00e9 gusto saludarte de nuevo! Parece que est\u00e1s interesado en algunas opciones. \u00bfTe gustar\u00eda revisar la opci\u00f3n 3: el ZCN8 Colonial Elena, un producto multicolor con un formato de 37x37 cm y un rendimiento del mismo: 2.11 metros cuadrados por caja? El precio ser\u00eda $559.00.\n\n\u00bfMe das una idea qu\u00e9 te parece o necesitas m\u00e1s informaci\u00f3n sobre este producto?\n\nSi quieres saber si incluir\u00eda otros productos, estar\u00e9 encantado de ayudarte a completar tu carrito. \u00bfQuieres que calculemos el total y verifiquemos si es lo que esperabas? Adem\u00e1s, si necesitas ubicaci\u00f3n de una sucursal o algo m\u00e1s, aqu\u00ed tienes nuestra informaci\u00f3n:\n\nSUCURSALES ENCONTRADAS: [Aqu\u00ed va la lista de sucursales disponibles]\n\n\u00bfCu\u00e1l te parece perfecto? Si quieres continuar con otros productos o hay algo que quieras saber sobre el ZCN8, estar\u00e9 encantado de ayudarte m\u00e1s.\n\n\u00a1Gracias por tu tiempo y espero poder asistirte!\n\nUn saludo,\n[Vendendor VAMA]",
+        "time": "2026-03-23T23:37:41.499177"
+      }
+    ],
+    "ultima_busqueda": "Ten\u00e9 m\u00e1s modelos?",
+    "estado": "inicio"
+  },
+  "5216674789601": {
+    "nombre": "ESTHELA \u2728",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "ZKT23264PR1SL",
+        "descripcion": "ZKT2 80 CM X 160 CM RECT. KATALONIA BEIGE 1a. CAL. 2.52 M2",
+        "formato": "80x160",
+        "color": "beige",
+        "m2_caja": 2.56,
+        "precio": 1899.008,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS1001216",
+        "descripcion": "PISO MOON IVORY 60X120 3PZ 2.13M2",
+        "formato": "60x120",
+        "color": "beige",
+        "m2_caja": 2.13,
+        "precio": 748.9931999999999,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS785",
+        "descripcion": "TULUM 60 SAND 60X60 5PZ 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 498.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "Venden piedra decorativa para pared ?",
+        "time": "2026-03-23T23:40:03.688364"
+      },
+      {
+        "role": "assistant",
+        "content": "Hola ESTHELA \u2728,\n\n\u00a1Estimado/a! Te preguntaba si te interesa este producto: MURO MEDITERRANEO CREMA 28X60 CM 1.68 M\u00b2/CAJA 10 PZ. Es un color crema que se adapta muy bien a muchas estilos de decoraci\u00f3n.\n\n\u00bfTe parece? \u00bfEs lo que buscabas en piedra decorativa para pared?\n\nSi es as\u00ed, solo necesito decirte cu\u00e1ntas cajas quieres comprar y podemos proceder con el pago. Si no tienes idea ahora, te dar\u00e9 un total pronto y podr\u00e1s confirmar la compra si todo est\u00e1 bien.\n\n\u00bfTe parece? \u00bfPuedo asistirte en algo m\u00e1s hoy?\n\nSi lo prefieres, tambi\u00e9n puedes visitar nuestra p\u00e1gina web para consultar m\u00e1s productos: https://vama.com.mx\n\n\u00a1Gracias por tu tiempo!\n\nAtentamente,\n[VAMA]",
+        "time": "2026-03-23T23:40:06.434154"
+      },
+      {
+        "role": "user",
+        "content": "Piedra decorativa para paredes",
+        "time": "2026-03-23T23:40:51.318847"
+      },
+      {
+        "role": "assistant",
+        "content": "Hola ESTHELA \u2728,\n\n\u00a1Estimada/a! Me complace saber que est\u00e1s interesada en una piedra decorativa para paredes. Vamos a ver las opciones disponibles:\n\nOpci\u00f3n 1:\n- Producto: ZKT2 80 CM X 160 CM RECT. KATALONIA BEIGE 1a. CAL.\n- Formato: 80x160\n- Color: beige\n- Rendimiento: 2.56 m\u00b2 por caja\n- Precio: $1899.01\n\nOpci\u00f3n 2:\n- Producto: TULUM 60 SAND 60X60 5PZ\n- Formato: 60x60\n- Color: beige\n- Rendimiento: 1.8 m\u00b2 por caja\n- Precio: $499.00\n\n\u00bfMe interesa la opci\u00f3n ZKT2 80 CM X 160 CM RECT. KATALONIA BEIGE 1a. CAL.? Quiero confirmar si es lo que necesitas.\n\nSi ya tienes una idea de cu\u00e1ntas cajas quieres comprar, simplemente dec\u00edrmelo y podemos proceder con el pago. Si no decides ahora, te dar\u00e9 el total pronto para que puedas confirmarlo.\n\n\u00bfTe parece? \u00bfPuedo asistirte en algo m\u00e1s hoy?\n\nSi",
+        "time": "2026-03-23T23:40:54.998599"
+      }
+    ],
+    "ultima_busqueda": "Piedra decorativa para paredes",
+    "estado": "inicio"
+  },
+  "5216692177919": {
+    "nombre": "FP\u2728",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "521666090473021",
+        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+        "formato": "45x45",
+        "color": "caf\u00e9",
+        "m2_caja": 1.62,
+        "precio": 388.9944,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024511",
+        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "gris",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024510",
+        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n",
+        "time": "2026-03-23T23:48:52.232716"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola FP! Me alegra que me contactses con m\u00e1s informaci\u00f3n. \u00bfTe interesa la opci\u00f3n 1, el piso Maya multicolor en caf\u00e9? Si es as\u00ed, te dir\u00e9 los detalles y si tienes alguna otra pregunta.",
+        "time": "2026-03-23T23:48:53.516478"
+      }
+    ],
+    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n",
+    "estado": "inicio"
+  },
+  "5216692224382": {
+    "nombre": "IRIGOYEN \u270c\ud83c\udffb",
+    "carrito": [],
+    "ultimos_productos": [
+      {
+        "codigo": "521666090473021",
+        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
+        "formato": "45x45",
+        "color": "caf\u00e9",
+        "m2_caja": 1.62,
+        "precio": 388.9944,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024511",
+        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "gris",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      },
+      {
+        "codigo": "CAS10024510",
+        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+        "formato": "60X60",
+        "color": "beige",
+        "m2_caja": 1.8,
+        "precio": 408.996,
+        "coleccion": "nacionales"
+      }
+    ],
+    "m2": 0,
+    "historial": [
+      {
+        "role": "user",
+        "content": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n.",
+        "time": "2026-03-23T23:49:12.766033"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola IRIGOYEN! Me alegra que te interese algo de mi selecci\u00f3n. \u00bfEl piso Maya Multicolor 45x45 o el Halo 66 Ivory en 60x60? Ambos son opciones muy bonitas y elegantes para tu proyecto. \u00bfCu\u00e1l prefieres?",
+        "time": "2026-03-23T23:49:14.187095"
+      }
+    ],
+    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n.",
     "estado": "inicio"
   }
 }

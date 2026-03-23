@@ -23085,30 +23085,30 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "521666090473021",
-        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
-        "formato": "45x45",
-        "color": "caf\u00e9",
-        "m2_caja": 1.62,
-        "precio": 388.9944,
+        "codigo": "CAS9408",
+        "descripcion": "PISO MADEIRA 32 SAND 30X120 1.76 M2",
+        "formato": "30X120",
+        "color": "beige",
+        "m2_caja": 1.76,
+        "precio": 598.9984,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS10024511",
-        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
+        "codigo": "CAS777",
+        "descripcion": "MYST 66 GRAY 60X60 5PZ 1.80M2",
         "formato": "60X60",
         "color": "gris",
         "m2_caja": 1.8,
-        "precio": 408.996,
+        "precio": 529.002,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS10024510",
-        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
-        "formato": "60X60",
-        "color": "beige",
-        "m2_caja": 1.8,
-        "precio": 408.996,
+        "codigo": "CAS94018",
+        "descripcion": "PISO YUNN 32 NUEZ 30X120 1.76M2",
+        "formato": "30X120",
+        "color": "caf\u00e9",
+        "m2_caja": 1.76,
+        "precio": 629.0064,
         "coleccion": "nacionales"
       }
     ],
@@ -23123,9 +23123,19 @@
         "role": "assistant",
         "content": "\u00a1Hola IRIGOYEN! Me alegra que te interese algo de mi selecci\u00f3n. \u00bfEl piso Maya Multicolor 45x45 o el Halo 66 Ivory en 60x60? Ambos son opciones muy bonitas y elegantes para tu proyecto. \u00bfCu\u00e1l prefieres?",
         "time": "2026-03-23T23:49:14.187095"
+      },
+      {
+        "role": "user",
+        "content": "Esta",
+        "time": "2026-03-23T23:50:12.743741"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola IRIGOYEN! Estoy encantado de que hayas elegido este piso Madeira 32 Sand. Es una excelente opci\u00f3n para tu proyecto. \u00bfQuieres un presupuesto o necesitas m\u00e1s informaci\u00f3n sobre c\u00f3mo podemos ayudarte con esto?",
+        "time": "2026-03-23T23:50:13.999830"
       }
     ],
-    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n.",
+    "ultima_busqueda": "Esta",
     "estado": "inicio"
   }
 }

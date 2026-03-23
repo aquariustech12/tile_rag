@@ -23027,30 +23027,30 @@
     "carrito": [],
     "ultimos_productos": [
       {
-        "codigo": "521666090473021",
-        "descripcion": "PISO MAYA MULTICOLOR 45X45 CM 1.62 M2 CAJA",
-        "formato": "45x45",
-        "color": "caf\u00e9",
-        "m2_caja": 1.62,
-        "precio": 388.9944,
+        "codigo": "CAS94016",
+        "descripcion": "PISO VENETIAN BLANCO 60X60 1.44M2",
+        "formato": "60X60",
+        "color": "blanco",
+        "m2_caja": 1.44,
+        "precio": 675.7056,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS10024511",
-        "descripcion": "HALO 66 SILVER 60X60 5 PZS 1.80M2",
-        "formato": "60X60",
-        "color": "gris",
-        "m2_caja": 1.8,
-        "precio": 408.996,
+        "codigo": "CAS2510",
+        "descripcion": "PISO GRECIA 62 BRILLO 60X120 2PZ 1.42M2",
+        "formato": "60X120",
+        "color": "blanco",
+        "m2_caja": 1.42,
+        "precio": 459.0008,
         "coleccion": "nacionales"
       },
       {
-        "codigo": "CAS10024510",
-        "descripcion": "HALO 66 IVORY 60X60 5 PZS 1.80M2",
+        "codigo": "CAS757",
+        "descripcion": "AMANI WHITE 60X60 1.44 M2",
         "formato": "60X60",
-        "color": "beige",
-        "m2_caja": 1.8,
-        "precio": 408.996,
+        "color": "blanco",
+        "m2_caja": 1.44,
+        "precio": 879.8831999999999,
         "coleccion": "nacionales"
       }
     ],
@@ -23065,9 +23065,19 @@
         "role": "assistant",
         "content": "\u00a1Hola FP! Me alegra que me contactses con m\u00e1s informaci\u00f3n. \u00bfTe interesa la opci\u00f3n 1, el piso Maya multicolor en caf\u00e9? Si es as\u00ed, te dir\u00e9 los detalles y si tienes alguna otra pregunta.",
         "time": "2026-03-23T23:48:53.516478"
+      },
+      {
+        "role": "user",
+        "content": "Me interesa un piso de 60x60 marmoleado blanco con gris",
+        "time": "2026-03-23T23:49:48.623036"
+      },
+      {
+        "role": "assistant",
+        "content": "\u00a1Hola FP\u2728! Me alegra que me contactes con m\u00e1s informaci\u00f3n. Parece que te interesan los pisos marmolizados de 60x60 en blanco con gris. \u00bfMejoramos esa opci\u00f3n? \n\nTenemos tres opciones disponibles:\n\nOpci\u00f3n 1: PISO VENETIAN BLANCO 60X60 1.44M2 - Color blanco, Rendimiento: 1.44 m\u00b2 por caja\n- Precio individual: $675.71\n\nOpci\u00f3n 2: PISO GRECIA 62 BRILLO 60X120 2PZ 1.42M2 - Color blanco, Rendimiento: 1.42 m\u00b2 por caja\n- Precio individual: $459.00\n\nOpci\u00f3n 3: AMANI WHITE 60X60 1.44 M2 - Color blanco y gris, Rendimiento: 1.44 m\u00b2 por caja\n- Precio individual: $879.88 \n\n\u00bfTe interesa alguna de estas opciones o prefieres que hagamos otro an\u00e1lisis?",
+        "time": "2026-03-23T23:49:51.883653"
       }
     ],
-    "ultima_busqueda": "\u00a1Hola! Quiero m\u00e1s informaci\u00f3n",
+    "ultima_busqueda": "Me interesa un piso de 60x60 marmoleado blanco con gris",
     "estado": "inicio"
   },
   "5216692224382": {

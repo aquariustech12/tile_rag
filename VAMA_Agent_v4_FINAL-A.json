@@ -1,0 +1,151 @@
+{
+  "name": "VAMA Agent v5 - Port 5001 Fix",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "vama",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://agente3.aegis-oceanit.work/user/' + $json.messages[0].from }}",
+        "options": {}
+      },
+      "id": "get_user",
+      "name": "Get User State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.error ? 'not_found' : 'exists' }}",
+              "operation": "equals",
+              "value2": "not_found"
+            }
+          ]
+        }
+      },
+      "id": "if_exists",
+      "name": "If user exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "telefono", "value": "={{ $node[\"Webhook WhatsApp\"].json.messages[0].from }}" },
+            { "name": "nombre", "value": "={{ $node[\"Webhook WhatsApp\"].json.contacts[0].profile.name }}" },
+            { "name": "estado", "value": "inicio" },
+            { "name": "m2", "value": "0" },
+            { "name": "carrito", "value": "[]" },
+            { "name": "ultimos_productos", "value": "[]" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "create_user",
+      "name": "Create User",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $node[\"Webhook WhatsApp\"].json;\nlet userState = $node[\"Get User State\"].json;\n\nreturn {\n  telefono: webhookData.messages[0].from,\n  nombre: webhookData.contacts[0].profile.name,\n  mensaje: webhookData.messages[0].text.body,\n  estado: userState.estado || 'inicio',\n  carrito: userState.carrito ? (typeof userState.carrito === 'string' ? JSON.parse(userState.carrito) : userState.carrito) : [],\n  m2: userState.m2 || 0,\n  ultimos_productos: userState.ultimos_productos ? (typeof userState.ultimos_productos === 'string' ? JSON.parse(userState.ultimos_productos) : userState.ultimos_productos) : [],\n  ultima_busqueda: userState.ultima_busqueda || ''\n};"
+      },
+      "id": "merge_state",
+      "name": "Merge State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/buscar",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "query", "value": "={{ $json.mensaje }}" },
+            { "name": "m2", "value": "={{ $json.m2 }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "search_products",
+      "name": "Search Products",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1650, 700]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://agente3.aegis-oceanit.work/user/' + $json.telefono + '/reset' }}",
+        "options": {}
+      },
+      "id": "reset_state",
+      "name": "Reset State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1450, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "telefono", "value": "={{ $json.telefono }}" },
+            { "name": "estado", "value": "={{ $json.nuevo_estado || $json.estado }}" },
+            { "name": "m2", "value": "={{ $json.m2 }}" },
+            { "name": "carrito", "value": "={{ $json.nuevo_carrito || $json.carrito }}" },
+            { "name": "ultimos_productos", "value": "={{ $json.ultimos_productos || [] }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update_state",
+      "name": "Update State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [2050, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.respuesta }}"
+      },
+      "id": "respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2250, 400]
+    }
+  ],
+  "connections": {
+    "Webhook WhatsApp": { "main": [[{ "node": "get_user", "type": "main", "index": 0 }]] },
+    "get_user": { "main": [[{ "node": "if_exists", "type": "main", "index": 0 }]] },
+    "if_exists": { "main": [[{ "node": "create_user", "type": "main", "index": 0 }], [{ "node": "merge_state", "type": "main", "index": 0 }]] },
+    "create_user": { "main": [[{ "node": "merge_state", "type": "main", "index": 0 }]] },
+    "update_state": { "main": [[{ "node": "respond", "type": "main", "index": 0 }]] }
+  }
+}

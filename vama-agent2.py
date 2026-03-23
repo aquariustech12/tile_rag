@@ -98,7 +98,8 @@ class Memoria:
                 'ultimos_productos': [],
                 'm2': 0,
                 'historial': [],
-                'ultima_busqueda': ''
+                'ultima_busqueda': '',
+                'estado': 'inicio'
             }
         return self.datos[uid]
 
@@ -146,9 +147,20 @@ MAP_COLECCIONES = {
 def detectar_intenciones_producto(msg):
     msg = msg.lower()
     intenciones = []
+    
+    # Prioridad para frases compuestas que no deben caer en 'piso'
+    if 'piso sobre piso' in msg or 'piso sobre piso' in msg:
+        return ['pegamento']
+    
     for palabra, cols in MAP_COLECCIONES.items():
         if palabra in msg:
             intenciones.append(palabra)
+    
+    # Si no hay intención clara y el mensaje tiene "piso" pero también "pegamento" o "adhesivo", priorizar pegamento
+    if 'piso' in intenciones and any(p in msg for p in ['pegamento', 'pega', 'adhesivo', 'cemento']):
+        intenciones = [p for p in intenciones if p != 'piso']
+        intenciones.append('pegamento')
+    
     return intenciones if intenciones else ['piso']
 
 def detectar_color(msg):
@@ -490,29 +502,6 @@ def flujo_buscar(user, msg):
     if not productos:
         return "Lo siento, no encontré productos con esas características. ¿Podrías darme más detalles? (color, medida, tipo)"
 
-    # === GUARDADO AUTOMÁTICO SI EL CLIENTE MENCIONA UN PRODUCTO POR NOMBRE ===
-    for p in productos:
-        # Extraer palabras clave del producto
-        palabras_clave = p['descripcion'].lower().split()
-        # Verificar si alguna palabra clave está en el mensaje
-        if any(palabra in msg.lower() for palabra in palabras_clave if len(palabra) > 3):
-            cantidad = calcular_cantidad(user.get('m2', 0), p['m2_caja'])
-            item = {
-                'codigo': p['codigo'],
-                'descripcion': p['descripcion'],
-                'cantidad': cantidad,
-                'precio_unitario': p['precio'],
-                'subtotal': (p['precio'] or 0) * cantidad
-            }
-            user['carrito'].append(item)
-            user['ultimos_productos'] = []
-            total = sum(i['subtotal'] for i in user['carrito'])
-            return (f"¡Listo! Agregué {cantidad} unidad(es) de {p['descripcion']} a tu carrito.\n"
-                    f"Subtotal: ${item['subtotal']:.2f}\n"
-                    f"Total acumulado: ${total:.2f}\n\n"
-                    f"¿Necesitas algo más o quieres ver el total?")
-    # ===========================================================================
-
     user['ultimos_productos'] = productos
 
     contexto = formatear_productos_para_llm(productos, user.get('m2'))
@@ -603,7 +592,46 @@ def flujo_total(user, user_id=None):
 
     lineas.append("¿Te parece bien? ¿Confirmamos disponibilidad?")
 
+        # Vaciar carrito después de mostrar la cotización (como pagar en caja)
+    user['carrito'] = []
+    user['ultimos_productos'] = []
+    user['m2'] = 0
+
     return "\n".join(lineas)
+
+def flujo_eliminar_producto(user, msg):
+    if not user.get('carrito'):
+        return "Tu carrito está vacío, no hay nada que eliminar."
+
+    msg_low = msg.lower()
+
+    # Eliminar por número (si dice "quita el 1", "elimina el 2")
+    num_match = re.search(r'(?:quita\s+el\s+)?([123])', msg_low)
+    if num_match:
+        idx = int(num_match.group(1)) - 1
+        if idx < len(user['carrito']):
+            eliminado = user['carrito'].pop(idx)
+            total = sum(i.get('subtotal', 0) for i in user['carrito'])
+            return f"✅ Eliminado {eliminado['descripcion']} de tu carrito.\nTotal actual: ${total:.2f}\n\n¿Algo más?"
+
+    # Eliminar por nombre o código
+    for idx, item in enumerate(user['carrito']):
+        desc_lower = item['descripcion'].lower()
+        cod_lower = item['codigo'].lower()
+        if desc_lower in msg_low or cod_lower in msg_low:
+            eliminado = user['carrito'].pop(idx)
+            total = sum(i.get('subtotal', 0) for i in user['carrito'])
+            return f"✅ Eliminado {eliminado['descripcion']} de tu carrito.\nTotal actual: ${total:.2f}\n\n¿Algo más?"
+
+    # Eliminar el último producto
+    if any(p in msg_low for p in ['último', 'ultimo', 'ese', 'eso', 'el último', 'el que agregué']):
+        eliminado = user['carrito'].pop()
+        total = sum(i.get('subtotal', 0) for i in user['carrito'])
+        return f"✅ Eliminado {eliminado['descripcion']} de tu carrito.\nTotal actual: ${total:.2f}\n\n¿Necesitas algo más?"
+
+    # Mostrar carrito numerado
+    carrito_str = "\n".join([f"{i+1}. {item['descripcion']} - ${item.get('subtotal', 0):.2f}" for i, item in enumerate(user['carrito'])])
+    return f"No entendí qué producto quieres eliminar. Estos son los productos en tu carrito:\n{carrito_str}\n\nDime el **número** o el **nombre** del que quieras quitar."
 
 def flujo_mas_opciones(user):
     if not user.get('ultima_busqueda'):
@@ -691,6 +719,9 @@ def detectar_intencion(msg, user):
 
     if any(p in msg_low for p in ['mas opciones', 'otras opciones', 'ver más', 'otros']):
         return 'MAS_OPCIONES'
+
+    if any(p in msg_low for p in ['quitar', 'eliminar', 'quita', 'borrar', 'saca', 'no quiero ese', 'cancela ese']):
+        return 'ELIMINAR_PRODUCTO'
 
     if any(p in msg_low for p in ['nueva cotizacion', 'empezar de nuevo', 'borrar', 'limpiar']):
         return 'REINICIAR'
@@ -793,6 +824,9 @@ def procesar(user_id, nombre, mensaje):
         if not respuesta:
             respuesta = "¡Listo! Empezamos una cotización nueva. ¿Qué material necesitas?"
 
+    elif intencion == 'ELIMINAR_PRODUCTO':
+        respuesta = flujo_eliminar_producto(user, mensaje)
+
     elif intencion == 'DESPEDIR':
         respuesta = generar_respuesta_llm(user, mensaje, "El cliente se está despidiendo. Despídete amablemente.")
         if not respuesta:
@@ -815,7 +849,27 @@ def procesar(user_id, nombre, mensaje):
     })
 
     memoria.save()
+    log_conversacion(user_id, user.get('nombre', nombre), mensaje, respuesta, user)
+    
     return respuesta
+
+# ============================================================================
+# LOG DE CONVERSACIONES
+# ============================================================================
+def log_conversacion(user_id, nombre, mensaje_usuario, respuesta, user):
+    with open("conversaciones_completas.jsonl", "a") as f:
+        registro = {
+            "timestamp": datetime.now().isoformat(),
+            "telefono": user_id,
+            "nombre": nombre,
+            "mensaje_usuario": mensaje_usuario,
+            "respuesta_bot": respuesta,
+            "estado": user.get("estado"),  # aunque no lo uses ahora, por si acaso
+            "carrito": user.get("carrito"),
+            "ultimos_productos": [p.get("codigo") for p in user.get("ultimos_productos", [])],
+            "m2": user.get("m2"),
+        }
+        f.write(json.dumps(registro, ensure_ascii=False) + "\n")
 
 # ============================================================================
 # API

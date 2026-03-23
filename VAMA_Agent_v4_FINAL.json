@@ -1,0 +1,683 @@
+{
+  "name": "VAMA Agent v4",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "vama",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://agente3.aegis-oceanit.work/user/' + $json.messages[0].from }}",
+        "authentication": "none",
+        "sendQuery": false,
+        "options": {}
+      },
+      "id": "get_user",
+      "name": "Get User State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.error ? 'not_found' : 'exists' }}",
+              "operation": "equals",
+              "value2": "not_found"
+            }
+          ]
+        }
+      },
+      "id": "if_exists",
+      "name": "If user exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "telefono",
+              "value": "={{ $json.messages[0].from }}"
+            },
+            {
+              "name": "nombre",
+              "value": "={{ $json.contacts[0].profile.name }}"
+            },
+            {
+              "name": "estado",
+              "value": "inicio"
+            },
+            {
+              "name": "m2",
+              "value": "0"
+            },
+            {
+              "name": "carrito",
+              "value": "[]"
+            },
+            {
+              "name": "ultimos_productos",
+              "value": "[]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "create_user",
+      "name": "Create User",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        850,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combinar datos de webhook con estado del usuario\nconst webhookData = $input.first().json;\nlet userState = {};\nif ($input.length > 1) {\n  userState = $input.item(1).json;\n}\n\nreturn {\n  telefono: webhookData.messages[0].from,\n  nombre: webhookData.contacts[0].profile.name,\n  mensaje: webhookData.messages[0].text.body,\n  estado: userState.estado || 'inicio',\n  carrito: userState.carrito ? JSON.parse(userState.carrito) : [],\n  m2: userState.m2 || 0,\n  ultimos_productos: userState.ultimos_productos ? JSON.parse(userState.ultimos_productos) : [],\n  ultima_busqueda: userState.ultima_busqueda || ''\n};"
+      },
+      "id": "merge_state",
+      "name": "Merge State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1050,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.mensaje.toLowerCase().includes('nueva cotizacion') || $json.mensaje.toLowerCase().includes('reiniciar') }}",
+              "operation": "equals",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "switch_reinicio",
+      "name": "Reinicio?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://agente3.aegis-oceanit.work/user/' + $json.telefono + '/reset' }}",
+        "authentication": "none",
+        "sendBody": false,
+        "options": {}
+      },
+      "id": "reset_state",
+      "name": "Reset State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "\u00a1Listo! Empezamos una cotizaci\u00f3n nueva. \u00bfQu\u00e9 material necesitas?"
+      },
+      "id": "respond_reset",
+      "name": "Respond Reset",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1650,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detectar intenciones\nconst msg = $json.mensaje.toLowerCase();\nconst estado = $json.estado;\n\nlet intent = 'buscar';\n\n// 1. Ubicaci\u00f3n / ciudad\nconst ciudades = ['culiac\u00e1n','culiacan','los mochis','mochis','guasave','mazatl\u00e1n'];\nif (ciudades.some(c => msg.includes(c))) {\n  intent = 'sucursales';\n}\n// 2. Preguntas de env\u00edo / tiempo\nelse if (msg.includes('tarda') || msg.includes('env\u00edo') || msg.includes('domicilio') || msg.includes('disponibilidad')) {\n  intent = 'envio';\n}\n// 3. Saludo\nelse if (msg.includes('hola') || msg.includes('buen dia') || msg.includes('saludos')) {\n  intent = 'saludo';\n}\n// 4. Checkout\nelse if (msg.includes('total') || msg.includes('pagar') || msg.includes('resumen') || msg.includes('cotizacion') && $json.carrito.length > 0) {\n  intent = 'checkout';\n}\n// 5. Selecci\u00f3n (si hay productos mostrados y el mensaje es n\u00famero o nombre de producto)\nelse if ($json.ultimos_productos.length > 0) {\n  // Si el mensaje es un n\u00famero 1-3 o coincide con alg\u00fan nombre\n  const nums = ['1','2','3'];\n  if (nums.includes(msg) || $json.ultimos_productos.some(p => p.descripcion.toLowerCase().includes(msg))) {\n    intent = 'seleccion';\n  }\n}\n\nreturn { ...$json, intent };"
+      },
+      "id": "detect_intent",
+      "name": "Detect Intent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "outputCount": 6,
+        "jsExpression": "{{ $json.intent === 'sucursales' ? 0 : $json.intent === 'envio' ? 1 : $json.intent === 'saludo' ? 2 : $json.intent === 'checkout' ? 3 : $json.intent === 'seleccion' ? 4 : 5 }}"
+      },
+      "id": "switch_intent",
+      "name": "Switch Intent",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://agente3.aegis-oceanit.work/sucursales",
+        "authentication": "none",
+        "sendQuery": false,
+        "options": {}
+      },
+      "id": "get_sucursales",
+      "name": "Get Sucursales",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1650,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatear respuesta de sucursales\nconst sucursales = $json;\nlet texto = 'Aqu\u00ed est\u00e1n nuestras sucursales:\\n\\n';\nsucursales.forEach((s, i) => {\n  texto += `${i+1}. ${s.nombre}\\n   \ud83d\udccd ${s.direccion}\\n   \ud83d\udcde ${s.telefono}\\n   \ud83d\udd52 ${s.horario}\\n\\n`;\n});\nreturn { respuesta: texto };"
+      },
+      "id": "format_sucursales",
+      "name": "Format Sucursales",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1850,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return { respuesta: 'Nuestros tiempos de entrega var\u00edan seg\u00fan la ubicaci\u00f3n. En Culiac\u00e1n, Los Mochis y Guasave realizamos env\u00edos en 24-48 horas h\u00e1biles. Para otras zonas, consulta con tu sucursal m\u00e1s cercana. \u00bfNecesitas m\u00e1s informaci\u00f3n?' };"
+      },
+      "id": "resp_envio",
+      "name": "Respuesta Env\u00edo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const nombre = $json.nombre || 'Cliente';\nreturn { respuesta: `\u00a1Hola ${nombre}! \u00bfEn qu\u00e9 puedo ayudarte hoy? Estamos buscando materiales para construcci\u00f3n.` };"
+      },
+      "id": "resp_saludo",
+      "name": "Respuesta Saludo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1650,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/generar_pdf",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "carrito",
+              "value": "={{ $json.carrito }}"
+            },
+            {
+              "name": "nombre",
+              "value": "={{ $json.nombre }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate_pdf",
+      "name": "Generate PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1650,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const carrito = $json.carrito;\nlet total = 0;\nlet lineas = ['**Resumen de tu cotizaci\u00f3n:**\\n'];\nfor (const item of carrito) {\n  const subtotal = (item.precio_unitario || 0) * item.cantidad;\n  total += subtotal;\n  lineas.push(`\u2022 ${item.descripcion}: ${item.cantidad} x $${item.precio_unitario?.toFixed(2)} = $${subtotal.toFixed(2)}`);\n}\nlineas.push(`\\n**TOTAL: $${total.toFixed(2)}**`);\nif ($json.pdf_url) {\n  lineas.push(`\\n\ud83d\udcc4 Descarga tu cotizaci\u00f3n aqu\u00ed: ${$json.pdf_url}`);\n}\nlineas.push('\\n\u00bfTe parece bien? \u00bfConfirmamos disponibilidad?');\n\nreturn { respuesta: lineas.join('\\n'), nuevo_estado: 'esperando_confirmacion' };"
+      },
+      "id": "format_checkout",
+      "name": "Format Checkout",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1850,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/buscar",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.mensaje }}"
+            },
+            {
+              "name": "m2",
+              "value": "={{ $json.m2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "search_products",
+      "name": "Search Products",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1650,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const productos = $json.productos;\nif (!productos || productos.length === 0) {\n  return { respuesta: 'Lo siento, no encontr\u00e9 productos con esas caracter\u00edsticas. \u00bfPodr\u00edas darme m\u00e1s detalles? (color, medida, tipo)' };\n}\n\n// Guardar ultimos_productos en estado (se har\u00e1 despu\u00e9s)\nconst ultimos = productos.slice(0,3);\nlet texto = 'Aqu\u00ed est\u00e1n las opciones que encontr\u00e9:\\n';\nfor (let i = 0; i < ultimos.length; i++) {\n  const p = ultimos[i];\n  texto += `\\nOpci\u00f3n ${i+1}:\\n- Producto: ${p.descripcion}\\n`;\n  if (p.formato) texto += `- Formato: ${p.formato}\\n`;\n  if (p.color) texto += `- Color: ${p.color}\\n`;\n  if (p.m2_caja) texto += `- Rendimiento: ${p.m2_caja} m\u00b2 por caja\\n`;\n  if (p.precio) texto += `- Precio: $${p.precio.toFixed(2)}\\n`;\n}\nconst m2 = $json.m2 || 0;\nif (m2) texto += `\\nPara tus ${m2} m\u00b2, \u00bfcu\u00e1l te interesa? (dime el n\u00famero o el nombre)`;\nelse texto += '\\n\u00bfCu\u00e1l te interesa? (dime el n\u00famero o el nombre)';\n\nreturn { respuesta: texto, ultimos_productos: ultimos };"
+      },
+      "id": "format_busqueda",
+      "name": "Format B\u00fasqueda",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1850,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Manejo de selecci\u00f3n\nconst mensaje = $json.mensaje.toLowerCase();\nconst ultimos = $json.ultimos_productos;\nlet productoSeleccionado = null;\n\n// Por n\u00famero\nif (['1','2','3'].includes(mensaje)) {\n  const idx = parseInt(mensaje) - 1;\n  if (idx < ultimos.length) productoSeleccionado = ultimos[idx];\n} else {\n  // Por nombre\n  productoSeleccionado = ultimos.find(p => p.descripcion.toLowerCase().includes(mensaje));\n}\n\nif (!productoSeleccionado) {\n  return { respuesta: 'No entend\u00ed cu\u00e1l producto elegiste. Por favor dime el n\u00famero (1,2,3) o el nombre.' };\n}\n\n// Calcular cantidad (si es superficie y hay m2)\nconst esSuperficie = ['nacionales','importados','muros'].includes(productoSeleccionado.coleccion);\nlet cantidad = 1;\nif (esSuperficie && $json.m2 && productoSeleccionado.m2_caja) {\n  cantidad = Math.ceil($json.m2 / productoSeleccionado.m2_caja);\n}\n\nconst item = {\n  codigo: productoSeleccionado.codigo,\n  descripcion: productoSeleccionado.descripcion,\n  cantidad: cantidad,\n  precio_unitario: productoSeleccionado.precio,\n  subtotal: (productoSeleccionado.precio || 0) * cantidad\n};\n\nconst carritoActual = [...$json.carrito];\ncarritoActual.push(item);\nconst total = carritoActual.reduce((sum, i) => sum + (i.subtotal || 0), 0);\n\nconst respuesta = `\u00a1Listo! He a\u00f1adido ${cantidad} unidad(es) de ${productoSeleccionado.descripcion} a tu carrito.\\nSubtotal: $${item.subtotal.toFixed(2)}\\nTotal acumulado: $${total.toFixed(2)}\\n\\n\u00bfNecesitas algo m\u00e1s o quieres ver el total?`;\n\nreturn { respuesta, nuevo_carrito: carritoActual, nuevo_estado: 'cotizando' };"
+      },
+      "id": "seleccion",
+      "name": "Selecci\u00f3n",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1850,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "telefono",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "estado",
+              "value": "={{ $json.nuevo_estado || $json.estado }}"
+            },
+            {
+              "name": "m2",
+              "value": "={{ $json.m2 }}"
+            },
+            {
+              "name": "carrito",
+              "value": "={{ JSON.stringify($json.nuevo_carrito || $json.carrito) }}"
+            },
+            {
+              "name": "ultimos_productos",
+              "value": "={{ JSON.stringify($json.ultimos_productos || []) }}"
+            },
+            {
+              "name": "ultima_busqueda",
+              "value": "={{ $json.ultima_busqueda || '' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update_state",
+      "name": "Update State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        2050,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.respuesta }}"
+      },
+      "id": "respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2250,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Get User State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User State": {
+      "main": [
+        [
+          {
+            "node": "If user exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If user exists?": {
+      "main": [
+        [
+          {
+            "node": "Create User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create User": {
+      "main": [
+        [
+          {
+            "node": "Merge State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge State": {
+      "main": [
+        [
+          {
+            "node": "Reinicio?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reinicio?": {
+      "main": [
+        [
+          {
+            "node": "Reset State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Detect Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset State": {
+      "main": [
+        [
+          {
+            "node": "Respond Reset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond Reset": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Intent": {
+      "main": [
+        [
+          {
+            "node": "Switch Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Intent": {
+      "main": [
+        [
+          {
+            "node": "Get Sucursales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Env\u00edo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Saludo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Selecci\u00f3n",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search Products",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Sucursales": {
+      "main": [
+        [
+          {
+            "node": "Format Sucursales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Sucursales": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta Env\u00edo": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta Saludo": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PDF": {
+      "main": [
+        [
+          {
+            "node": "Format Checkout",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Checkout": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Products": {
+      "main": [
+        [
+          {
+            "node": "Format B\u00fasqueda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format B\u00fasqueda": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Selecci\u00f3n": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update State": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,934 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -4128,
+        1168
+      ],
+      "id": "7b5f3b7f-c79c-4597-94f3-050caa945005",
+      "name": "WhatsApp Trigger",
+      "webhookId": "67849531-ed96-47dc-b699-0981e42c9d29",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "W8pKVUnCSPkvRyUx",
+          "name": "WhatsApp Trigger Messages"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Datos del webhook (Extraer Datos Webhook)\nconst webhook = $node['Extraer Datos Webhook'].json;\n\n// Datos de la API (Code2, que contiene los datos del usuario)\nconst api = $node['Get User State v2'].json;\n\n// Verificar si la API devolvió datos válidos (debe tener telefono)\nconst usuarioExiste = api && api.telefono;\n\n// Función para parsear JSON de forma segura\nfunction safeParse(str) {\n  if (!str || typeof str !== 'string') return [];\n  try {\n    const parsed = JSON.parse(str);\n    return Array.isArray(parsed) ? parsed : [];\n  } catch (e) {\n    return [];\n  }\n}\n\nreturn {\n  telefono: webhook.telefono,\n  nombre: webhook.nombre,\n  mensaje: webhook.mensaje,\n  estado: usuarioExiste ? api.estado : \"inicio\",\n  m2: usuarioExiste ? api.m2 : 0,\n  carrito: usuarioExiste ? safeParse(api.carrito) : [],\n  ultimos_productos: usuarioExiste ? safeParse(api.ultimos_productos) : [],\n  ultima_busqueda: usuarioExiste ? api.ultima_busqueda : \"\"\n};"
+      },
+      "id": "70bb1ac1-989d-44c5-ab7d-ad35c55aa1a8",
+      "name": "Merge State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3280,
+        1168
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "={{ 'https://agente3.aegis-oceanit.work/user/' + $json.telefono + '/reset' }}",
+        "options": {}
+      },
+      "id": "e34a314b-1435-4d47-986a-bc52103d7385",
+      "name": "Reset State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -2416,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://agente3.aegis-oceanit.work/sucursales",
+        "options": {}
+      },
+      "id": "02460832-b307-49c7-bd70-954f2ec6f917",
+      "name": "Get Sucursales",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -1984,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatear respuesta de sucursales\nconst sucursales = $json;\nlet texto = 'Aquí están nuestras sucursales:\\n\\n';\nsucursales.forEach((s, i) => {\n  texto += `${i+1}. ${s.nombre}\\n   📍 ${s.direccion}\\n   📞 ${s.telefono}\\n   🕒 ${s.horario}\\n\\n`;\n});\nreturn { ...$json, respuesta: texto };"
+      },
+      "id": "265080c7-6591-45ff-993f-0e5ac059cd2f",
+      "name": "Format Sucursales",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1808,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return { ...$json, respuesta: 'Nuestros tiempos de entrega varían según la ubicación. En Culiacán, Los Mochis y Guasave realizamos envíos en 24-48 horas hábiles. Para otras zonas, consulta con tu sucursal más cercana. ¿Necesitas más información?' };"
+      },
+      "id": "f9816885-8fb1-4549-9da0-697a1eaf31e7",
+      "name": "Respuesta Envío",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1136
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const nombre = $json.nombre || 'Cliente';\nreturn {\n  ...$json,  // Esto copia telefono, nombre, estado, m2, carrito, etc.\n  respuesta: `¡Hola ${nombre}! ¿En qué puedo ayudarte hoy? Estamos buscando materiales para construcción.`\n};"
+      },
+      "id": "513bb85b-96e9-41cd-ba8d-00973bfc4bff",
+      "name": "Respuesta Saludo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://agente3.aegis-oceanit.work/generar_pdf",
+        "options": {}
+      },
+      "id": "647435a5-367f-4445-b9e8-9b80a841483e",
+      "name": "Generate PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -1984,
+        1424
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const carrito = $json.carrito;\nlet total = 0;\nlet lineas = ['**Resumen de tu cotización:**\\n'];\nfor (const item of carrito) {\n  const subtotal = (item.precio_unitario || 0) * item.cantidad;\n  total += subtotal;\n  lineas.push(`• ${item.descripcion}: ${item.cantidad} x $${item.precio_unitario?.toFixed(2)} = $${subtotal.toFixed(2)}`);\n}\nlineas.push(`\\n**TOTAL: $${total.toFixed(2)}**`);\nif ($json.pdf_url) {\n  lineas.push(`\\n📄 Descarga tu cotización aquí: ${$json.pdf_url}`);\n}\nlineas.push('\\n¿Te parece bien? ¿Confirmamos disponibilidad?');\n\nreturn { ...$json, respuesta: lineas.join('\\n'), nuevo_estado: 'esperando_confirmacion' };"
+      },
+      "id": "a51dbb66-9155-4a5e-9649-0de62ee02ccc",
+      "name": "Format Checkout",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1808,
+        1424
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://agente3.aegis-oceanit.work/buscar",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "query",
+              "value": "={{ $json.mensaje }}"
+            },
+            {
+              "name": "m2",
+              "value": "={{ $json.m2 }}"
+            },
+            {
+              "name": "telefono",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "nombre",
+              "value": "={{ $json.nombre }}"
+            },
+            {
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}"
+            },
+            {
+              "name": "carrito",
+              "value": "={{ JSON.stringify($json.carrito || []) }}"
+            },
+            {
+              "name": "estado",
+              "value": "={{ $json.estado || 'inicio' }}"
+            }
+          ]
+        }
+      },
+      "id": "6cc799ff-4d81-4b76-9876-c5c2d2d8ce3a",
+      "name": "Search Products",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -2208,
+        1632
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const productos = $json.productos;\n\n// Si no hay productos, devolver error pero CONSERVAR datos del usuario\nif (!productos || productos.length === 0) {\n  return { \n    respuesta: 'Lo siento, no encontré productos con esas características. ¿Podrías darme más detalles? (color, medida, tipo)',\n    telefono: $json.telefono,\n    nombre: $json.nombre,\n    mensaje: $json.mensaje,\n    m2: $json.m2 || 0,\n    carrito: $json.carrito || [],\n    estado: $json.estado || 'inicio',\n    ultimos_productos: [],\n    nuevo_estado: 'inicio'\n  };\n}\n\n// Guardar ultimos_productos en estado\nconst ultimos = productos.slice(0,3);\nlet texto = 'Aquí están las opciones que encontré:\\n';\nfor (let i = 0; i < ultimos.length; i++) {\n  const p = ultimos[i];\n  texto += `\\nOpción ${i+1}:\\n- Producto: ${p.descripcion}\\n`;\n  if (p.formato) texto += `- Formato: ${p.formato}\\n`;\n  if (p.color) texto += `- Color: ${p.color}\\n`;\n  if (p.m2_caja) texto += `- Rendimiento: ${p.m2_caja} m² por caja\\n`;\n  if (p.precio) texto += `- Precio: $${p.precio.toFixed(2)}\\n`;\n}\n\nconst m2 = $json.m2 || 0;\nif (m2) texto += `\\nPara tus ${m2} m², ¿cuál te interesa? (dime el número o el nombre)`;\nelse texto += '\\n¿Cuál te interesa? (dime el número o el nombre)';\n\n// ✅ DEVOLVER TODO: respuesta + datos del usuario + nuevo estado\nreturn { \n  respuesta: texto, \n  ultimos_productos: ultimos,\n  telefono: $json.telefono,\n  nombre: $json.nombre,\n  mensaje: $json.mensaje,\n  m2: $json.m2 || 0,\n  carrito: $json.carrito || [],\n  estado: $json.estado || 'inicio',\n  nuevo_estado: 'cotizando', // ← Importante: ahora estamos cotizando\n};"
+      },
+      "id": "3815d980-b911-47d4-9718-7a10f8e3bb42",
+      "name": "Format Búsqueda",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1792,
+        1728
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener datos del usuario desde Merge State (siempre actualizado)\nconst usuario = $node['Merge State'].json;\n// Usar ultimos_productos del objeto actual si existen, sino del usuario\nconst ultimos = ($json.ultimos_productos && $json.ultimos_productos.length) ? $json.ultimos_productos : usuario.ultimos_productos;\n\nconst entidades = $json.entidades || {};\nlet productoSeleccionado = null;\n\n// 1. Por número (entidades.opcion_numero o número en mensaje)\nlet num = entidades.opcion_numero;\nif (!num) {\n  const match = $json.mensaje.toLowerCase().match(/\\b([1-3])\\b/);\n  if (match) num = parseInt(match[1]);\n}\nif (num && num >= 1 && num <= ultimos.length) {\n  productoSeleccionado = ultimos[num - 1];\n}\n\n// 2. Por nombre usando entidades\nif (!productoSeleccionado && (entidades.producto_tipo || entidades.color)) {\n  const tipo = entidades.producto_tipo?.toLowerCase() || '';\n  const color = entidades.color?.toLowerCase() || '';\n  productoSeleccionado = ultimos.find(p => {\n    const desc = p.descripcion?.toLowerCase() || '';\n    return (tipo && desc.includes(tipo)) || (color && desc.includes(color));\n  });\n}\n\n// 3. Fallback: buscar en el mensaje\nif (!productoSeleccionado) {\n  const palabrasClave = $json.mensaje.toLowerCase().replace(/quiero|el|la|los|las|ese|esa|ese|producto|opcion/gi, '').trim();\n  if (palabrasClave) {\n    productoSeleccionado = ultimos.find(p => p.descripcion.toLowerCase().includes(palabrasClave));\n  }\n}\n\nif (!productoSeleccionado) {\n  return {\n    ...$json,\n    respuesta: 'No encontré el producto que mencionas. Por favor dime el número de la opción (1,2,3) o el nombre exacto que apareció en la lista.'\n  };\n}\n\n// Calcular cantidad (si es superficie y hay m2)\nconst esSuperficie = ['nacionales','importados','muros'].includes(productoSeleccionado.coleccion);\nlet cantidad = 1;\nif (esSuperficie && $json.m2 && productoSeleccionado.m2_caja) {\n  cantidad = Math.ceil($json.m2 / productoSeleccionado.m2_caja);\n}\n\nconst item = {\n  codigo: productoSeleccionado.codigo,\n  descripcion: productoSeleccionado.descripcion,\n  cantidad: cantidad,\n  precio_unitario: productoSeleccionado.precio,\n  subtotal: (productoSeleccionado.precio || 0) * cantidad\n};\n\nconst carritoActual = [...($json.carrito || [])];\ncarritoActual.push(item);\nconst total = carritoActual.reduce((sum, i) => sum + (i.subtotal || 0), 0);\n\nconst respuesta = `¡Listo! He añadido ${cantidad} unidad(es) de ${productoSeleccionado.descripcion} a tu carrito.\\nSubtotal: $${item.subtotal.toFixed(2)}\\nTotal acumulado: $${total.toFixed(2)}\\n\\n¿Necesitas algo más o quieres ver el total?`;\n\nreturn {\n  ...$json,\n  ultimos_productos: ultimos,   // asegurar que se mantiene\n  respuesta,\n  nuevo_carrito: carritoActual, // array\n  nuevo_estado: 'cotizando'\n};"
+      },
+      "id": "fc02d26b-e086-4647-9f5c-2ad75932e480",
+      "name": "Selección",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1568
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "telefono",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "nombre",
+              "value": "={{ $json.nombre }}"
+            },
+            {
+              "name": "estado",
+              "value": "={{ $json.nuevo_estado || $json.estado }}"
+            },
+            {
+              "name": "m2",
+              "value": "={{ $json.m2 || 0 }}"
+            },
+            {
+              "name": "carrito",
+              "value": "={{ JSON.stringify($json.nuevo_carrito || $json.carrito || []) }}"
+            },
+            {
+              "name": "ultimos_productos",
+              "value": "={{ JSON.stringify($json.ultimos_productos || []) }}"
+            },
+            {
+              "name": "ultima_busqueda",
+              "value": "={{ $json.ultima_busqueda || '' }}"
+            },
+            {
+              "name": "respuesta",
+              "value": "={{ $json.respuesta }}"
+            }
+          ]
+        }
+      },
+      "id": "56b163f3-defb-4f11-8698-f19eefbfd095",
+      "name": "Update State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/user",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"telefono\": \"{{ $json.telefono }}\",\n  \"nombre\": \"{{ $json.nombre }}\",\n  \"estado\": \"{{ $json.nuevo_estado || $json.estado }}\",\n  \"m2\": {{ $json.m2 || 0 }},\n  \"carrito\": {{ JSON.stringify($json.nuevo_carrito || $json.carrito || []) }},\n  \"ultimos_productos\": {{ JSON.stringify($json.ultimos_productos || []) }},\n  \"ultima_busqueda\": \"{{ $json.ultima_busqueda || '' }}\",\n  \"respuesta\": \"{{ $json.respuesta }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3104,
+        1168
+      ],
+      "id": "bf12a284-265e-40da-96b4-dc00ed2124cb",
+      "name": "Update User"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641ea23d-c3fc-4700-af99-0c9c3bba4db1",
+              "leftValue": "={{ $json.mensaje.toLowerCase().includes('reiniciar') || $json.mensaje.toLowerCase().includes('nueva') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2864,
+        1168
+      ],
+      "id": "1305ac29-bf7d-4369-90dd-67d215535353",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "455971687594956",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.respuesta }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        1264
+      ],
+      "id": "2215c551-80d6-42af-b429-51b1b60a5c1d",
+      "name": "Send message3",
+      "webhookId": "0a4114e9-e157-43ad-b088-f18741e6e0f6",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "HNegtPXvqt005sR8",
+          "name": "WhatsApp Send Messages"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "sucursales",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2ffcead5-6d55-483d-ae6f-9c06b3f3fbf0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sucursales"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cb3fdc16-79cc-4808-beb9-d1d7015c2975",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "envio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "envio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "da236fb0-ef9a-47d3-ae67-eba62d0a1dc8",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "saludo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "saludo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c7719cc7-3c1d-4003-b32d-437532664735",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "checkout",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkout"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9a5fb520-50a2-4ee1-836d-4257eab92e8f",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "buscar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "buscar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "eaf9adf7-2eb3-4184-b4cd-9ba183e2c6ec",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "seleccion",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "seleccion"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none",
+          "allMatchingOutputs": false
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2208,
+        1296
+      ],
+      "id": "ac537302-30cc-4fbe-862d-2bd3b1f33489",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    debug: \"Verificar salida de Update State\",\n    tiene_respuesta: $json.hasOwnProperty('respuesta'),\n    respuesta: $json.respuesta,\n    keys: Object.keys($json)\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -912,
+        1264
+      ],
+      "id": "67bee5e1-9082-47d8-bcdb-b6a07f972a3b",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "455971687594956",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "=Con mucho gusto empecemos una nueva cotización, que productos te interesan?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        880
+      ],
+      "id": "4567ab07-672c-4905-ab01-23378c5a9d5c",
+      "name": "Send message4",
+      "webhookId": "0a4114e9-e157-43ad-b088-f18741e6e0f6",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "HNegtPXvqt005sR8",
+          "name": "WhatsApp Send Messages"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nreturn {\n  telefono: data.messages[0].from,\n  nombre: data.contacts[0].profile.name,\n  mensaje: data.messages[0].text.body,\n  // También pasamos el objeto original por si acaso\n  webhook_raw: data\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3888,
+        1168
+      ],
+      "id": "d01ad866-f12a-4b57-9ea2-a903eaee1158",
+      "name": "Extraer Datos Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const telefono = $json.telefono;\nreturn {\n  url: `https://agente3.aegis-oceanit.work/user/${telefono}`\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3696,
+        1168
+      ],
+      "id": "2ef33142-3e4d-431e-96ff-9bc5332ac905",
+      "name": "Construir URL Usuario"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const url = $json.url;\nconst options = {\n  method: 'GET',\n  url: url,\n  json: true,  // Para que la respuesta se devuelva como objeto\n  rejectUnauthorized: false  // Ignorar SSL si es necesario (opcional)\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  return response;\n} catch (error) {\n  // Si es 404, devolvemos un objeto indicando que no existe\n  if (error.statusCode === 404) {\n    return {\n      error: \"not_found\",\n      telefono: $node['Extraer Datos Webhook'].json.telefono\n    };\n  }\n  // Si es otro error, lo lanzamos para que n8n lo muestre\n  throw new Error(`HTTP request failed: ${error.message}`);\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3472,
+        1168
+      ],
+      "id": "7156bef5-0c95-4f5f-9bad-422e28935355",
+      "name": "Get User State v2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agente3.aegis-oceanit.work/llm/intent",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"mensaje\": \"{{ $json.mensaje }}\",\n  \"estado\": \"{{ $json.estado }}\",\n  \"ultimos_productos\": {{ JSON.stringify($json.ultimos_productos || []) }},\n  \"carrito\": {{ JSON.stringify($json.carrito || []) }},\n  \"m2\": {{ $json.m2 || 0 }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2656,
+        1264
+      ],
+      "id": "da8ff54a-0747-43b7-a1e1-a10fbf813384",
+      "name": "Detect Intent LLM"
+    },
+    {
+      "parameters": {
+        "jsCode": "const llm = $json;\nconst userData = $node['Merge State'].json; // Ajusta el nombre si es otro\n\n// Normalizar intent\nlet intent = llm.intent ? llm.intent.toLowerCase().trim() : 'buscar';\nif (!['saludo','buscar','seleccion','sucursales','envio','checkout','quitar'].includes(intent)) {\n  intent = 'buscar';\n}\n\n// Extraer entidades\nconst entidades = llm.entidades || {};\n\nreturn {\n  ...userData,\n  intent: intent,\n  entidades: entidades\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2448,
+        1264
+      ],
+      "id": "df0df3e0-b7b8-4cec-8bc3-6ab1628b37c8",
+      "name": "LLM-Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const textoOriginal = $json.respuesta;\nconst options = {\n  method: 'POST',\n  url: 'https://agente3.aegis-oceanit.work/llm/embellish', // nuevo endpoint\n  body: { text: textoOriginal },\n  json: true\n};\nconst response = await this.helpers.httpRequest(options);\nreturn { ...$json, respuesta: response.embellished };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1600,
+        1568
+      ],
+      "id": "26ec3637-d655-4c8e-a893-1767a0e8d13b",
+      "name": "Embellish"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Datos del usuario desde Merge State\nconst usuario = $node['Merge State'].json;\n\n// Datos de la búsqueda (productos, etc.)\nconst busqueda = $json; // esto es la respuesta de /buscar\n\n// Combinar: prevalecen los datos del usuario, pero se añaden los productos y otros campos de búsqueda\nreturn {\n  ...usuario,\n  ...busqueda,        // esto incluye \"productos\", y si la API devuelve telefono/nombre los sobrescribe\n  productos: busqueda.productos || []\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1728
+      ],
+      "id": "86187106-fd7a-443e-b2b8-1ee0bc6bfdfa",
+      "name": "Fusionar Búsqueda"
+    }
+  ],
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        []
+      ]
+    },
+    "Merge State": {
+      "main": [
+        [
+          {
+            "node": "Update User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset State": {
+      "main": [
+        []
+      ]
+    },
+    "Get Sucursales": {
+      "main": [
+        [
+          {
+            "node": "Format Sucursales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Sucursales": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta Envío": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta Saludo": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PDF": {
+      "main": [
+        [
+          {
+            "node": "Format Checkout",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Checkout": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Products": {
+      "main": [
+        [
+          {
+            "node": "Fusionar Búsqueda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Búsqueda": {
+      "main": [
+        [
+          {
+            "node": "Embellish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Selección": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update State": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update User": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Reset State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Detect Intent LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get Sucursales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Envío",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Saludo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search Products",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Selección",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Datos Webhook": {
+      "main": [
+        [
+          {
+            "node": "Construir URL Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir URL Usuario": {
+      "main": [
+        [
+          {
+            "node": "Get User State v2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User State v2": {
+      "main": [
+        [
+          {
+            "node": "Merge State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Intent LLM": {
+      "main": [
+        [
+          {
+            "node": "LLM-Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM-Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embellish": {
+      "main": [
+        [
+          {
+            "node": "Update State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusionar Búsqueda": {
+      "main": [
+        [
+          {
+            "node": "Format Búsqueda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f7d856bb648e48ab98f4001671175556709e88b8f4e50be66b4b89b048887719"
+  }
+}

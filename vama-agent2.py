@@ -25,7 +25,7 @@ import requests
 CHROMA_PATH = "./chroma_db_v3"
 MEMORIA_FILE = 'memoria_v2.json'
 OLLAMA_HOST = 'http://127.0.0.1:11434'
-MODELO = "qwen2.5:3b"
+MODELO = "qwen2.5:14b"
 
 print("=" * 60)
 print("🚀 VAMA Agent - PARCHE MÍNIMO")
